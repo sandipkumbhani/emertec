@@ -1,0 +1,15 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/Emertec.Api/bin/Debug/net8.0
+/Emertec.Api/obj
+/Emertec.Application/bin/Debug/net8.0
+/Emertec.Application/obj
+/Emertec.Domain/bin/Debug/net8.0
+/Emertec.Domain/Emertec.Api/bin/Debug/net8.0
+/Emertec.Domain/Emertec.Api/obj
+/Emertec.Domain/obj
+/Emertec.Infrastructure/bin/Debug/net8.0
+/Emertec.Infrastructure/obj
