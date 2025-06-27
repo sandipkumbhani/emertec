@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace MicroService_Template.Application.DTO
 {
-    public class AudioPaths
+    public class DecryptRequest
     {
         public string BasePath { get; set; }
+        public string PrivateKeyPath { get; set; }
+        public string whisperExePath { get; set; }
 
-        public string PublicKeyPath { get; set; }
-
+        public string guidPath { get; set; }
     }
 }

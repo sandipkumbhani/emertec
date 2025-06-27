@@ -9,5 +9,6 @@ namespace MicroService_Template.Application.DTO
     public class MP3Settings
     {
         public bool IsdeleteMp3File { get; set; }
+        public bool IsdeleteRsaFiles { get; set; }
     }
 }

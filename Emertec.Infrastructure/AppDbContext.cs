@@ -8,7 +8,8 @@ public class AppDbContext : DbContext
 
     }
      public DbSet<ModelDimJson> modelDimJson { get; set; }
-     public DbSet<ModelDimCompany> modelDimCompany { get; set; }
+    public object ModelDimJson { get; internal set; }
+    public DbSet<ModelDimCompany> modelDimCompany { get; set; }
      public DbSet<ModelDimCampaign> modelDimCampaign { get; set; }
      public DbSet<ModelDimTextSentence> modelDimTextSentence { get; set; }
      public DbSet<ModelDimTextFull> modelDimTextFull { get; set; }

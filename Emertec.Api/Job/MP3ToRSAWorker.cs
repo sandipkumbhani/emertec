@@ -1,5 +1,5 @@
 ﻿using MicroService_Template.Application.DTO;
-using MicroService_Template.Application.Interface;
+using MicroService_Template.Application.Extension.Interface;
 using Microsoft.Extensions.Options;
 using Quartz;
 

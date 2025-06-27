@@ -1,24 +1,25 @@
-﻿using MicroService_Template.Application.DTO;
-using MicroService_Template.Application.Interface;
+﻿using Azure.Core;
+using MicroService_Template.Application.DTO;
+using MicroService_Template.Application.Extension.Interface;
+using MicroService_Template.Application.Services;
 using Microsoft.Extensions.Options;
 using Quartz;
 
 namespace MicroService_Template.Job
 {
-    public class RSAToJsonWorker
+    public class RSAToJsonWorker : IJob
     {
-        private readonly IAudioFileService _audioService;
-        private readonly AudioPaths _paths;
-
-        public RSAToJsonWorker(IAudioFileService audioService, IOptions<AudioPaths> paths)
+        private readonly IConvertRsaToJsonService _convertRsaToJson;
+        private readonly DecryptRequest _decryptRequest;
+        public RSAToJsonWorker(IConvertRsaToJsonService convertRsaToJson, IOptions<DecryptRequest> decryptRequest)
         {
-            _audioService = audioService;
-            _paths = paths.Value;
+            _convertRsaToJson = convertRsaToJson;
+            _decryptRequest = decryptRequest.Value;
         }
         public Task Execute(IJobExecutionContext context)
         {
-            var result = _audioService.ConvertAllRsaFilesToJson(_paths);
-            Console.WriteLine($"[Job] get all {result.Count} rsa and guid file at {DateTime.Now}");
+          var result = _convertRsaToJson.WorkerMp3ToJson(_decryptRequest, _decryptRequest.PrivateKeyPath, _decryptRequest.whisperExePath);
+            Console.WriteLine($"[Job] convert all {result.Count} RSA TO MP3 {DateTime.Now}");
             return Task.CompletedTask;
         }
     }

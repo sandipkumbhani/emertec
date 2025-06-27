@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace MicroService_Template.Application.DTO
 {
-    public class AudioPaths
+    public class KeyGenerationResponse
     {
-        public string BasePath { get; set; }
-
+        public string PrivateKeyPath { get; set; }
         public string PublicKeyPath { get; set; }
-
+        public string Message { get; set; }
     }
 }

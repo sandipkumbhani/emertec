@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace MicroService_Template.Application.DTO
 {
-    public class AudioPaths
+    public class JsonToDB
     {
         public string BasePath { get; set; }
-
-        public string PublicKeyPath { get; set; }
-
     }
 }

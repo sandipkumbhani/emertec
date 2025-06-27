@@ -10,12 +10,12 @@
   <ItemGroup>
     <Folder Include="Entity\" />
     <Folder Include="Enum\" />
-    <Folder Include="Interface\" />
     <Folder Include="Response\" />
     <Folder Include="Request\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1">
       <PrivateAssets>all</PrivateAssets>

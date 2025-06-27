@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MicroService_Template.Application.Interface
+namespace MicroService_Template.Application.Extension.Interface
 {
     public interface IAudioFileService
     {
         List<string> ConvertAllMp3FilesToRsaAndGuid(AudioPaths _paths);
-        public List<string> ConvertAllRsaFilesToJson(AudioPaths _paths);
+       
      }
 }

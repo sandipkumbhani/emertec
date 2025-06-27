@@ -1,4 +1,4 @@
-﻿namespace MicroService_Template.Domain.Model
+﻿    namespace MicroService_Template.Domain.Model
 {
     public class ModelDimCompany
     {

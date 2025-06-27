@@ -1,8 +1,10 @@
-﻿using MicroService_Template.Application.DTO;
-using MicroService_Template.Application.Interface;
+﻿using Azure.Core;
+using MicroService_Template.Application.DTO;
+using MicroService_Template.Application.Extension.Interface;
 using MicroService_Template.Application.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using System.IO;
 using System.Threading.Tasks;
@@ -14,13 +16,23 @@ namespace MicroService_Template.Controllers
 
     public class AudioController : ControllerBase
     {
+        private readonly IConvertRsaToJsonService _convertRsaToJson;
+        private readonly IConvertJsonToDb _convertJsonToDb;
         private readonly IAudioFileService _audioService;
         private readonly AudioPaths _paths;
-        public AudioController(IAudioFileService audioService, IOptions<AudioPaths> paths)
-        {
-            _audioService = audioService;
-            _paths = paths.Value;
+        private readonly DecryptRequest _decryptRequest;
+        private readonly ICryptoService _cryptoService;
+        private readonly JsonToDB _jsontodb;
 
+        public AudioController(IConvertRsaToJsonService convertRsaToJson, IConvertJsonToDb  convertJsonToDb, IAudioFileService audioFileService, ICryptoService cryptoService, IOptions<AudioPaths> paths, IOptions<DecryptRequest> decryptRequest, IOptions<JsonToDB> jsontodb)
+        {
+            _convertRsaToJson = convertRsaToJson;
+            _convertJsonToDb = convertJsonToDb;
+            _audioService = audioFileService;
+            _paths = paths.Value;
+            _decryptRequest = decryptRequest.Value;
+            _cryptoService = cryptoService;
+            _jsontodb = jsontodb.Value;
         }
         [HttpPost("convert-all-mp3-to-rsa")]
         public IActionResult ConvertAllMp3ToRsa()
@@ -34,20 +46,56 @@ namespace MicroService_Template.Controllers
             });
 
         }
-        [HttpPost("get-all-rsa-and-guid")]
-        public IActionResult GetAllRsaAndGuid()
+        [HttpPost("mp3-to-json")]
+        public IActionResult DecryptAll()
         {
-            var rsaFiles = _audioService.ConvertAllRsaFilesToJson(_paths);
+            try
+            {
+                var request = new DecryptRequest
+                {
+                    BasePath = _decryptRequest.BasePath,
+                    PrivateKeyPath = _decryptRequest.PrivateKeyPath,
+                    whisperExePath = _decryptRequest.whisperExePath
+                };
+
+                var result = _convertRsaToJson.WorkerMp3ToJson(request, request.PrivateKeyPath, request.whisperExePath);
+                return Ok(new { Count = result.Count, Files = result });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Decryption failed: {ex.Message}");
+            }
+        }
+        [HttpPost("generate-keys")]
+        public IActionResult GenerateKeys([FromQuery] string outputFolder = @"D:\Keys")
+        {
+            var result = _cryptoService.GenerateRsaKeys(outputFolder);
+            return Ok(result);
+        }
+        [HttpPost("process-json-files")]
+        public async Task<IActionResult> GetAllJson()
+        {
+            var jsonToDb = new JsonToDB
+            {
+                BasePath = _jsontodb.BasePath // Make sure _jsontodb is injected or configured properly
+            };
+
+            var updatedRows = await _convertJsonToDb.CheckGuidFromJsonAsync(jsonToDb);
 
             return Ok(new
             {
-                Message = "All files get successfully.",
-                Files = rsaFiles
+                Message = "Processed JSON files successfully.",
+                UpdatedCount = updatedRows.Count,
+                UpdatedFiles = updatedRows.Select(x => new
+                {
+                    x.DapperGuid,
+                    x.FileName,
+                    x.FilePath,
+                    x.LastSyncDateTime
+                })
             });
         }
+
+
     }
 }
-
-
-
-
