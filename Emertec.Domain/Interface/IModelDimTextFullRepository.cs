@@ -5,16 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MicroService_Template.Domain.Interface
+namespace MicroService_Template.Application.Extension.Interface
 {
-    public interface IModelDimJsonRepository
+    public interface IModelDimTextFullRepository
     {
         Task<ModelDimJson?> GetByJsonidAsync(Guid guid);
-        Task InsertJsonRecordAsync(ModelDimJson model);
-        Task<ModelDimJson?> GetByDapperGuidAsync(Guid guid);
-        Task UpdateAsync(ModelDimJson model);
+        Task InsertAsync(ModelDimTextFull textFull);
+       Task<ModelDimTextFull?> GetByJsonGuidAsync(Guid jsonGuid);
         Task SaveChangesAsync();
-        
-
     }
 }

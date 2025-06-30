@@ -17,6 +17,7 @@ namespace MicroService_Template.Infrastructure.Repository
         {
             _context = context;
         }
+       
         public async Task<ModelDimCampaign?> GetByNameAsync(string campaignName)
         {
             return await _context.modelDimCampaign

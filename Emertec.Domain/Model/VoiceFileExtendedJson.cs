@@ -18,6 +18,7 @@ namespace MicroService_Template.Domain.Model
         public string? TeamName { get; set; } = "";
         public string? CallNumber { get; set; }
         public string? CallDateTime { get; set; }
+        public string? CompanyId { get; set; }
         public string? CallRespondentFullPath { get; set; } = null;
         public List<Segment>? Segments { get; set; }
         public object FileName { get; set; }

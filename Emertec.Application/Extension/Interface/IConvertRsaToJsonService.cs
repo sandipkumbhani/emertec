@@ -11,10 +11,8 @@ namespace MicroService_Template.Application.Extension.Interface
 {
     public interface IConvertRsaToJsonService
     {
-        
-        List<string> WorkerMp3ToJson(DecryptRequest request, string privateKeyPath, string whisperExePath);
 
-       
-       
+        Task<List<string>> WorkerMp3ToJson(DecryptRequest request, string privateKeyPath, string whisperExePath);
+
     }
 }

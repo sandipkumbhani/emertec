@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroService_Template.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250610130003_Emertac")]
+    [Migration("20250630062255_Emertac")]
     partial class Emertac
     {
         /// <inheritdoc />

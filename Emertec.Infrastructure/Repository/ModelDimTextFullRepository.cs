@@ -1,4 +1,4 @@
-﻿using MicroService_Template.Domain.Interface;
+﻿using MicroService_Template.Application.Extension.Interface;
 using MicroService_Template.Domain.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,38 +9,30 @@ using System.Threading.Tasks;
 
 namespace MicroService_Template.Infrastructure.Repository
 {
-    public class ModelDimJsonRepository : IModelDimJsonRepository
+    public class ModelDimTextFullRepository : IModelDimTextFullRepository
     {
         private readonly AppDbContext _context;
 
-        public ModelDimJsonRepository(AppDbContext context)
+        public ModelDimTextFullRepository(AppDbContext context)
         {
             _context = context;
         }
-        public async Task InsertJsonRecordAsync(ModelDimJson model)
+        public async Task InsertAsync(ModelDimTextFull textFull)
         {
-            _context.modelDimJson.Add(model);
-            await _context.SaveChangesAsync();
+            await _context.modelDimTextFull.AddAsync(textFull);
         }
 
-        public async Task<ModelDimJson?> GetByDapperGuidAsync(Guid guid)
-        {
-            return await _context.modelDimJson.FirstOrDefaultAsync(x => x.DapperGuid == guid);
-        }
         public async Task<ModelDimJson?> GetByJsonidAsync(Guid guid)
         {
             return await _context.modelDimJson.FirstOrDefaultAsync(x => x.Id == guid);
         }
-
-        public async Task UpdateAsync(ModelDimJson model)
+        public async Task<ModelDimTextFull?> GetByJsonGuidAsync(Guid jsonGuid)
         {
-            _context.modelDimJson.Update(model);
+            return await _context.modelDimTextFull.FirstOrDefaultAsync(x => x.JsonGuid == jsonGuid);
         }
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
         }
-
-
     }
 }

@@ -16,11 +16,11 @@ namespace MicroService_Template.Job
             _convertRsaToJson = convertRsaToJson;
             _decryptRequest = decryptRequest.Value;
         }
-        public Task Execute(IJobExecutionContext context)
+        public async Task Execute(IJobExecutionContext context)
         {
-          var result = _convertRsaToJson.WorkerMp3ToJson(_decryptRequest, _decryptRequest.PrivateKeyPath, _decryptRequest.whisperExePath);
+            var result = await _convertRsaToJson.WorkerMp3ToJson(_decryptRequest, _decryptRequest.PrivateKeyPath, _decryptRequest.whisperExePath);
             Console.WriteLine($"[Job] convert all {result.Count} RSA TO MP3 {DateTime.Now}");
-            return Task.CompletedTask;
+            //return Task.CompletedTask;
         }
     }
 }

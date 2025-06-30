@@ -18,12 +18,14 @@ namespace MicroService_Template.Infrastructure.Repository
         {
             _context = context;
         }
-        public async Task<ModelDimCompany?> GetcompanyNameAsync(string companyname)
+        public async Task<ModelDimCompany> GetByNameAsync(string name)
         {
-            return await _context.modelDimCompany
-                .FirstOrDefaultAsync(c => c.Name == companyname);
+            return await _context.modelDimCompany.FirstOrDefaultAsync(c => c.Name == name);
         }
-
+        public async Task<ModelDimCompany?> GetByCompanyIdAsync(Guid guid)
+        {
+            return await _context.modelDimCompany.FirstOrDefaultAsync(x => x.Id == guid);
+        }
         public async Task companyInsertAsync(ModelDimCompany company)
         {
             await _context.modelDimCompany.AddAsync(company);

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MicroService_Template.Application.Extension.Interface
 {
-    public interface IConvertJsonToDb
+    public interface IConvertJsonToDbService
     {
         Task<List<ModelDimJson>> CheckGuidFromJsonAsync(JsonToDB jsonToDb);
     }

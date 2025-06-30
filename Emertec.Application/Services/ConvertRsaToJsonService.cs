@@ -25,7 +25,7 @@ namespace MicroService_Template.Application.Services
         }
 
 
-        public List<string> WorkerMp3ToJson(DecryptRequest request, string privateKeyPath, string whisperExePath)
+        public async Task<List<string>> WorkerMp3ToJson(DecryptRequest request, string privateKeyPath, string whisperExePath)
         {
             var mp3Files = new List<string>();
             var jsonFiles = new List<string>();
@@ -79,7 +79,7 @@ namespace MicroService_Template.Application.Services
 
                 AppendGuidToJson(jsonPath, guidPath);
 
-                SaveFileAndGeneratedGuidAsync(guidPath);
+                await SaveFileAndGeneratedGuidAsync(guidPath);
 
                 if (_mp3Settings.IsdeleteRsaFiles)
                 {
@@ -91,7 +91,7 @@ namespace MicroService_Template.Application.Services
         }
         //get all rsafolder 
 
-       private List<string> GetAllRsaFiles(DecryptRequest _request)
+        private List<string> GetAllRsaFiles(DecryptRequest _request)
         {
             var rsaFiles = new List<string>();
 
@@ -143,19 +143,15 @@ namespace MicroService_Template.Application.Services
 
             if (new FileInfo(rsaFilePath).Length < 256)
             {
-                // Optionally log and skip this file
                 Console.WriteLine($"Skipping file (too small): {rsaFilePath}");
                 return;
             }
             byte[] encryptedHeader = encryptedFile.Take(256).ToArray();
             byte[] mp3Rest = encryptedFile.Skip(256).ToArray();
 
-            // Load private RSA key
             string privateKeyXml = File.ReadAllText(privateKeyPath);
             using RSA rsa = RSA.Create();
-            rsa.FromXmlString(privateKeyXml); // Load private key from XML
-
-            // Decrypt the first 256 bytes
+            rsa.FromXmlString(privateKeyXml);
             byte[] decryptedHeader = rsa.Decrypt(encryptedHeader, RSAEncryptionPadding.Pkcs1);
             byte[] fullMp3 = decryptedHeader.Concat(mp3Rest).ToArray();
 
@@ -300,17 +296,16 @@ namespace MicroService_Template.Application.Services
             string ciRaw = parts.FirstOrDefault(p => p.StartsWith("CI"))?.Substring(2);
             if (!string.IsNullOrEmpty(ciRaw))
             {
-                result.CampaignName = ciRaw;  
+                result.CampaignName = ciRaw;
             }
 
-            // Correct: get CampaignDate from DT
+
             string dtRaw = parts.FirstOrDefault(p => p.StartsWith("DT"))?.Substring(2);
             if (!string.IsNullOrEmpty(dtRaw) && dtRaw.Length >= 14)
             {
                 result.CampaignDate = DateTime.ParseExact(dtRaw.Substring(0, 8), "ddMMyyyy", null).ToString("yyyy-MM-dd");
             }
 
-            // Extract call number and datetime
             string utcstRaw = parts.FirstOrDefault(p => p.StartsWith("UTCST"))?.Substring(5);
             if (!string.IsNullOrEmpty(utcstRaw) && utcstRaw.Length >= 14)
             {
@@ -354,7 +349,7 @@ namespace MicroService_Template.Application.Services
             }
             catch (Exception ex)
             {
-               
+
                 return $"Error: {ex.Message}";
             }
         }

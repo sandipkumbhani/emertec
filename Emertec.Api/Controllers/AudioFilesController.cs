@@ -17,14 +17,14 @@ namespace MicroService_Template.Controllers
     public class AudioController : ControllerBase
     {
         private readonly IConvertRsaToJsonService _convertRsaToJson;
-        private readonly IConvertJsonToDb _convertJsonToDb;
+        private readonly IConvertJsonToDbService _convertJsonToDb;
         private readonly IAudioFileService _audioService;
         private readonly AudioPaths _paths;
         private readonly DecryptRequest _decryptRequest;
         private readonly ICryptoService _cryptoService;
         private readonly JsonToDB _jsontodb;
 
-        public AudioController(IConvertRsaToJsonService convertRsaToJson, IConvertJsonToDb  convertJsonToDb, IAudioFileService audioFileService, ICryptoService cryptoService, IOptions<AudioPaths> paths, IOptions<DecryptRequest> decryptRequest, IOptions<JsonToDB> jsontodb)
+        public AudioController(IConvertRsaToJsonService convertRsaToJson, IConvertJsonToDbService  convertJsonToDb, IAudioFileService audioFileService, ICryptoService cryptoService, IOptions<AudioPaths> paths, IOptions<DecryptRequest> decryptRequest, IOptions<JsonToDB> jsontodb)
         {
             _convertRsaToJson = convertRsaToJson;
             _convertJsonToDb = convertJsonToDb;
@@ -47,7 +47,7 @@ namespace MicroService_Template.Controllers
 
         }
         [HttpPost("mp3-to-json")]
-        public IActionResult DecryptAll()
+        public async Task<IActionResult> DecryptAll()
         {
             try
             {
@@ -58,7 +58,7 @@ namespace MicroService_Template.Controllers
                     whisperExePath = _decryptRequest.whisperExePath
                 };
 
-                var result = _convertRsaToJson.WorkerMp3ToJson(request, request.PrivateKeyPath, request.whisperExePath);
+                var result = await _convertRsaToJson.WorkerMp3ToJson(request, request.PrivateKeyPath, request.whisperExePath);
                 return Ok(new { Count = result.Count, Files = result });
             }
             catch (Exception ex)
@@ -82,18 +82,8 @@ namespace MicroService_Template.Controllers
 
             var updatedRows = await _convertJsonToDb.CheckGuidFromJsonAsync(jsonToDb);
 
-            return Ok(new
-            {
-                Message = "Processed JSON files successfully.",
-                UpdatedCount = updatedRows.Count,
-                UpdatedFiles = updatedRows.Select(x => new
-                {
-                    x.DapperGuid,
-                    x.FileName,
-                    x.FilePath,
-                    x.LastSyncDateTime
-                })
-            });
+            return Ok("All Data Save in Database");
+            
         }
 
 

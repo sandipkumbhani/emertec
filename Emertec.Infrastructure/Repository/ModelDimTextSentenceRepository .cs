@@ -9,38 +9,30 @@ using System.Threading.Tasks;
 
 namespace MicroService_Template.Infrastructure.Repository
 {
-    public class ModelDimJsonRepository : IModelDimJsonRepository
+    public class IModelDimTextWordRepository : IModelDimTextSentenceRepository
     {
         private readonly AppDbContext _context;
 
-        public ModelDimJsonRepository(AppDbContext context)
+        public IModelDimTextWordRepository(AppDbContext context)
         {
             _context = context;
         }
-        public async Task InsertJsonRecordAsync(ModelDimJson model)
-        {
-            _context.modelDimJson.Add(model);
-            await _context.SaveChangesAsync();
-        }
-
         public async Task<ModelDimJson?> GetByDapperGuidAsync(Guid guid)
-        {
-            return await _context.modelDimJson.FirstOrDefaultAsync(x => x.DapperGuid == guid);
-        }
-        public async Task<ModelDimJson?> GetByJsonidAsync(Guid guid)
         {
             return await _context.modelDimJson.FirstOrDefaultAsync(x => x.Id == guid);
         }
 
-        public async Task UpdateAsync(ModelDimJson model)
+        public async Task InsertAsync(ModelDimTextSentence sentence)
         {
-            _context.modelDimJson.Update(model);
+            await _context.modelDimTextSentence.AddAsync(sentence);
+        }
+        public async Task<bool> ExistsByJsonGuidAsync(Guid jsonGuid)
+        {
+            return await _context.modelDimTextSentence.AnyAsync(s => s.JsonGuid == jsonGuid);
         }
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
         }
-
-
     }
 }

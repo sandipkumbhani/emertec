@@ -53,9 +53,12 @@ using Quartz.Listener;
     builder.Services.AddScoped<IModelDimJsonRepository,ModelDimJsonRepository>();
     builder.Services.AddScoped<IModelDimCompanyRepository, ModelDimCompanyRepository>();
     builder.Services.AddScoped<IModelDimCampaignRepository, ModelDimCampaignRepository>();
+    builder.Services.AddScoped<IModelDimTextFullRepository, ModelDimTextFullRepository>();
     builder.Services.AddScoped<IModelDimAgentRepository, ModelDimAgentRepository>();
+    builder.Services.AddScoped<IModelDimTextSentenceRepository,IModelDimTextWordRepository>();
+    builder.Services.AddScoped<IModelDimTextWordRepositorycs,ModelDimTextWordRepositorycs>();
     builder.Services.AddScoped<ICryptoService, CryptoService>();
-    builder.Services.AddScoped<IConvertJsonToDb, ConvertJsonToDb>();
+    builder.Services.AddScoped<IConvertJsonToDbService, ConvertJsonToDb>();
 
 
     builder.Services.AddControllers();

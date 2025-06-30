@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 
 namespace MicroService_Template.Domain.Interface
 {
-    public  interface IModelDimCampaignRepository
+    public interface IModelDimTextWordRepositorycs
     {
-        Task<ModelDimCampaign?> GetByNameAsync(string campaignName);
-        Task campaignInsertAsync(ModelDimCampaign campaign);
-        
+
+        Task<ModelDimJson?> GetByGuidAsync(Guid guid);
+
+        Task<ModelDimTextSentence?> GetbyTextSentenceIdAsync(Guid guid);
+
+        Task InsertAsync(ModelDimWord word);
         Task SaveChangesAsync();
     }
 }
