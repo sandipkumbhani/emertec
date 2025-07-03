@@ -24,8 +24,6 @@ namespace MicroService_Template.Application.Services
 
             if (string.IsNullOrWhiteSpace(_paths.PublicKeyPath) || !File.Exists(_paths.PublicKeyPath))
                 throw new FileNotFoundException("Public key not found at path: " + _paths.PublicKeyPath);
-
-            // Load the public key
             using var rsa = RSA.Create();
             string publicKeyXml = File.ReadAllText(_paths.PublicKeyPath);
             rsa.FromXmlString(publicKeyXml);
@@ -104,7 +102,7 @@ namespace MicroService_Template.Application.Services
         }
 
 
-        
+
 
 
     }

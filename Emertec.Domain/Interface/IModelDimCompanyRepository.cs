@@ -11,7 +11,8 @@ namespace MicroService_Template.Domain.Interface
     {
         Task<ModelDimCompany> GetByNameAsync(string name);
         Task companyInsertAsync(ModelDimCompany company);
-        Task<ModelDimCompany?> GetByCompanyIdAsync(Guid guid);
+        Task<ModelDimCompany?> GetCompanyIdByNameAsync(string name);
+
         Task SaveChangesAsync();
     }
 }

@@ -77,7 +77,7 @@ namespace MicroService_Template.Controllers
         {
             var jsonToDb = new JsonToDB
             {
-                BasePath = _jsontodb.BasePath // Make sure _jsontodb is injected or configured properly
+                BasePath = _jsontodb.BasePath 
             };
 
             var updatedRows = await _convertJsonToDb.CheckGuidFromJsonAsync(jsonToDb);

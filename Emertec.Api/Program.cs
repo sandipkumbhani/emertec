@@ -16,49 +16,60 @@ using Quartz.Listener;
 {
 
     var builder = WebApplication.CreateBuilder(args);
-
-
     builder.Services.AddQuartz(q =>
     {
         var mp3ToRsaJobKey = new JobKey("MP3ToRSAWorker");
         var rsaToJsonJobKey = new JobKey("RSAToJsonWorker");
+        var jsonToDbJobKey = new JobKey("JsonToDbWorker");
 
+        // Register jobs
         q.AddJob<MP3ToRSAWorker>(opts => opts.WithIdentity(mp3ToRsaJobKey));
-        q.AddJob<RSAToJsonWorker>(opts => opts
-            .WithIdentity(rsaToJsonJobKey)
-            .StoreDurably()); // Required for chaining (no direct trigger)
+        q.AddJob<RSAToJsonWorker>(opts => opts.WithIdentity(rsaToJsonJobKey));
+        q.AddJob<JsonToDbWorker>(opts => opts.WithIdentity(jsonToDbJobKey));
 
-        var cronSchedule = builder.Configuration["Quartz:JobSchedule"];
+        // Get individual cron expressions
+        var mp3ToRsaCron = builder.Configuration["Quartz:MP3ToRSAJob"];
+        var rsaToJsonCron = builder.Configuration["Quartz:RSAToJsonJob"];
+        var jsonToDbCron = builder.Configuration["Quartz:JsonToDbJob"];
+
+        // Add triggers for each job
         q.AddTrigger(opts => opts
             .ForJob(mp3ToRsaJobKey)
-            .WithIdentity("Trigger_MP3ToRSA")
-            .WithCronSchedule(cronSchedule, cronOpts =>
-            {
-                cronOpts.WithMisfireHandlingInstructionDoNothing();
-            }));
+            .WithIdentity("TriggerMP3ToRSA")
+            .WithCronSchedule(mp3ToRsaCron, cron => cron.WithMisfireHandlingInstructionDoNothing()));
 
-        var listener = new JobChainingJobListener("SequentialJobListener");
-        listener.AddJobChainLink(mp3ToRsaJobKey, rsaToJsonJobKey);
+        q.AddTrigger(opts => opts
+            .ForJob(rsaToJsonJobKey)
+            .WithIdentity("TriggerRSAToJson")
+            .WithCronSchedule(rsaToJsonCron, cron => cron.WithMisfireHandlingInstructionDoNothing()));
 
-        q.AddJobListener(listener, GroupMatcher<JobKey>.AnyGroup());
+        q.AddTrigger(opts => opts
+            .ForJob(jsonToDbJobKey)
+            .WithIdentity("TriggerJsonToDb")
+            .WithCronSchedule(jsonToDbCron, cron => cron.WithMisfireHandlingInstructionDoNothing()));
     });
 
+    // Hosted service to run Quartz
     builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
 
-    // Add services to the container.
-    builder.Services.AddScoped<IAudioFileService, AudioFileService>();
-    builder.Services.AddScoped<IConvertRsaToJsonService, ConvertRsaToJsonService>();
-    //dimjson repo
-    builder.Services.AddScoped<IModelDimJsonRepository,ModelDimJsonRepository>();
+
+    //REPOSITORY INJECTION
+
+    builder.Services.AddScoped<IModelDimJsonRepository, ModelDimJsonRepository>();
     builder.Services.AddScoped<IModelDimCompanyRepository, ModelDimCompanyRepository>();
     builder.Services.AddScoped<IModelDimCampaignRepository, ModelDimCampaignRepository>();
     builder.Services.AddScoped<IModelDimTextFullRepository, ModelDimTextFullRepository>();
     builder.Services.AddScoped<IModelDimAgentRepository, ModelDimAgentRepository>();
-    builder.Services.AddScoped<IModelDimTextSentenceRepository,IModelDimTextWordRepository>();
-    builder.Services.AddScoped<IModelDimTextWordRepositorycs,ModelDimTextWordRepositorycs>();
+    builder.Services.AddScoped<IModelDimTextSentenceRepository, IModelDimTextWordRepository>();
+    builder.Services.AddScoped<IModelDimTextWordRepositorycs, ModelDimTextWordRepositorycs>();
+
+
+    //SERVICE INJECTION 
+    builder.Services.AddScoped<IAudioFileService, AudioFileService>();
+    builder.Services.AddScoped<IConvertRsaToJsonService, ConvertRsaToJsonService>();
     builder.Services.AddScoped<ICryptoService, CryptoService>();
-    builder.Services.AddScoped<IConvertJsonToDbService, ConvertJsonToDb>();
+    builder.Services.AddScoped<IConvertJsonToDbService, ConvertJsonToDbService>();
 
 
     builder.Services.AddControllers();

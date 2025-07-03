@@ -22,9 +22,11 @@ namespace MicroService_Template.Infrastructure.Repository
         {
             return await _context.modelDimCompany.FirstOrDefaultAsync(c => c.Name == name);
         }
-        public async Task<ModelDimCompany?> GetByCompanyIdAsync(Guid guid)
+        public async Task<ModelDimCompany?> GetCompanyIdByNameAsync(string name)
         {
-            return await _context.modelDimCompany.FirstOrDefaultAsync(x => x.Id == guid);
+            var trimmedName = name.Trim().ToLower();
+            return await _context.modelDimCompany
+                                 .FirstOrDefaultAsync(c => c.Name.ToLower() == trimmedName);
         }
         public async Task companyInsertAsync(ModelDimCompany company)
         {

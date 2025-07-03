@@ -5,21 +5,27 @@ using Quartz;
 
 namespace MicroService_Template.Job
 {
-    public class WorkerJsonToDb
+    public class JsonToDbWorker : IJob
     {
 
         private readonly IConvertJsonToDbService _convertJsonToDbService;
         private readonly JsonToDB _jsonToDB;
-        public WorkerJsonToDb(IConvertJsonToDbService convertJsonToDbService, IOptions<JsonToDB> jsontodb)
+        public JsonToDbWorker(IConvertJsonToDbService convertJsonToDbService, IOptions<JsonToDB> jsontodb)
         {
             _convertJsonToDbService = convertJsonToDbService;
             _jsonToDB = jsontodb.Value;
         }
         public async Task Execute(IJobExecutionContext context)
         {
-            var result = await _convertJsonToDbService.CheckGuidFromJsonAsync(_jsonToDB);
-            Console.WriteLine($"[Job] Save All Data in Database {result.Count}{DateTime.Now}");
-
+            try
+            {
+                var result = await _convertJsonToDbService.CheckGuidFromJsonAsync(_jsonToDB);
+                Console.WriteLine($"[Job3] Save All Data in Database {result.Count} at {DateTime.Now}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Job3] Error: {ex.Message}");
+            }
         }
 
     }

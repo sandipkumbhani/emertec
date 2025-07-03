@@ -46,27 +46,48 @@ namespace MicroService_Template.Application.Services
                 Directory.CreateDirectory(jsonFolder);
                 string jsonPath = Path.Combine(jsonFolder, fileName + ".json");
 
+               
+
+
+                /*if (File.Exists(mp3Path))
+                {
+                    Console.WriteLine($"MP3 already exists. Skipping: {mp3Path}");
+                    continue;
+                }*/
+
+                //call decrypt method 
+                /*DecryptRsaToMp3(rsaFilePath, privateKeyPath, mp3Path);*/
+                if (!File.Exists(mp3Path))
+                {
+                    DecryptRsaToMp3(rsaFilePath, privateKeyPath, mp3Path);
+                    Console.WriteLine($"MP3 created: {mp3Path}");
+                }
+                else
+                {
+                    Console.WriteLine($"MP3 already exists: {mp3Path}");
+                }
+
+                mp3Files.Add(mp3Path);
+                /*//call mp3 to json method
+                ConvertMp3ToJson(mp3Path, jsonFolder, whisperExePath);
                 // Skip if JSON already exists
                 if (File.Exists(jsonPath))
                 {
                     Console.WriteLine($"JSON already exists. Skipping: {jsonPath}");
                     jsonFiles.Add(jsonPath);
                     continue;
-                }
-
-
-                if (File.Exists(mp3Path))
+                }*/
+                if (!File.Exists(jsonPath))
                 {
-                    Console.WriteLine($"MP3 already exists. Skipping: {mp3Path}");
-                    continue;
+                    ConvertMp3ToJson(mp3Path, jsonFolder, whisperExePath);
+                    Console.WriteLine($"JSON created: {jsonPath}");
                 }
-
-                //call decrypt method 
-                DecryptRsaToMp3(rsaFilePath, privateKeyPath, mp3Path);
-
-                mp3Files.Add(mp3Path);
-                //call mp3 to json method
-                ConvertMp3ToJson(mp3Path, jsonFolder, whisperExePath);
+                else
+                {
+                    Console.WriteLine($"JSON already exists: {jsonPath}");
+                    jsonFiles.Add(jsonPath);
+                    continue; 
+                }
 
                 string guidFolder = rsaFolder.Replace("-RSA", "-GUID");
                 string guidPath = Path.Combine(guidFolder, fileName + ".guid");
@@ -327,6 +348,12 @@ namespace MicroService_Template.Application.Services
 
                 if (!Guid.TryParse(fileGuidText.Trim(), out Guid fileGuidValue))
                     throw new FormatException("The file does not contain a valid GUID.");
+                var existing = await _modelDimJsonRepository.GetByDapperGuidAsync(fileGuidValue);
+                if (existing != null)
+                {
+                    Console.WriteLine($"Record with GUID {fileGuidValue} already exists. Skipping insert.");
+                    return $"Duplicate record skipped for GUID: {fileGuidValue}";
+                }
 
                 var model = new ModelDimJson
                 {

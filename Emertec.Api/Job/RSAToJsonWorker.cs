@@ -19,8 +19,8 @@ namespace MicroService_Template.Job
         public async Task Execute(IJobExecutionContext context)
         {
             var result = await _convertRsaToJson.WorkerMp3ToJson(_decryptRequest, _decryptRequest.PrivateKeyPath, _decryptRequest.whisperExePath);
-            Console.WriteLine($"[Job] convert all {result.Count} RSA TO MP3 {DateTime.Now}");
-            //return Task.CompletedTask;
+            Console.WriteLine($"[Job2] convert all {result.Count} RSA TO MP3 {DateTime.Now}");
+           
         }
     }
 }

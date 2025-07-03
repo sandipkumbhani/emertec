@@ -11,7 +11,7 @@ namespace MicroService_Template.Domain.Interface
     {
         Task<ModelDimCampaign?> GetByNameAsync(string campaignName);
         Task campaignInsertAsync(ModelDimCampaign campaign);
-        
+        Task<Guid?> GetCompanyIdByCampaignNameAsync(string campaignName);
         Task SaveChangesAsync();
     }
 }

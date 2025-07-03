@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace MicroService_Template.Application.Services
 {
-    public class ConvertJsonToDb : IConvertJsonToDbService
+    public class ConvertJsonToDbService : IConvertJsonToDbService
     {
         private readonly IModelDimJsonRepository _modelDimJsonRepository;
         private readonly IModelDimAgentRepository _modelDimAgentRepository;
@@ -18,7 +18,7 @@ namespace MicroService_Template.Application.Services
         private readonly IModelDimTextFullRepository _modelDimTextFullRepository;
         private readonly IModelDimTextSentenceRepository _modelDimTextSentenceRepository;
         private readonly IModelDimTextWordRepositorycs _modelDimTextWordRepository;
-        public ConvertJsonToDb(IModelDimJsonRepository modelDimJsonRepository, IModelDimAgentRepository modelDimAgentRepository,
+        public ConvertJsonToDbService(IModelDimJsonRepository modelDimJsonRepository, IModelDimAgentRepository modelDimAgentRepository,
             IModelDimCampaignRepository modelDimCampaignRepository, IModelDimCompanyRepository modelDimCompanyRepository,
             IModelDimTextFullRepository modelDimTextFullRepository, IModelDimTextSentenceRepository modelDimTextSentenceRepository, IModelDimTextWordRepositorycs modelDimTextWordRepositorycs)
         {
@@ -31,7 +31,7 @@ namespace MicroService_Template.Application.Services
             _modelDimTextWordRepository = modelDimTextWordRepositorycs;
         }
 
-        public List<string> GetALLJsonFiles(JsonToDB _jsontodb)
+       private List<string> GetALLJsonFiles(JsonToDB _jsontodb)
         {
             var rsaFiles = new List<string>();
 
@@ -83,13 +83,11 @@ namespace MicroService_Template.Application.Services
                     await _modelDimJsonRepository.UpdateAsync(existing);
                     updatedRows.Add(existing);
                 }
-
-                // Insert Agent if not exists
                 string agentKey = $"{data.AgentFirstName?.Trim()}|{data.AgentLastName?.Trim()}";
 
                 if (!processedAgents.Contains(agentKey))
                 {
-                    processedAgents.Add(agentKey); // Mark as processed
+                    processedAgents.Add(agentKey);
 
                     bool agentExists = await _modelDimAgentRepository.AgentExistsAsync(data.AgentFirstName, data.AgentLastName);
                     if (!agentExists)
@@ -106,78 +104,103 @@ namespace MicroService_Template.Application.Services
                         await _modelDimAgentRepository.InsertAgentAsync(agent);
                     }
                 }
-
-                if (!string.IsNullOrWhiteSpace(data.CampaignDate))
+                if (!string.IsNullOrWhiteSpace(data.CampaignName))
                 {
-                    var campaignDate = data.CampaignDate.Trim(); // e.g., "2024-07-10"
+                    var CompanyName = data.CampaignName.Trim();
+                    if (!processedCampaigns.Contains(CompanyName))
+                    {
+                        processedCampaigns.Add(CompanyName);
+
+                        var existingCampaign = await _modelDimCompanyRepository.GetByNameAsync(CompanyName);
+                         if (existingCampaign == null)
+                        {
+                            var company = new ModelDimCompany
+                            {
+                                Id = Guid.NewGuid(),
+                                Name = CompanyName,
+                                Description = "null",
+                                Created = DateTime.Now,
+                                Modified = DateTime.Now
+                            };
+
+                            await _modelDimCompanyRepository.companyInsertAsync(company);
+                            await _modelDimCompanyRepository.SaveChangesAsync();
+                        }
+                    }
+                }
+                if (!string.IsNullOrWhiteSpace(data.CampaignDate) && !string.IsNullOrWhiteSpace(data.CampaignName))
+                {
+                    var campaignDate = data.CampaignDate.Trim();
                     var campaignPath = Path.GetDirectoryName(file);
+                    var campaignName = data.CampaignName.Trim();
 
                     if (!processedCampaigns.Contains(campaignDate))
                     {
-                        if (!string.IsNullOrWhiteSpace(data.CompanyId) && Guid.TryParse(data.CompanyId, out var CompanyId))
+                        processedCampaigns.Add(campaignDate);
+
+                        var existingCampaign = await _modelDimCampaignRepository.GetByNameAsync(campaignDate);
+                        var existingCompany = await _modelDimCompanyRepository.GetCompanyIdByNameAsync(campaignName);
+                        var companyId = existingCompany?.Id;
+
+                        if (existingCampaign == null)
                         {
-                            processedCampaigns.Add(campaignDate);
-
-                            var existingCampaign = await _modelDimCampaignRepository.GetByNameAsync(campaignDate);
-                            var dimCompany = await _modelDimCompanyRepository.GetByCompanyIdAsync(CompanyId);
-
-
-                            if (existingCampaign == null)
+                            var campaign = new ModelDimCampaign
                             {
-                                var campaign = new ModelDimCampaign
-                                {
-                                    Id = Guid.NewGuid(),
-                                    CompanyId = dimCompany.Id,
-                                    Name = campaignDate,
-                                    Campaignpath = campaignPath,
-                                    Created = DateTime.Now,
-                                    Modified = DateTime.Now
-                                };
+                                Id = Guid.NewGuid(),
+                                CompanyId = companyId,
+                                Name = campaignDate,
+                                Campaignpath = campaignPath,
+                                Created = DateTime.Now,
+                                Modified = DateTime.Now
+                            };
 
-                                await _modelDimCampaignRepository.campaignInsertAsync(campaign);
-                            }
+                            await _modelDimCampaignRepository.campaignInsertAsync(campaign);
+                            await _modelDimCampaignRepository.SaveChangesAsync();
                         }
                     }
                 }
 
-                
+
+
                 if (!string.IsNullOrWhiteSpace(data.Guid) && Guid.TryParse(data.Guid, out var jsonguid))
                 {
-
                     var jsonRecord = await _modelDimJsonRepository.GetByDapperGuidAsync(jsonguid);
 
                     if (jsonRecord != null)
                     {
-
-
-                        var allWords = data.Segments?
-                            .SelectMany(seg => seg.words)
-                            .Where(w => !string.IsNullOrWhiteSpace(w.word))
-                            .Select(w => w.word.Trim())
-                            .ToList();
-
-                        string fullText = string.Join(" ", allWords ?? new List<string>());
-
-                        var textFull = new ModelDimTextFull
+                        var existingTextFull = await _modelDimTextFullRepository.GetByJsonGuidAsync(jsonRecord.Id);
+                        if (existingTextFull == null)
                         {
-                            Id = Guid.NewGuid(),
-                            JsonGuid = jsonRecord.Id,
-                            name = $"{data.AgentFirstName} {data.AgentLastName}".Trim(),
-                            campaign_date = data.CampaignDate,
-                            FullText = fullText,
-                            Size = allWords?.Count.ToString(),
-                            Created = DateTime.Now,
-                            Modified = DateTime.Now
-                        };
+                            var allWords = data.Segments?
+                                .SelectMany(seg => seg.words)
+                                .Where(w => !string.IsNullOrWhiteSpace(w.word))
+                                .Select(w => w.word.Trim())
+                                .ToList();
 
-                        await _modelDimTextFullRepository.InsertAsync(textFull);
-                        await _modelDimTextFullRepository.SaveChangesAsync();
+                            string fullText = string.Join(" ", allWords ?? new List<string>());
+
+                            var textFull = new ModelDimTextFull
+                            {
+                                Id = Guid.NewGuid(),
+                                JsonGuid = jsonRecord.Id,
+                                name = $"{data.AgentFirstName} {data.AgentLastName}".Trim(),
+                                campaign_date = data.CampaignDate,
+                                FullText = fullText,
+                                Size = allWords?.Count.ToString(),
+                                Created = DateTime.Now,
+                                Modified = DateTime.Now
+                            };
+
+                            await _modelDimTextFullRepository.InsertAsync(textFull);
+                            await _modelDimTextFullRepository.SaveChangesAsync();
+                        }
+                        
                     }
                 }
 
-                if (!string.IsNullOrWhiteSpace(data.Guid) && Guid.TryParse(data.Guid, out var jsonguidfoesentence))
+                if (!string.IsNullOrWhiteSpace(data.Guid) && Guid.TryParse(data.Guid, out var jsonguidforsentence))
                 {
-                    var jsonRecord = await _modelDimJsonRepository.GetByDapperGuidAsync(jsonguidfoesentence);
+                    var jsonRecord = await _modelDimJsonRepository.GetByDapperGuidAsync(jsonguidforsentence);
 
                     if (jsonRecord != null)
                     {
@@ -191,7 +214,6 @@ namespace MicroService_Template.Application.Services
                             var baseTime = jsonRecord.Created ?? DateTime.UtcNow;
                             foreach (var segment in data.Segments)
                             {
-                                // First, insert sentence (optional, if needed for sentence linking)
                                 var sentence = new ModelDimTextSentence
                                 {
                                     Id = Guid.NewGuid(),
