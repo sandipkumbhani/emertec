@@ -1,7 +1,6 @@
 ﻿using MicroService_Template.Application.DTO;
 using MicroService_Template.Application.Extension.Interface;
 using Microsoft.Extensions.Options;
-using System;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 

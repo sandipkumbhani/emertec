@@ -4,13 +4,10 @@ using MicroService_Template.Application.DTO;
 using MicroService_Template.Application.Extension.Interface;
 using MicroService_Template.Application.Services;
 using MicroService_Template.Domain.Interface;
-using MicroService_Template.Domain.Setting;
 using MicroService_Template.Infrastructure.Repository;
 using MicroService_Template.Job;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
-using Quartz.Impl.Matchers;
-using Quartz.Listener;
 
 
 {
@@ -48,8 +45,6 @@ using Quartz.Listener;
             .WithIdentity("TriggerJsonToDb")
             .WithCronSchedule(jsonToDbCron, cron => cron.WithMisfireHandlingInstructionDoNothing()));
     });
-
-    // Hosted service to run Quartz
     builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
 
@@ -79,6 +74,7 @@ using Quartz.Listener;
 
     builder.Services.AddInfrastrucureService();
     builder.Services.AddApplicationService();
+
     builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 

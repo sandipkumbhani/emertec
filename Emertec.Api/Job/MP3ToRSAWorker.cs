@@ -18,9 +18,17 @@ namespace MicroService_Template.Job
         }
         public Task Execute(IJobExecutionContext context)
         {
-            var result = _audioService.ConvertAllMp3FilesToRsaAndGuid(_paths);
-            Console.WriteLine($"[Job] Converted {result.Count} MP3 files to RSA at {DateTime.Now}");
-            return Task.CompletedTask;
+            try
+            {
+                var result = _audioService.ConvertAllMp3FilesToRsaAndGuid(_paths);
+                Console.WriteLine($"[Job] Converted {result.Count} MP3 files to RSA at {DateTime.Now}");
+                return Task.CompletedTask;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Job] Error: {ex.Message}");
+                return Task.FromException(ex);
+            }
         }
     }
 }

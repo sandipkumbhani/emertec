@@ -2,9 +2,7 @@
 using MicroService_Template.Application.Extension.Interface;
 using MicroService_Template.Domain.Interface;
 using MicroService_Template.Domain.Model;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
-using System;
 using System.Text.RegularExpressions;
 
 namespace MicroService_Template.Application.Services

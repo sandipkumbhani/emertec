@@ -1,7 +1,5 @@
-﻿using Azure.Core;
-using MicroService_Template.Application.DTO;
+﻿using MicroService_Template.Application.DTO;
 using MicroService_Template.Application.Extension.Interface;
-using MicroService_Template.Application.Services;
 using Microsoft.Extensions.Options;
 using Quartz;
 
@@ -18,9 +16,16 @@ namespace MicroService_Template.Job
         }
         public async Task Execute(IJobExecutionContext context)
         {
-            var result = await _convertRsaToJson.WorkerMp3ToJson(_decryptRequest, _decryptRequest.PrivateKeyPath, _decryptRequest.whisperExePath);
-            Console.WriteLine($"[Job2] convert all {result.Count} RSA TO MP3 {DateTime.Now}");
-           
+            try
+            {
+                var result = await _convertRsaToJson.WorkerMp3ToJson(_decryptRequest, _decryptRequest.PrivateKeyPath, _decryptRequest.whisperExePath);
+                Console.WriteLine($"[Job2] convert all {result.Count} RSA TO MP3 {DateTime.Now}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Job2] Error: {ex.Message}");
+
+            }
         }
     }
 }
