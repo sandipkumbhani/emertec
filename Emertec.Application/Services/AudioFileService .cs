@@ -17,7 +17,6 @@ namespace MicroService_Template.Application.Services
         public List<string> ConvertAllMp3FilesToRsaAndGuid(AudioPaths _paths)
         {
             var rsaFiles = new List<string>();
-
             if (!Directory.Exists(_paths.BasePath))
                 throw new DirectoryNotFoundException($"Base path not found: {_paths.BasePath}");
 
@@ -53,7 +52,7 @@ namespace MicroService_Template.Application.Services
                 foreach (string mp3File in allFiles)
                 {
                     byte[] mp3Data = File.ReadAllBytes(mp3File);
-                    byte[] toEncrypt = mp3Data.Take(200).ToArray(); // Limit to 200 bytes for 2048-bit RSA
+                    byte[] toEncrypt = mp3Data.Take(200).ToArray(); 
                     byte[] rest = mp3Data.Skip(200).ToArray();
 
                     byte[] encryptedData = rsa.Encrypt(toEncrypt, RSAEncryptionPadding.Pkcs1);

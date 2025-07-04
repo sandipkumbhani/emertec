@@ -157,10 +157,7 @@ namespace MicroService_Template.Application.Services
                         }
                     }
                 }
-
-
-
-                if (!string.IsNullOrWhiteSpace(data.Guid) && Guid.TryParse(data.Guid, out var jsonguid))
+            if (!string.IsNullOrWhiteSpace(data.Guid) && Guid.TryParse(data.Guid, out var jsonguid))
                 {
                     var jsonRecord = await _modelDimJsonRepository.GetByDapperGuidAsync(jsonguid);
 

@@ -17,9 +17,9 @@ namespace MicroService_Template.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterUser dto)
+        public async Task<IActionResult> Register([FromBody] RegisterUser registrationdto)
         {
-            var success = await _userService.RegisterAsync(dto);
+            var success = await _userService.RegisterAsync(registrationdto);
             if (!success)
                 return BadRequest("User already exists.");
 
