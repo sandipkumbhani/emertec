@@ -18,14 +18,6 @@ namespace MicroService_Template.Infrastructure.Repository
             return await _context.modelDimCampaign
                 .FirstOrDefaultAsync(c => c.Name == campaignName);
         }
-        public async Task<Guid?> GetCompanyIdByCampaignNameAsync(string campaignName)
-        {
-            return await _context.modelDimCampaign
-                                 .Where(c => c.Name == campaignName)
-                                 .Select(c => c.CompanyId)
-                                 .FirstOrDefaultAsync();
-        }
-
         public async Task campaignInsertAsync(ModelDimCampaign campaign)
         {
             await _context.modelDimCampaign.AddAsync(campaign);

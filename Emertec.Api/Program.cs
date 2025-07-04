@@ -4,10 +4,15 @@ using MicroService_Template.Application.DTO;
 using MicroService_Template.Application.Extension.Interface;
 using MicroService_Template.Application.Services;
 using MicroService_Template.Domain.Interface;
+using MicroService_Template.Domain.Model;
 using MicroService_Template.Infrastructure.Repository;
 using MicroService_Template.Job;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Quartz;
+using System.Text;
+using Microsoft.OpenApi.Models;
 
 
 {
@@ -58,13 +63,15 @@ using Quartz;
     builder.Services.AddScoped<IModelDimAgentRepository, ModelDimAgentRepository>();
     builder.Services.AddScoped<IModelDimTextSentenceRepository, IModelDimTextWordRepository>();
     builder.Services.AddScoped<IModelDimTextWordRepositorycs, ModelDimTextWordRepositorycs>();
-
+    builder.Services.AddScoped<IUserRepository, UserRepository>();
 
     //SERVICE INJECTION 
     builder.Services.AddScoped<IAudioFileService, AudioFileService>();
     builder.Services.AddScoped<IConvertRsaToJsonService, ConvertRsaToJsonService>();
     builder.Services.AddScoped<ICryptoService, CryptoService>();
     builder.Services.AddScoped<IConvertJsonToDbService, ConvertJsonToDbService>();
+    builder.Services.AddScoped<IUserRegistrationService, UserRegistrationService>();
+    builder.Services.AddScoped<IUserLoginService, UserLoginService>();
 
 
     builder.Services.AddControllers();
@@ -78,12 +85,65 @@ using Quartz;
     builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-    builder.Services.AddDbContext<AppDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("Emertec")));
+    //builder.Services.AddDbContext<AppDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
     builder.Services.Configure<AudioPaths>(builder.Configuration.GetSection("AudioEncryptionPaths"));
     builder.Services.Configure<MP3Settings>(builder.Configuration.GetSection("MP3Settings"));
     builder.Services.Configure<DecryptRequest>(builder.Configuration.GetSection("DecryptRequest"));
     builder.Services.Configure<KeyGenerationResponse>(builder.Configuration.GetSection("Crypto"));
     builder.Services.Configure<JsonToDB>(builder.Configuration.GetSection("JsonToDB"));
+
+
+    builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+ .AddJwtBearer(options =>
+ {
+     options.RequireHttpsMetadata = false; // Set to true in production
+     options.SaveToken = true;
+     options.TokenValidationParameters = new TokenValidationParameters
+     {
+         ValidateIssuer = true,
+         ValidateAudience = true,
+         ValidateLifetime = true,
+         ValidateIssuerSigningKey = true,
+         ValidIssuer = builder.Configuration["Jwt:Issuer"],
+         ValidAudience = builder.Configuration["Jwt:Audience"],
+         IssuerSigningKey = new SymmetricSecurityKey(
+             Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+     };
+ });
+
+    builder.Services.AddAuthorization();
+    builder.Services.AddSwaggerGen(option =>
+    {
+        option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+        {
+            Name = "Authorization",
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "Bearer",
+            BearerFormat = "JWT",
+            In = ParameterLocation.Header,
+            Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+        });
+        option.AddSecurityRequirement(new OpenApiSecurityRequirement
+                     {
+                         {
+                               new OpenApiSecurityScheme
+                                 {
+                                     Reference = new OpenApiReference
+                                     {
+                                         Type = ReferenceType.SecurityScheme,
+                                         Id = "Bearer"
+                                     }
+                                 },
+                                 new string[] {}
+                         }
+                     });
+
+    });
+
 
 
 
@@ -98,7 +158,9 @@ using Quartz;
 
     app.UseHttpsRedirection();
 
+    app.UseAuthentication();
     app.UseAuthorization();
+
     app.UseStaticFiles();
 
     app.MapControllers();

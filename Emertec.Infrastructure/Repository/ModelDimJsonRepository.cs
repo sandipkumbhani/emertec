@@ -30,6 +30,7 @@ namespace MicroService_Template.Infrastructure.Repository
         public async Task UpdateAsync(ModelDimJson model)
         {
             _context.modelDimJson.Update(model);
+            await _context.SaveChangesAsync();
         }
         public async Task SaveChangesAsync()
         {

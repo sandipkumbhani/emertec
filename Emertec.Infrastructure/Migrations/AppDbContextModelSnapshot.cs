@@ -308,6 +308,29 @@ namespace MicroService_Template.Infrastructure.Migrations
 
                     b.ToTable("modelDimWord");
                 });
+
+            modelBuilder.Entity("MicroService_Template.Domain.Model.ModelUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("modelUsers");
+                });
 #pragma warning restore 612, 618
         }
     }

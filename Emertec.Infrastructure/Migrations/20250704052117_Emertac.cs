@@ -172,6 +172,20 @@ namespace MicroService_Template.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_modelDimWord", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "modelUsers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_modelUsers", x => x.Id);
+                });
         }
 
         /// <inheritdoc />
@@ -203,6 +217,9 @@ namespace MicroService_Template.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "modelDimWord");
+
+            migrationBuilder.DropTable(
+                name: "modelUsers");
         }
     }
 }
