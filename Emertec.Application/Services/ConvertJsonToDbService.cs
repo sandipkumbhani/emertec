@@ -43,7 +43,7 @@ namespace MicroService_Template.Application.Services
             foreach (var folder in subFolders)
             {
                 string folderName = Path.GetFileName(folder);
-                if (!rsaDateFolderPattern.IsMatch(folderName))
+                 if (!rsaDateFolderPattern.IsMatch(folderName))
                     continue;
                 string[] files = Directory.GetFiles(folder, "*.json", SearchOption.AllDirectories);
                 rsaFiles.AddRange(files);
@@ -61,7 +61,8 @@ namespace MicroService_Template.Application.Services
 
             foreach (var file in jsonFiles)
             {
-                if (!File.Exists(file)) continue;
+                if (!File.Exists(file))
+                    continue;
 
                 var json = await File.ReadAllTextAsync(file);
                 var data = JsonConvert.DeserializeObject<VoiceFileExtendedJson>(json);

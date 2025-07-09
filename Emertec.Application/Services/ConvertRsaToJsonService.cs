@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using MicroService_Template.Domain.Model;
 using MicroService_Template.Application.Extension.Interface;
 using MicroService_Template.Domain.Interface;
+using System.Text;
 
 namespace MicroService_Template.Application.Services
 {
@@ -45,18 +46,6 @@ namespace MicroService_Template.Application.Services
                 string jsonFolder = rsaFolder.Replace("-RSA", "-JSON");
                 Directory.CreateDirectory(jsonFolder);
                 string jsonPath = Path.Combine(jsonFolder, fileName + ".json");
-
-               
-
-
-                /*if (File.Exists(mp3Path))
-                {
-                    Console.WriteLine($"MP3 already exists. Skipping: {mp3Path}");
-                    continue;
-                }*/
-
-                //call decrypt method 
-                /*DecryptRsaToMp3(rsaFilePath, privateKeyPath, mp3Path);*/
                 if (!File.Exists(mp3Path))
                 {
                     DecryptRsaToMp3(rsaFilePath, privateKeyPath, mp3Path);
@@ -68,15 +57,6 @@ namespace MicroService_Template.Application.Services
                 }
 
                 mp3Files.Add(mp3Path);
-                /*//call mp3 to json method
-                ConvertMp3ToJson(mp3Path, jsonFolder, whisperExePath);
-                // Skip if JSON already exists
-                if (File.Exists(jsonPath))
-                {
-                    Console.WriteLine($"JSON already exists. Skipping: {jsonPath}");
-                    jsonFiles.Add(jsonPath);
-                    continue;
-                }*/
                 if (!File.Exists(jsonPath))
                 {
                     ConvertMp3ToJson(mp3Path, jsonFolder, whisperExePath);
@@ -86,7 +66,7 @@ namespace MicroService_Template.Application.Services
                 {
                     Console.WriteLine($"JSON already exists: {jsonPath}");
                     jsonFiles.Add(jsonPath);
-                    continue; 
+                    //continue;
                 }
 
                 string guidFolder = rsaFolder.Replace("-RSA", "-GUID");
@@ -133,7 +113,7 @@ namespace MicroService_Template.Application.Services
                 if (!rsaDateFolderPattern.IsMatch(folderName))
                     continue;
 
-                foreach (var folder1 in folderName)
+                foreach (var subfolder in folderName)
                 {
                     string rsafile = Path.GetFileName(folderName);
 
@@ -141,18 +121,18 @@ namespace MicroService_Template.Application.Services
                     string[] files = Directory.GetFiles(folder, "*.rsa", SearchOption.AllDirectories);
                     rsaFiles.AddRange(files);
                 }
-                try
-                {
-                    if (Directory.Exists(currentSource))
-                    {
-                        Directory.Delete(currentSource, recursive: false);
-                        Console.WriteLine($"Force deleted folder: {currentSource}");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Failed to delete folder {currentSource}: {ex.Message}");
-                }
+                //try
+                //{
+                //    if (Directory.Exists(currentSource))
+                //    {
+                //        Directory.Delete(currentSource, recursive: false);
+                //        Console.WriteLine($"Force deleted folder: {currentSource}");
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine($"Failed to delete folder {currentSource}: {ex.Message}");
+                //}
             }
             return rsaFiles;
         }
@@ -178,7 +158,7 @@ namespace MicroService_Template.Application.Services
 
             // Save output MP3
             File.WriteAllBytes(outputMp3Path, fullMp3);
-            Console.WriteLine($" Decryption successful! MP3 saved at: {outputMp3Path}");
+            Console.WriteLine($"Decryption successful! MP3 saved at: {outputMp3Path}");
         }
         private void ConvertMp3ToJson(string mp3Path, string jsonOutputFolder, string whisperExePath)
         {
@@ -192,18 +172,21 @@ namespace MicroService_Template.Application.Services
                 Console.WriteLine($"JSON already exists. Skipping: {expectedJsonPath}");
                 return;
             }
-
             var arguments = new List<string>
-    {
-        "--model medium",
-        "--compute_type float32",
-        "--threads 4",
-        "--output_format json",
-        "--word_timestamps true",
-        "--task translate",
-        $"-o \"{jsonOutputFolder}\"",
-        $"\"{mp3Path}\""
-    };
+        {
+            "--model medium",
+            "--compute_type float32",
+            "--threads 4",
+            "--output_format json",
+            "--word_timestamps true",
+            "--task transcribe",
+            "--language hi",
+            "--verbose true",
+            "-o", $"\"{jsonOutputFolder}\"",
+            $"\"{mp3Path}\""
+        };
+
+            Console.OutputEncoding = Encoding.UTF8;
 
             var startInfo = new ProcessStartInfo
             {
@@ -211,9 +194,35 @@ namespace MicroService_Template.Application.Services
                 Arguments = string.Join(" ", arguments),
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
+                StandardOutputEncoding = Encoding.UTF8,
+                StandardErrorEncoding = Encoding.UTF8,
                 UseShellExecute = false,
                 CreateNoWindow = true
             };
+            //var arguments = new List<string>
+            //{
+            //    "--model medium",
+            //    "--compute_type float32",
+            //    "--threads 4",
+            //    "--output_format json",
+            //    "--word_timestamps true",
+            //    "--task translate",
+            //    $"-o \"{jsonOutputFolder}\"",
+            //    $"\"{mp3Path}\""
+            //};
+
+
+            //var startInfo = new ProcessStartInfo
+            //{
+            //    FileName = whisperExePath,
+            //    Arguments = string.Join(" ", arguments),
+            //    RedirectStandardOutput = true,
+            //    RedirectStandardError = true,
+            //    UseShellExecute = false,
+            //    CreateNoWindow = true
+            //};
+
+
 
             using var process = new Process { StartInfo = startInfo };
 
@@ -283,6 +292,11 @@ namespace MicroService_Template.Application.Services
                         }
                     }
                 }
+                string fullText = string.Join(" ",
+              transcript.Segments.Where(s => !string.IsNullOrWhiteSpace(s.text))
+            .Select(s => s.text.Trim())
+);
+                transcript.FullText = fullText;
             }
             string updatedJson = JsonConvert.SerializeObject(transcript, Formatting.Indented);
             File.WriteAllText(jsonPath, updatedJson);

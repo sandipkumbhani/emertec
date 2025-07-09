@@ -20,18 +20,18 @@ namespace MicroService_Template.Application.Services
             _userRepository = userRepository;
         }
 
-        public async Task<bool> RegisterAsync(RegisterUser dto)
+        public async Task<bool> RegisterAsync(RegisterUser registerUser)
         {
-            var existingUser = await _userRepository.GetByEmailAsync(dto.Email);
+            var existingUser = await _userRepository.GetByEmailAsync(registerUser.Email);
             if (existingUser != null) return false;
 
-            var (hash, salt) = CreateHashedPassword(dto.Password);
+            var (hash, salt) = CreateHashedPassword(registerUser.Password);
 
             var user = new ModelUserLogin
             {
                 Id = Guid.NewGuid(),
-                Username = dto.Username,
-                Email = dto.Email,
+                Username = registerUser.Username,
+                Email = registerUser.Email,
                 PasswordHash = hash,
                 Salt = salt
             };

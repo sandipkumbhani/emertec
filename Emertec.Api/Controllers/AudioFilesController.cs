@@ -24,7 +24,7 @@ namespace MicroService_Template.Controllers
         private readonly ICryptoService _cryptoService;
         private readonly JsonToDB _jsontodb;
 
-        public AudioController(IConvertRsaToJsonService convertRsaToJson, IConvertJsonToDbService  convertJsonToDb, IAudioFileService audioFileService, ICryptoService cryptoService, IOptions<AudioPaths> paths, IOptions<DecryptRequest> decryptRequest, IOptions<JsonToDB> jsontodb)
+        public AudioController(IConvertRsaToJsonService convertRsaToJson, IConvertJsonToDbService convertJsonToDb, IAudioFileService audioFileService, ICryptoService cryptoService, IOptions<AudioPaths> paths, IOptions<DecryptRequest> decryptRequest, IOptions<JsonToDB> jsontodb)
         {
             _convertRsaToJson = convertRsaToJson;
             _convertJsonToDb = convertJsonToDb;
@@ -77,13 +77,13 @@ namespace MicroService_Template.Controllers
         {
             var jsonToDb = new JsonToDB
             {
-                BasePath = _jsontodb.BasePath 
+                BasePath = _jsontodb.BasePath
             };
 
             var updatedRows = await _convertJsonToDb.CheckGuidFromJsonAsync(jsonToDb);
 
             return Ok("All Data Save in Database");
-            
+
         }
 
 

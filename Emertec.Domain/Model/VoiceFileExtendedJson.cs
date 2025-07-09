@@ -22,6 +22,7 @@ namespace MicroService_Template.Domain.Model
         public string? CallRespondentFullPath { get; set; } = null;
         public List<Segment>? Segments { get; set; }
         public object FileName { get; set; }
+        public string FullText { get; set; }
     }
     public class Segment
     {
@@ -30,6 +31,7 @@ namespace MicroService_Template.Domain.Model
         public string? text { get; set; }
         public List<Word>? words { get; set; }
         public string? Speaker { get; set; }
+        public string? FullText { get; set; }
     }
 
     public class Word

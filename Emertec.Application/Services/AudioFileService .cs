@@ -25,8 +25,6 @@ namespace MicroService_Template.Application.Services
             using var rsa = RSA.Create();
             string publicKeyXml = File.ReadAllText(_paths.PublicKeyPath);
             rsa.FromXmlString(publicKeyXml);
-
-            // Get all subfolders inside the base directory
             var subFolders = Directory.GetDirectories(_paths.BasePath);
             var datePattern = new Regex(@"^\d{4}-\d{2}-\d{2}$");
 
@@ -76,33 +74,28 @@ namespace MicroService_Template.Application.Services
                         Console.WriteLine($"GUID file already exists. Skipping creation: {guidFilePath}");
                     }
 
-                    if (_mp3Settings.IsdeleteMp3File)
-                    {
-                        File.Delete(mp3File);
-                    }
+                    //if (_mp3Settings.IsdeleteMp3File)
+                    //{
+                    //    File.Delete(mp3File);
+                    //}
                 }
 
-                try
-                {
-                    if (Directory.Exists(currentSource))
-                    {
-                        Directory.Delete(currentSource, recursive: false);
-                        Console.WriteLine($"Force deleted folder: {currentSource}");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Failed to delete folder {currentSource}: {ex.Message}");
-                }
+                //try
+                //{
+                //    if (Directory.Exists(currentSource))
+                //    {
+                //        Directory.Delete(currentSource, recursive: false);
+                //        Console.WriteLine($"Force deleted folder: {currentSource}");
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //    Console.WriteLine($"Failed to delete folder {currentSource}: {ex.Message}");
+                //}
             }
 
             return rsaFiles;
         }
-
-
-
-
-
     }
 }
 

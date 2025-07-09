@@ -6,7 +6,7 @@ using MicroService_Template.Application.Services;
 using MicroService_Template.Domain.Interface;
 using MicroService_Template.Domain.Model;
 using MicroService_Template.Infrastructure.Repository;
-using MicroService_Template.Job;
+//using MicroService_Template.Job;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -15,42 +15,43 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 
 
+
 {
 
     var builder = WebApplication.CreateBuilder(args);
-    builder.Services.AddQuartz(q =>
-    {
-        var mp3ToRsaJobKey = new JobKey("MP3ToRSAWorker");
-        var rsaToJsonJobKey = new JobKey("RSAToJsonWorker");
-        var jsonToDbJobKey = new JobKey("JsonToDbWorker");
+    //builder.Services.AddQuartz(q =>
+    //{
+    //    var mp3ToRsaJobKey = new JobKey("MP3ToRSAWorker");
+    //    var rsaToJsonJobKey = new JobKey("RSAToJsonWorker");
+    //    var jsonToDbJobKey = new JobKey("JsonToDbWorker");
 
-        // Register jobs
-        q.AddJob<MP3ToRSAWorker>(opts => opts.WithIdentity(mp3ToRsaJobKey));
-        q.AddJob<RSAToJsonWorker>(opts => opts.WithIdentity(rsaToJsonJobKey));
-        q.AddJob<JsonToDbWorker>(opts => opts.WithIdentity(jsonToDbJobKey));
+    //    // Register jobs
+    //    q.AddJob<MP3ToRSAWorker>(opts => opts.WithIdentity(mp3ToRsaJobKey));
+    //    q.AddJob<RSAToJsonWorker>(opts => opts.WithIdentity(rsaToJsonJobKey));
+    //    q.AddJob<JsonToDbWorker>(opts => opts.WithIdentity(jsonToDbJobKey));
 
-        // Get individual cron expressions
-        var mp3ToRsaCron = builder.Configuration["Quartz:MP3ToRSAJob"];
-        var rsaToJsonCron = builder.Configuration["Quartz:RSAToJsonJob"];
-        var jsonToDbCron = builder.Configuration["Quartz:JsonToDbJob"];
+    //    // Get individual cron expressions
+    //    var mp3ToRsaCron = builder.Configuration["Quartz:MP3ToRSAJob"];
+    //    var rsaToJsonCron = builder.Configuration["Quartz:RSAToJsonJob"];
+    //    var jsonToDbCron = builder.Configuration["Quartz:JsonToDbJob"];
 
-        // Add triggers for each job
-        q.AddTrigger(opts => opts
-            .ForJob(mp3ToRsaJobKey)
-            .WithIdentity("TriggerMP3ToRSA")
-            .WithCronSchedule(mp3ToRsaCron, cron => cron.WithMisfireHandlingInstructionDoNothing()));
+    //    // Add triggers for each job
+    //    q.AddTrigger(opts => opts
+    //        .ForJob(mp3ToRsaJobKey)
+    //        .WithIdentity("TriggerMP3ToRSA")
+    //        .WithCronSchedule(mp3ToRsaCron, cron => cron.WithMisfireHandlingInstructionDoNothing()));
 
-        q.AddTrigger(opts => opts
-            .ForJob(rsaToJsonJobKey)
-            .WithIdentity("TriggerRSAToJson")
-            .WithCronSchedule(rsaToJsonCron, cron => cron.WithMisfireHandlingInstructionDoNothing()));
+    //    q.AddTrigger(opts => opts
+    //        .ForJob(rsaToJsonJobKey)
+    //        .WithIdentity("TriggerRSAToJson")
+    //        .WithCronSchedule(rsaToJsonCron, cron => cron.WithMisfireHandlingInstructionDoNothing()));
 
-        q.AddTrigger(opts => opts
-            .ForJob(jsonToDbJobKey)
-            .WithIdentity("TriggerJsonToDb")
-            .WithCronSchedule(jsonToDbCron, cron => cron.WithMisfireHandlingInstructionDoNothing()));
-    });
-    builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+    //    q.AddTrigger(opts => opts
+    //        .ForJob(jsonToDbJobKey)
+    //        .WithIdentity("TriggerJsonToDb")
+    //        .WithCronSchedule(jsonToDbCron, cron => cron.WithMisfireHandlingInstructionDoNothing()));
+    //});
+    //builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
 
 
