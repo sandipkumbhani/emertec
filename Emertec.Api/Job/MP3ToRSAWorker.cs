@@ -6,7 +6,7 @@ using Quartz;
 namespace MicroService_Template.Job
 {
     [DisallowConcurrentExecution]
-    public class MP3ToRSAWorker :IJob
+    public class MP3ToRSAWorker : IJob
     {
         private readonly IAudioFileService _audioService;
         private readonly AudioPaths _paths;

@@ -6,13 +6,13 @@ using MicroService_Template.Application.Services;
 using MicroService_Template.Domain.Interface;
 using MicroService_Template.Domain.Model;
 using MicroService_Template.Infrastructure.Repository;
-using MicroService_Template.Job;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Quartz;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using MicroService_Template.Job;
 
 
 {
@@ -26,8 +26,8 @@ using Microsoft.OpenApi.Models;
 
         // Register jobs
         q.AddJob<MP3ToRSAWorker>(opts => opts.WithIdentity(mp3ToRsaJobKey));
-        q.AddJob<RSAToJsonWorker>(opts => opts.WithIdentity(rsaToJsonJobKey));
-        q.AddJob<JsonToDbWorker>(opts => opts.WithIdentity(jsonToDbJobKey));
+        //q.AddJob<RSAToJsonWorker>(opts => opts.WithIdentity(rsaToJsonJobKey));
+        //q.AddJob<JsonToDbWorker>(opts => opts.WithIdentity(jsonToDbJobKey));
 
         // Get individual cron expressions
         var mp3ToRsaCron = builder.Configuration["Quartz:MP3ToRSAJob"];
@@ -40,15 +40,15 @@ using Microsoft.OpenApi.Models;
             .WithIdentity("TriggerMP3ToRSA")
             .WithCronSchedule(mp3ToRsaCron, cron => cron.WithMisfireHandlingInstructionDoNothing()));
 
-        q.AddTrigger(opts => opts
-            .ForJob(rsaToJsonJobKey)
-            .WithIdentity("TriggerRSAToJson")
-            .WithCronSchedule(rsaToJsonCron, cron => cron.WithMisfireHandlingInstructionDoNothing()));
+        //q.AddTrigger(opts => opts
+        //    .ForJob(rsaToJsonJobKey)
+        //    .WithIdentity("TriggerRSAToJson")
+        //    .WithCronSchedule(rsaToJsonCron, cron => cron.WithMisfireHandlingInstructionDoNothing()));
 
-        q.AddTrigger(opts => opts
-            .ForJob(jsonToDbJobKey)
-            .WithIdentity("TriggerJsonToDb")
-            .WithCronSchedule(jsonToDbCron, cron => cron.WithMisfireHandlingInstructionDoNothing()));
+        //q.AddTrigger(opts => opts
+        //    .ForJob(jsonToDbJobKey)
+        //    .WithIdentity("TriggerJsonToDb")
+        //    .WithCronSchedule(jsonToDbCron, cron => cron.WithMisfireHandlingInstructionDoNothing()));
     });
     builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroService_Template.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250704052117_Emertac")]
+    [Migration("20250710044038_Emertac")]
     partial class Emertac
     {
         /// <inheritdoc />
@@ -312,22 +312,22 @@ namespace MicroService_Template.Infrastructure.Migrations
                     b.ToTable("modelDimWord");
                 });
 
-            modelBuilder.Entity("MicroService_Template.Domain.Model.ModelUser", b =>
+            modelBuilder.Entity("MicroService_Template.Domain.Model.ModelUserLogin", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
-                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Salt")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
