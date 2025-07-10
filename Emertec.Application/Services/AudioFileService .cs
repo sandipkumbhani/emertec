@@ -8,13 +8,13 @@ namespace MicroService_Template.Application.Services
 {
     public class AudioFileService : IAudioFileService
     {
-        private readonly MP3Settings _mp3Settings;
+        private readonly MP3SettingsDTO _mp3Settings;
 
-        public AudioFileService(IOptions<MP3Settings> mp3Settings)
+        public AudioFileService(IOptions<MP3SettingsDTO> mp3Settings)
         {
             _mp3Settings = mp3Settings.Value;
         }
-        public List<string> ConvertAllMp3FilesToRsaAndGuid(AudioPaths _paths)
+        public List<string> ConvertAllMp3FilesToRsaAndGuid(AudioPathsDTO _paths)
         {
             var rsaFiles = new List<string>();
             if (!Directory.Exists(_paths.BasePath))

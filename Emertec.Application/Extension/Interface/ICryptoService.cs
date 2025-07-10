@@ -4,6 +4,6 @@ namespace MicroService_Template.Application.Extension.Interface
 {
     public interface ICryptoService
     {
-        KeyGenerationResponse GenerateRsaKeys(string outputFolder);
+        KeyGenerationResponseDTO GenerateRsaKeys(string outputFolder);
     }
 }

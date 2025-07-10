@@ -86,11 +86,11 @@ using MicroService_Template.Job;
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
     //builder.Services.AddDbContext<AppDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-    builder.Services.Configure<AudioPaths>(builder.Configuration.GetSection("AudioEncryptionPaths"));
-    builder.Services.Configure<MP3Settings>(builder.Configuration.GetSection("MP3Settings"));
-    builder.Services.Configure<DecryptRequest>(builder.Configuration.GetSection("DecryptRequest"));
-    builder.Services.Configure<KeyGenerationResponse>(builder.Configuration.GetSection("Crypto"));
-    builder.Services.Configure<JsonToDB>(builder.Configuration.GetSection("JsonToDB"));
+    builder.Services.Configure<AudioPathsDTO>(builder.Configuration.GetSection("AudioEncryptionPaths"));
+    builder.Services.Configure<MP3SettingsDTO>(builder.Configuration.GetSection("MP3Settings"));
+    builder.Services.Configure<DecryptRequestDTO>(builder.Configuration.GetSection("DecryptRequest"));
+    builder.Services.Configure<KeyGenerationResponseDTO>(builder.Configuration.GetSection("Crypto"));
+    builder.Services.Configure<JsonToDbDTO>(builder.Configuration.GetSection("JsonToDB"));
 
 
     builder.Services.AddAuthentication(options =>

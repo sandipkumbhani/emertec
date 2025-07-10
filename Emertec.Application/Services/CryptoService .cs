@@ -11,7 +11,7 @@ namespace MicroService_Template.Application.Services
 {
     public class CryptoService : ICryptoService
     {
-        public KeyGenerationResponse GenerateRsaKeys(string outputFolder)
+        public KeyGenerationResponseDTO GenerateRsaKeys(string outputFolder)
         {
             Directory.CreateDirectory(outputFolder);
 
@@ -26,7 +26,7 @@ namespace MicroService_Template.Application.Services
             File.WriteAllText(privateKeyPath, privateKeyXml);
             File.WriteAllText(publicKeyPath, publicKeyXml);
 
-            return new KeyGenerationResponse
+            return new KeyGenerationResponseDTO
             {
                 PrivateKeyPath = privateKeyPath,
                 PublicKeyPath = publicKeyPath,

@@ -13,19 +13,19 @@ namespace MicroService_Template.Application.Services
 
     public class ConvertRsaToJsonService : IConvertRsaToJsonService
     {
-        private readonly MP3Settings _mp3Settings;
+        private readonly MP3SettingsDTO _mp3Settings;
 
         private readonly IModelDimJsonRepository _modelDimJsonRepository;
 
 
-        public ConvertRsaToJsonService(IOptions<MP3Settings> mp3Settings, IModelDimJsonRepository repository)
+        public ConvertRsaToJsonService(IOptions<MP3SettingsDTO> mp3Settings, IModelDimJsonRepository repository)
         {
             _mp3Settings = mp3Settings.Value;
             _modelDimJsonRepository = repository;
         }
 
 
-        public async Task<List<string>> WorkerMp3ToJson(DecryptRequest request, string privateKeyPath, string whisperExePath)
+        public async Task<List<string>> WorkerMp3ToJson(DecryptRequestDTO request, string privateKeyPath, string whisperExePath)
         {
             var mp3Files = new List<string>();
             var jsonFiles = new List<string>();
@@ -112,7 +112,7 @@ namespace MicroService_Template.Application.Services
         }
         //get all rsafolder 
 
-        private List<string> GetAllRsaFiles(DecryptRequest _request)
+        private List<string> GetAllRsaFiles(DecryptRequestDTO _request)
         {
             var rsaFiles = new List<string>();
 

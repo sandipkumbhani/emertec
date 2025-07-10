@@ -14,7 +14,7 @@ namespace MicroService_Template.Controllers
             _userLoginService = userLoginService;
         }
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginUser logindto)
+        public async Task<IActionResult> Login([FromBody] LoginUserDTO logindto)
         {
             var token = await _userLoginService.LoginAsync(logindto);
             if (string.IsNullOrEmpty(token))

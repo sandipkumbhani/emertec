@@ -5,6 +5,6 @@ namespace MicroService_Template.Application.Extension.Interface
 {
     public interface IConvertJsonToDbService
     {
-        Task<List<ModelDimJson>> CheckGuidFromJsonAsync(JsonToDB jsonToDb);
+        Task<List<ModelDimJson>> CheckGuidFromJsonAsync(JsonToDbDTO jsonToDb);
     }
 }
