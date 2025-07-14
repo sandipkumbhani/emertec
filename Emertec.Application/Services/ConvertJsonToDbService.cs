@@ -29,7 +29,7 @@ namespace MicroService_Template.Application.Services
             _modelDimTextWordRepository = modelDimTextWordRepositorycs;
         }
 
-       private List<string> GetALLJsonFiles(JsonToDB _jsontodb)
+       private List<string> GetALLJsonFiles(JsonToDbDTO _jsontodb)
         {
             var rsaFiles = new List<string>();
 
@@ -52,7 +52,7 @@ namespace MicroService_Template.Application.Services
 
             return rsaFiles;
         }
-        public async Task<List<ModelDimJson>> CheckGuidFromJsonAsync(JsonToDB jsonToDb)
+        public async Task<List<ModelDimJson>> CheckGuidFromJsonAsync(JsonToDbDTO jsonToDb)
         {
             var updatedRows = new List<ModelDimJson>();
             var jsonFiles = GetALLJsonFiles(jsonToDb);

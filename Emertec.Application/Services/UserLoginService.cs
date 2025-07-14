@@ -33,7 +33,7 @@ namespace MicroService_Template.Application.Services
             _JwtExpiry = int.Parse(_configuration["Jwt:ExpiryMinutes"] ?? "60");
         }
 
-        public async Task<string> LoginAsync(LoginUser dto)
+        public async Task<string> LoginAsync(LoginUserDTO dto)
         {
             var user = await _userRepository.GetByEmailAsync(dto.Email);
             if (user == null || string.IsNullOrEmpty(user.Salt)) return null;

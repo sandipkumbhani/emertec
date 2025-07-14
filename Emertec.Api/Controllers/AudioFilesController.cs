@@ -19,12 +19,12 @@ namespace MicroService_Template.Controllers
         private readonly IConvertRsaToJsonService _convertRsaToJson;
         private readonly IConvertJsonToDbService _convertJsonToDb;
         private readonly IAudioFileService _audioService;
-        private readonly AudioPaths _paths;
-        private readonly DecryptRequest _decryptRequest;
+        private readonly AudioPathsDTO _paths;
+        private readonly DecryptRequestDTO _decryptRequest;
         private readonly ICryptoService _cryptoService;
-        private readonly JsonToDB _jsontodb;
+        private readonly JsonToDbDTO _jsontodb;
 
-        public AudioController(IConvertRsaToJsonService convertRsaToJson, IConvertJsonToDbService convertJsonToDb, IAudioFileService audioFileService, ICryptoService cryptoService, IOptions<AudioPaths> paths, IOptions<DecryptRequest> decryptRequest, IOptions<JsonToDB> jsontodb)
+        public AudioController(IConvertRsaToJsonService convertRsaToJson, IConvertJsonToDbService convertJsonToDb, IAudioFileService audioFileService, ICryptoService cryptoService, IOptions<AudioPathsDTO> paths, IOptions<DecryptRequestDTO> decryptRequest, IOptions<JsonToDbDTO> jsontodb)
         {
             _convertRsaToJson = convertRsaToJson;
             _convertJsonToDb = convertJsonToDb;
@@ -51,7 +51,7 @@ namespace MicroService_Template.Controllers
         {
             try
             {
-                var request = new DecryptRequest
+                var request = new DecryptRequestDTO
                 {
                     BasePath = _decryptRequest.BasePath,
                     PrivateKeyPath = _decryptRequest.PrivateKeyPath,
@@ -72,19 +72,19 @@ namespace MicroService_Template.Controllers
             var result = _cryptoService.GenerateRsaKeys(outputFolder);
             return Ok(result);
         }
-        [HttpPost("process-json-files")]
-        public async Task<IActionResult> GetAllJson()
-        {
-            var jsonToDb = new JsonToDB
-            {
-                BasePath = _jsontodb.BasePath
-            };
+        //[HttpPost("process-json-files")]
+        //public async Task<IActionResult> GetAllJson()
+        //{
+        //    var jsonToDb = new JsonToDB
+        //    {
+        //        BasePath = _jsontodb.BasePath
+        //    };
 
-            var updatedRows = await _convertJsonToDb.CheckGuidFromJsonAsync(jsonToDb);
+        //    var updatedRows = await _convertJsonToDb.CheckGuidFromJsonAsync(jsonToDb);
 
-            return Ok("All Data Save in Database");
+        //    return Ok("All Data Save in Database");
 
-        }
+        //}
 
 
     }

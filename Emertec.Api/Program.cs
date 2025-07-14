@@ -6,16 +6,13 @@ using MicroService_Template.Application.Services;
 using MicroService_Template.Domain.Interface;
 using MicroService_Template.Domain.Model;
 using MicroService_Template.Infrastructure.Repository;
-//using MicroService_Template.Job;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Quartz;
 using System.Text;
 using Microsoft.OpenApi.Models;
-
-
-
+//using MicroService_Template.Job;
 {
 
     var builder = WebApplication.CreateBuilder(args);
@@ -87,11 +84,11 @@ using Microsoft.OpenApi.Models;
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
     //builder.Services.AddDbContext<AppDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-    builder.Services.Configure<AudioPaths>(builder.Configuration.GetSection("AudioEncryptionPaths"));
-    builder.Services.Configure<MP3Settings>(builder.Configuration.GetSection("MP3Settings"));
-    builder.Services.Configure<DecryptRequest>(builder.Configuration.GetSection("DecryptRequest"));
-    builder.Services.Configure<KeyGenerationResponse>(builder.Configuration.GetSection("Crypto"));
-    builder.Services.Configure<JsonToDB>(builder.Configuration.GetSection("JsonToDB"));
+    builder.Services.Configure<AudioPathsDTO>(builder.Configuration.GetSection("AudioEncryptionPaths"));
+    builder.Services.Configure<MP3SettingsDTO>(builder.Configuration.GetSection("MP3Settings"));
+    builder.Services.Configure<DecryptRequestDTO>(builder.Configuration.GetSection("DecryptRequest"));
+    builder.Services.Configure<KeyGenerationResponseDTO>(builder.Configuration.GetSection("Crypto"));
+    builder.Services.Configure<JsonToDbDTO>(builder.Configuration.GetSection("JsonToDB"));
 
 
     builder.Services.AddAuthentication(options =>

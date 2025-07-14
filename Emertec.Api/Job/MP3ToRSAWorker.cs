@@ -9,9 +9,9 @@
 //    public class MP3ToRSAWorker : IJob
 //    {
 //        private readonly IAudioFileService _audioService;
-//        private readonly AudioPaths _paths;
+//        private readonly AudioPathsDTO _paths;
 
-//        public MP3ToRSAWorker(IAudioFileService audioService, IOptions<AudioPaths> paths)
+//        public MP3ToRSAWorker(IAudioFileService audioService, IOptions<AudioPathsDTO> paths)
 //        {
 //            _audioService = audioService;
 //            _paths = paths.Value;

@@ -20,7 +20,7 @@ namespace MicroService_Template.Application.Services
             _userRepository = userRepository;
         }
 
-        public async Task<bool> RegisterAsync(RegisterUser registerUser)
+        public async Task<bool> RegisterAsync(RegisterUserDTO dto)
         {
             var existingUser = await _userRepository.GetByEmailAsync(registerUser.Email);
             if (existingUser != null) return false;

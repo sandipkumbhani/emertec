@@ -8,13 +8,13 @@ namespace MicroService_Template.Application.Services
 {
     public class AudioFileService : IAudioFileService
     {
-        private readonly MP3Settings _mp3Settings;
+        private readonly MP3SettingsDTO _mp3Settings;
 
-        public AudioFileService(IOptions<MP3Settings> mp3Settings)
+        public AudioFileService(IOptions<MP3SettingsDTO> mp3Settings)
         {
             _mp3Settings = mp3Settings.Value;
         }
-        public List<string> ConvertAllMp3FilesToRsaAndGuid(AudioPaths _paths)
+        public List<string> ConvertAllMp3FilesToRsaAndGuid(AudioPathsDTO _paths)
         {
             var rsaFiles = new List<string>();
             if (!Directory.Exists(_paths.BasePath))
@@ -39,10 +39,10 @@ namespace MicroService_Template.Application.Services
                     continue;
 
                 string rsaFolder = Path.Combine(_paths.BasePath, folderName + "-RSA");
-                string guidBaseFolder = Path.Combine(_paths.BasePath, folderName + "-GUID");
+                //string guidBaseFolder = Path.Combine(_paths.BasePath, folderName + "-GUID");
 
                 Directory.CreateDirectory(rsaFolder);
-                Directory.CreateDirectory(guidBaseFolder);
+                //Directory.CreateDirectory(guidBaseFolder);
 
                 string[] allFiles = Directory.GetFiles(currentSource, "*.mp3");
                 if (allFiles.Length == 0) continue;
@@ -61,18 +61,18 @@ namespace MicroService_Template.Application.Services
                     File.WriteAllBytes(rsaFilePath, combined);
                     rsaFiles.Add(rsaFilePath);
 
-                    string guidFilePath = Path.Combine(guidBaseFolder, $"{fileName}.guid");
+                    //string guidFilePath = Path.Combine(guidBaseFolder, $"{fileName}.guid");
 
-                    if (!File.Exists(guidFilePath))
-                    {
-                        string guid = Guid.NewGuid().ToString();
-                        File.WriteAllText(guidFilePath, guid);
-                        Console.WriteLine($"GUID saved to: {guidFilePath}");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"GUID file already exists. Skipping creation: {guidFilePath}");
-                    }
+                    //if (!File.Exists(guidFilePath))
+                    //{
+                    //    string guid = Guid.NewGuid().ToString();
+                    //    File.WriteAllText(guidFilePath, guid);
+                    //    Console.WriteLine($"GUID saved to: {guidFilePath}");
+                    //}
+                    //else
+                    //{
+                    //    Console.WriteLine($"GUID file already exists. Skipping creation: {guidFilePath}");
+                    //}
 
                     //if (_mp3Settings.IsdeleteMp3File)
                     //{

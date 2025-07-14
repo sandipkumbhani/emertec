@@ -9,6 +9,6 @@ namespace MicroService_Template.Application.Extension.Interface
 {
     public interface IUserLoginService
     {
-        Task<string> LoginAsync(LoginUser dto);
+        Task<string> LoginAsync(LoginUserDTO dto);
     }
 }

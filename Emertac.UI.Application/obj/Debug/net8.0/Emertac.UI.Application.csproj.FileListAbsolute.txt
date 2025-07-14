@@ -1,0 +1,16 @@
+D:\Broadsy\Projects\Emertac\Emertac.UI.Application\bin\Debug\net8.0\Emertac.UI.Application.deps.json
+D:\Broadsy\Projects\Emertac\Emertac.UI.Application\bin\Debug\net8.0\Emertac.UI.Application.dll
+D:\Broadsy\Projects\Emertac\Emertac.UI.Application\bin\Debug\net8.0\Emertac.UI.Application.pdb
+D:\Broadsy\Projects\Emertac\Emertac.UI.Application\bin\Debug\net8.0\Emertac.UI.Domain.dll
+D:\Broadsy\Projects\Emertac\Emertac.UI.Application\bin\Debug\net8.0\Emertac.UI.Domain.pdb
+D:\Broadsy\Projects\Emertac\Emertac.UI.Application\obj\Debug\net8.0\Emertac.UI.Application.csproj.AssemblyReference.cache
+D:\Broadsy\Projects\Emertac\Emertac.UI.Application\obj\Debug\net8.0\Emertac.UI.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\Broadsy\Projects\Emertac\Emertac.UI.Application\obj\Debug\net8.0\Emertac.UI.Application.AssemblyInfoInputs.cache
+D:\Broadsy\Projects\Emertac\Emertac.UI.Application\obj\Debug\net8.0\Emertac.UI.Application.AssemblyInfo.cs
+D:\Broadsy\Projects\Emertac\Emertac.UI.Application\obj\Debug\net8.0\Emertac.UI.Application.csproj.CoreCompileInputs.cache
+D:\Broadsy\Projects\Emertac\Emertac.UI.Application\obj\Debug\net8.0\Emertac.UI.Application.sourcelink.json
+D:\Broadsy\Projects\Emertac\Emertac.UI.Application\obj\Debug\net8.0\Emertac..F40677C7.Up2Date
+D:\Broadsy\Projects\Emertac\Emertac.UI.Application\obj\Debug\net8.0\Emertac.UI.Application.dll
+D:\Broadsy\Projects\Emertac\Emertac.UI.Application\obj\Debug\net8.0\refint\Emertac.UI.Application.dll
+D:\Broadsy\Projects\Emertac\Emertac.UI.Application\obj\Debug\net8.0\Emertac.UI.Application.pdb
+D:\Broadsy\Projects\Emertac\Emertac.UI.Application\obj\Debug\net8.0\ref\Emertac.UI.Application.dll

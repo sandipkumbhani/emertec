@@ -4,7 +4,7 @@ namespace MicroService_Template.Application.Extension.Interface
 {
     public interface IAudioFileService
     {
-        List<string> ConvertAllMp3FilesToRsaAndGuid(AudioPaths _paths);
+        List<string> ConvertAllMp3FilesToRsaAndGuid(AudioPathsDTO _paths);
        
      }
 }

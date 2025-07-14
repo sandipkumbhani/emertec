@@ -1,0 +1,11 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "Emertec.Api\\Emertec.Api.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

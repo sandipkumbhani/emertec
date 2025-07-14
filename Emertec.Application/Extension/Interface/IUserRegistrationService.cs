@@ -9,6 +9,6 @@ namespace MicroService_Template.Application.Extension.Interface
 {
     public interface IUserRegistrationService
     {
-        Task<bool> RegisterAsync(RegisterUser dto);
+        Task<bool> RegisterAsync(RegisterUserDTO dto);
     }
 }
