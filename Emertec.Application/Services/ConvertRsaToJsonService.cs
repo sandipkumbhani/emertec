@@ -89,8 +89,8 @@ namespace MicroService_Template.Application.Services
                     continue; 
                 }
 
-                string guidFolder = rsaFolder.Replace("-RSA", "-GUID");
-                string guidPath = Path.Combine(guidFolder, fileName + ".guid");
+                //string guidFolder = rsaFolder.Replace("-RSA", "-GUID");
+                //string guidPath = Path.Combine(guidFolder, fileName + ".guid");
 
                 /*if (!File.Exists(guidPath))
                 {
@@ -192,6 +192,7 @@ namespace MicroService_Template.Application.Services
                 Console.WriteLine($"JSON already exists. Skipping: {expectedJsonPath}");
                 return;
             }
+<<<<<<< Updated upstream
 
             var arguments = new List<string>
     {
@@ -204,6 +205,47 @@ namespace MicroService_Template.Application.Services
         $"-o \"{jsonOutputFolder}\"",
         $"\"{mp3Path}\""
     };
+=======
+            //    var arguments = new List<string>
+            //{
+            //    "--model medium",
+            //    "--compute_type float32",
+            //    "--threads 4",
+            //    "--output_format json",
+            //    "--word_timestamps true",
+            //    "--task transcribe",
+            //    "--language hi",
+            //    "--verbose true",
+            //    "-o", $"\"{jsonOutputFolder}\"",
+            //    $"\"{mp3Path}\""
+            //};
+
+            //    Console.OutputEncoding = Encoding.UTF8;
+
+            //    var startInfo = new ProcessStartInfo
+            //    {
+            //        FileName = whisperExePath,
+            //        Arguments = string.Join(" ", arguments),
+            //        RedirectStandardOutput = true,
+            //        RedirectStandardError = true,
+            //        StandardOutputEncoding = Encoding.UTF8,
+            //        StandardErrorEncoding = Encoding.UTF8,
+            //        UseShellExecute = false,
+            //        CreateNoWindow = true
+            //    };
+            var arguments = new List<string>
+            {
+                "--model medium",
+                "--compute_type float32",
+                "--threads 4",
+                "--output_format json",
+                "--word_timestamps true",
+                "--task translate",
+                $"-o \"{jsonOutputFolder}\"",
+                $"\"{mp3Path}\""
+            };
+
+>>>>>>> Stashed changes
 
             var startInfo = new ProcessStartInfo
             {
@@ -214,6 +256,11 @@ namespace MicroService_Template.Application.Services
                 UseShellExecute = false,
                 CreateNoWindow = true
             };
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
 
             using var process = new Process { StartInfo = startInfo };
 
@@ -267,6 +314,7 @@ namespace MicroService_Template.Application.Services
             transcript.CampaignName = metadata.CampaignName;
             transcript.CampaignDate = metadata.CampaignDate;
             transcript.CallNumber = metadata.CallNumber;
+            transcript.TelephoneNumber = metadata.TelephoneNumber;
             transcript.CallDateTime = metadata.CallDateTime;
             transcript.TeamName = metadata.TeamName;
             transcript.CallRespondentFullPath = metadata.CallRespondentFullPath;
@@ -326,12 +374,21 @@ namespace MicroService_Template.Application.Services
             {
                 result.CampaignDate = DateTime.ParseExact(dtRaw.Substring(0, 8), "ddMMyyyy", null).ToString("yyyy-MM-dd");
             }
+            string cnRaw = parts.FirstOrDefault(p => p.StartsWith("CI"));
+            if (!string.IsNullOrEmpty(cnRaw))
+            {
+                result.CallNumber = cnRaw.Substring(2); // remove "CI"
+            }
+            string tnRaw = parts.FirstOrDefault(p => p.StartsWith("TN"));
+            if (!string.IsNullOrEmpty(tnRaw))
+            {
+                result.TelephoneNumber = tnRaw.Substring(2);
+            }
 
             string utcstRaw = parts.FirstOrDefault(p => p.StartsWith("UTCST"))?.Substring(5);
             if (!string.IsNullOrEmpty(utcstRaw) && utcstRaw.Length >= 14)
             {
-                result.CallNumber = utcstRaw.Substring(0, 14);
-                result.CallDateTime = DateTime.ParseExact(result.CallNumber, "yyyyMMddHHmmss", null)
+                result.CallDateTime = DateTime.ParseExact(utcstRaw.Substring(0, 14), "yyyyMMddHHmmss", null)
                     .ToString("yyyy-MM-ddTHH:mm:ss");
             }
 
