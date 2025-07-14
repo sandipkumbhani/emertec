@@ -15,4 +15,7 @@
 /Emertec.Infrastructure/obj
 /Emertac.UI.Application/bin/Debug/net8.0
 /EmertacUI/obj
-/EmertacUI/obj/Debug/net8.0/refint/EmertacUI.dll
+/EmertacUI/obj/Debug/net8.0/EmertacUI.AssemblyInfoInputs.cache
+/EmertacUI/bin/Debug/net8.0/EmertacUI.dll
+/Emertac.UI.Application/bin/Debug/net8.0/Emertac.UI.Application.dll
+/Emertac.UI.Application/bin/Debug/net8.0/Emertac.UI.Application.pdb
