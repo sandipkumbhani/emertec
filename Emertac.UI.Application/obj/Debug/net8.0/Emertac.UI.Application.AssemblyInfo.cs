@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Emertac.UI.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3a5f6f0b706ccb4ebef76cfe35b4ab04d98acbc8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fd9d9bd011842fb20b36394ed5c5b94d8f600277")]
 [assembly: System.Reflection.AssemblyProductAttribute("Emertac.UI.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Emertac.UI.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

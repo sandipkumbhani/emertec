@@ -92,15 +92,15 @@ namespace MicroService_Template.Application.Services
                 string guidFolder = rsaFolder.Replace("-RSA", "-GUID");
                 string guidPath = Path.Combine(guidFolder, fileName + ".guid");
 
-                if (!File.Exists(guidPath))
+                /*if (!File.Exists(guidPath))
                 {
                     Console.WriteLine($"GUID file not found for: {fileName}");
                     continue; // or handle error
-                }
+                }*/
 
-                AppendGuidToJson(jsonPath, guidPath);
+                AppendGuidToJson(jsonPath /*, guidPath*/);
 
-                await SaveFileAndGeneratedGuidAsync(guidPath);
+                //await SaveFileAndGeneratedGuidAsync(guidPath);
 
                 if (_mp3Settings.IsdeleteRsaFiles)
                 {
@@ -244,19 +244,19 @@ namespace MicroService_Template.Application.Services
             }
         }
 
-        private void AppendGuidToJson(string jsonPath, string guidPath)
+        private void AppendGuidToJson(string jsonPath /*string guidPath*/)
         {
             if (!File.Exists(jsonPath))
                 throw new FileNotFoundException("JSON file not found.");
 
-            if (!File.Exists(guidPath))
-                throw new FileNotFoundException("GUID file not found.");
-            if (Path.GetFullPath(jsonPath).Equals(Path.GetFullPath(guidPath), StringComparison.OrdinalIgnoreCase))
-                throw new InvalidOperationException("JSON file and GUID file cannot be the same.");
-            string guid = File.ReadAllText(guidPath).Trim();
+            //if (!File.Exists(guidPath))
+            //    throw new FileNotFoundException("GUID file not found.");
+            //if (Path.GetFullPath(jsonPath).Equals(Path.GetFullPath(guidPath), StringComparison.OrdinalIgnoreCase))
+            //    throw new InvalidOperationException("JSON file and GUID file cannot be the same.");
+            ////string guid = File.ReadAllText(guidPath).Trim();
             string json = File.ReadAllText(jsonPath);
             var transcript = JsonConvert.DeserializeObject<VoiceFileExtendedJson>(json);
-            transcript.Guid = guid;
+            //transcript.Guid = guid;
             string fileName = Path.GetFileNameWithoutExtension(jsonPath);
             var metadata = ParseFileName(fileName);
 
@@ -337,49 +337,49 @@ namespace MicroService_Template.Application.Services
 
             return result;
         }
-        private async Task<string> SaveFileAndGeneratedGuidAsync(string guidPath)
-        {
-            try
-            {
-                if (!File.Exists(guidPath))
-                    throw new FileNotFoundException("GUID file not found.", guidPath);
+        //private async Task<string> SaveFileAndGeneratedGuidAsync(string guidPath)
+        //{
+        //    try
+        //    {
+        //        if (!File.Exists(guidPath))
+        //            throw new FileNotFoundException("GUID file not found.", guidPath);
 
-                string fileGuidText = await File.ReadAllTextAsync(guidPath);
+        //        string fileGuidText = await File.ReadAllTextAsync(guidPath);
 
-                if (!Guid.TryParse(fileGuidText.Trim(), out Guid fileGuidValue))
-                    throw new FormatException("The file does not contain a valid GUID.");
-                var existing = await _modelDimJsonRepository.GetByDapperGuidAsync(fileGuidValue);
-                if (existing != null)
-                {
-                    Console.WriteLine($"Record with GUID {fileGuidValue} already exists. Skipping insert.");
-                    return $"Duplicate record skipped for GUID: {fileGuidValue}";
-                }
+        //        if (!Guid.TryParse(fileGuidText.Trim(), out Guid fileGuidValue))
+        //            throw new FormatException("The file does not contain a valid GUID.");
+        //        var existing = await _modelDimJsonRepository.GetByDapperGuidAsync(fileGuidValue);
+        //        if (existing != null)
+        //        {
+        //            Console.WriteLine($"Record with GUID {fileGuidValue} already exists. Skipping insert.");
+        //            return $"Duplicate record skipped for GUID: {fileGuidValue}";
+        //        }
 
-                var model = new ModelDimJson
-                {
-                    Id = Guid.NewGuid(),
-                    DapperGuid = fileGuidValue,
-                    CampaignId = Guid.Empty,
-                    FileName = null,
-                    FilePath = null,
-                    LastSyncDateTime = DateTime.UtcNow,
-                    IsExecuted = false,
-                    IsRepeat = false,
-                    CallLength = 0,
-                    Created = DateTime.UtcNow,
-                    Modified = DateTime.UtcNow,
-                };
+        //        var model = new ModelDimJson
+        //        {
+        //            Id = Guid.NewGuid(),
+        //            DapperGuid = fileGuidValue,
+        //            CampaignId = Guid.Empty,
+        //            FileName = null,
+        //            FilePath = null,
+        //            LastSyncDateTime = DateTime.UtcNow,
+        //            IsExecuted = false,
+        //            IsRepeat = false,
+        //            CallLength = 0,
+        //            Created = DateTime.UtcNow,
+        //            Modified = DateTime.UtcNow,
+        //        };
 
-                await _modelDimJsonRepository.InsertJsonRecordAsync(model);
+        //        await _modelDimJsonRepository.InsertJsonRecordAsync(model);
 
-                return "ModelDimJson record saved successfully.";
-            }
-            catch (Exception ex)
-            {
+        //        return "ModelDimJson record saved successfully.";
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                return $"Error: {ex.Message}";
-            }
-        }
+        //        return $"Error: {ex.Message}";
+        //    }
+        //}
 
     }
 

@@ -19,8 +19,7 @@ namespace MicroService_Template.Infrastructure.Repository
 
         public async Task<ModelUserLogin> GetByEmailAsync(string email)
         {
-            return await _context.modelUsers
-                .FirstOrDefaultAsync(u => u.Email == email);
+            return await _context.modelUsers.FirstOrDefaultAsync(u => u.Email == email);
         }
 
         public async Task AddAsync(ModelUserLogin user)

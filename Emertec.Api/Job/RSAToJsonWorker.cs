@@ -8,8 +8,8 @@
 //    public class RSAToJsonWorker : IJob
 //    {
 //        private readonly IConvertRsaToJsonService _convertRsaToJson;
-//        private readonly DecryptRequest _decryptRequest;
-//        public RSAToJsonWorker(IConvertRsaToJsonService convertRsaToJson, IOptions<DecryptRequest> decryptRequest)
+//        private readonly DecryptRequestDTO _decryptRequest;
+//        public RSAToJsonWorker(IConvertRsaToJsonService convertRsaToJson, IOptions<DecryptRequestDTO> decryptRequest)
 //        {
 //            _convertRsaToJson = convertRsaToJson;
 //            _decryptRequest = decryptRequest.Value;

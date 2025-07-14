@@ -17,7 +17,7 @@ namespace MicroService_Template.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterUser registrationdto)
+        public async Task<IActionResult> Register([FromBody] RegisterUserDTO registrationdto)
         {
             var success = await _userService.RegisterAsync(registrationdto);
             if (!success)

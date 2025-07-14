@@ -9,8 +9,8 @@
 //    {
 
 //        private readonly IConvertJsonToDbService _convertJsonToDbService;
-//        private readonly JsonToDB _jsonToDB;
-//        public JsonToDbWorker(IConvertJsonToDbService convertJsonToDbService, IOptions<JsonToDB> jsontodb)
+//        private readonly JsonToDbDTO _jsonToDB;
+//        public JsonToDbWorker(IConvertJsonToDbService convertJsonToDbService, IOptions<JsonToDbDTO> jsontodb)
 //        {
 //            _convertJsonToDbService = convertJsonToDbService;
 //            _jsonToDB = jsontodb.Value;

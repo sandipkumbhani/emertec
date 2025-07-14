@@ -20,12 +20,24 @@ build_property._RazorSourceGeneratorDebug =
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
+[D:/Broadsy/Projects/Emertac/EmertacUI/Views/Emertac/CreateUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1lcnRhY1xDcmVhdGVVc2VyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Broadsy/Projects/Emertac/EmertacUI/Views/Emertac/LoginUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1lcnRhY1xMb2dpblVzZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Broadsy/Projects/Emertac/EmertacUI/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Broadsy/Projects/Emertac/EmertacUI/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Broadsy/Projects/Emertac/EmertacUI/Views/Registration/Registration.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVnaXN0cmF0aW9uXFJlZ2lzdHJhdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Broadsy/Projects/Emertac/EmertacUI/Views/Shared/Error.cshtml]

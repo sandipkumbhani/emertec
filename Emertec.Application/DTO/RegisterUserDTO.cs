@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MicroService_Template.Application.DTO
 {
-    public class RegisterUser
+    public class RegisterUserDTO
     {
         public string? Username { get; set; }
         public string? Email { get; set; }
