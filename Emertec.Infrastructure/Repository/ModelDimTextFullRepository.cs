@@ -1,4 +1,4 @@
-﻿using MicroService_Template.Application.Extension.Interface;
+﻿using MicroService_Template.Domain.Extension.Interface;
 using MicroService_Template.Domain.Model;
 using Microsoft.EntityFrameworkCore;
 

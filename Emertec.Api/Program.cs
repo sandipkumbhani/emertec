@@ -1,17 +1,18 @@
 ﻿using Emertec.Application.Extension;
 using Emertec.Infrastructure.Extension;
-using MicroService_Template.Application.DTO;
 using MicroService_Template.Application.Extension.Interface;
 using MicroService_Template.Application.Services;
+using MicroService_Template.Domain.DTO;
+using MicroService_Template.Domain.Extension.Interface;
 using MicroService_Template.Domain.Interface;
-using MicroService_Template.Domain.Model;
+using MicroService_Template.Domain.Services;
 using MicroService_Template.Infrastructure.Repository;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Quartz;
 using System.Text;
-using Microsoft.OpenApi.Models;
 //using MicroService_Template.Job;
 {
 
@@ -61,14 +62,14 @@ using Microsoft.OpenApi.Models;
     builder.Services.AddScoped<IModelDimAgentRepository, ModelDimAgentRepository>();
     builder.Services.AddScoped<IModelDimTextSentenceRepository, IModelDimTextWordRepository>();
     builder.Services.AddScoped<IModelDimTextWordRepositorycs, ModelDimTextWordRepositorycs>();
-    builder.Services.AddScoped<IUserRepository, UserRepository>();
-
+    builder.Services.AddScoped<IModelUserLoginRepository, ModelUserLoginRepository>();
+    builder.Services.AddScoped<IModelCreateUserRepository, ModelCreateUserRepository>();
     //SERVICE INJECTION 
     builder.Services.AddScoped<IAudioFileService, AudioFileService>();
     builder.Services.AddScoped<IConvertRsaToJsonService, ConvertRsaToJsonService>();
     builder.Services.AddScoped<ICryptoService, CryptoService>();
     builder.Services.AddScoped<IConvertJsonToDbService, ConvertJsonToDbService>();
-    builder.Services.AddScoped<IUserRegistrationService, UserRegistrationService>();
+    builder.Services.AddScoped<IModelCreateUserService, ModelCreateUserService>();
     builder.Services.AddScoped<IUserLoginService, UserLoginService>();
 
 

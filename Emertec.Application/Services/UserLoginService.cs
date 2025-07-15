@@ -1,5 +1,6 @@
-﻿using MicroService_Template.Application.DTO;
-using MicroService_Template.Application.Extension.Interface;
+﻿using MicroService_Template.Domain.DTO;
+using MicroService_Template.Domain.Extension.Interface;
+using MicroService_Template.Domain.Interface;
 using MicroService_Template.Domain.Model;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Configuration;
@@ -13,17 +14,17 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MicroService_Template.Application.Services
+namespace MicroService_Template.Domain.Services
 {
     public class UserLoginService : IUserLoginService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IModelUserLoginRepository _userRepository;
         private readonly IConfiguration _configuration;
         private readonly string _JwtKey;
         private readonly string _JwtIssuer;
         private readonly string _JwtAudience;
         private readonly int _JwtExpiry;
-        public UserLoginService(IUserRepository userRepository, IConfiguration configuration)
+        public UserLoginService(IModelUserLoginRepository userRepository, IConfiguration configuration)
         {
             _userRepository = userRepository;
             _configuration = configuration;
@@ -33,25 +34,60 @@ namespace MicroService_Template.Application.Services
             _JwtExpiry = int.Parse(_configuration["Jwt:ExpiryMinutes"] ?? "60");
         }
 
-        public async Task<string> LoginAsync(LoginUserDTO dto)
+        public async Task<LoginUserDTO?> LoginAsync(string email, string password)
         {
-            var user = await _userRepository.GetByEmailAsync(dto.Email);
-            if (user == null || string.IsNullOrEmpty(user.Salt)) return null;
+            var user = await _userRepository.GetByEmailAsync(email);
+            if (user == null || string.IsNullOrEmpty(user.PasswordSalt))
+                return null;
 
-            var hashedInputPassword = HashPassword(dto.Password, user.Salt);
-            if (user.PasswordHash != hashedInputPassword) return null;
+            var hashedPassword = HashPassword(password, user.PasswordSalt);
 
-            return GenerateJWTToken(user);
+            if (user.Password != hashedPassword)
+                return null;
+
+            var token = GenerateJWTToken(user); 
+
+            return new LoginUserDTO
+            {
+
+                UserId = user.UserId,
+                Name = user.Name,
+                Password=hashedPassword,
+                EmailId = user.EmailId,
+                Token = token 
+            };
+        }
+        public async Task<List<UserDTO>> GetAllUsersAsync()
+        {
+            var users = await _userRepository.GetAllUsersAsync();
+
+            return users.Select(user => new UserDTO
+            {
+                UserId = user.UserId,
+                Name = user.Name,
+                EmailId = user.EmailId,
+                UserRoleId = user.UserRoleId,
+                IsActive = user.IsActive
+            }).ToList();
+        }
+
+
+        private string HashPassword(string password, string salt)
+        {
+            using var sha256 = SHA256.Create();
+            var bytes = Encoding.UTF8.GetBytes(password + salt);
+            return Convert.ToBase64String(sha256.ComputeHash(bytes));
         }
 
 
 
-        private string GenerateJWTToken(ModelUserLogin users)
+
+        private string GenerateJWTToken(ModelUsers modelUsers)
         {
             var claims = new[]
             {
-        new Claim(JwtRegisteredClaimNames.Sub, users.Id.ToString()),
-        new Claim(JwtRegisteredClaimNames.Email, users.Email ?? string.Empty),
+        new Claim(JwtRegisteredClaimNames.Sub, modelUsers.UserId.ToString()),
+        new Claim(JwtRegisteredClaimNames.Email, modelUsers.EmailId ?? string.Empty),
         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
     };
 
@@ -69,18 +105,9 @@ namespace MicroService_Template.Application.Services
         }
 
 
-        private string HashPassword(string password, string saltBase64)
-        {
-            byte[] salt = Convert.FromBase64String(saltBase64);
-
-            return Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: password,
-                salt: salt,
-                prf: KeyDerivationPrf.HMACSHA256,
-                iterationCount: 10000,
-                numBytesRequested: 256 / 8));
-        }
-
 
     }
+
 }
+    
+

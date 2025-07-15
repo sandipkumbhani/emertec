@@ -1,7 +1,7 @@
 ﻿using Azure.Core;
-using MicroService_Template.Application.DTO;
-using MicroService_Template.Application.Extension.Interface;
-using MicroService_Template.Application.Services;
+using MicroService_Template.Domain.DTO;
+using MicroService_Template.Domain.Extension.Interface;
+using MicroService_Template.Domain.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -72,19 +72,19 @@ namespace MicroService_Template.Controllers
             var result = _cryptoService.GenerateRsaKeys(outputFolder);
             return Ok(result);
         }
-        //[HttpPost("process-json-files")]
-        //public async Task<IActionResult> GetAllJson()
-        //{
-        //    var jsonToDb = new JsonToDB
-        //    {
-        //        BasePath = _jsontodb.BasePath
-        //    };
+        [HttpPost("process-json-files")]
+        public async Task<IActionResult> GetAllJson()
+        {
+            var jsonToDb = new JsonToDbDTO
+            {
+                BasePath = _jsontodb.BasePath
+            };
 
-        //    var updatedRows = await _convertJsonToDb.CheckGuidFromJsonAsync(jsonToDb);
+            var updatedRows = await _convertJsonToDb.SaveJsonToDB(jsonToDb);
 
-        //    return Ok("All Data Save in Database");
+            return Ok("All Data Save in Database");
 
-        //}
+        }
 
 
     }

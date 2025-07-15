@@ -1,10 +1,10 @@
-﻿using MicroService_Template.Application.DTO;
+﻿using MicroService_Template.Domain.DTO;
 using MicroService_Template.Domain.Model;
 
-namespace MicroService_Template.Application.Extension.Interface
+namespace MicroService_Template.Domain.Extension.Interface
 {
     public interface IConvertJsonToDbService
     {
-        Task<List<ModelDimJson>> CheckGuidFromJsonAsync(JsonToDbDTO jsonToDb);
+        Task<List<ModelDimJson>> SaveJsonToDB(JsonToDbDTO jsonToDb);
     }
 }

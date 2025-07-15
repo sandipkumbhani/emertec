@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MicroService_Template.Application.DTO
+namespace MicroService_Template.Domain.DTO
 {
-    public class KeyGenerationResponseDTO
+    public class AudioPathsDTO
     {
-        public string PrivateKeyPath { get; set; }
+        public string BasePath { get; set; }
+
         public string PublicKeyPath { get; set; }
-        public string Message { get; set; }
+
     }
 }
