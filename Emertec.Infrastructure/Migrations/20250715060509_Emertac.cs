@@ -63,16 +63,14 @@ namespace MicroService_Template.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CampaignId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FilePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DapperGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    LastSyncDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsExecuted = table.Column<bool>(type: "bit", nullable: false),
-                    IsRepeat = table.Column<bool>(type: "bit", nullable: false),
-                    CallLength = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    TelephoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    InsertBy = table.Column<long>(type: "bigint", nullable: false),
+                    InsertDate = table.Column<DateTime>(type: "smalldatetime", nullable: false),
+                    UpdateBy = table.Column<long>(type: "bigint", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "smalldatetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -174,18 +172,83 @@ namespace MicroService_Template.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "modelUsers",
+                name: "modelMenuMasters",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Salt = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    MenuId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Icon = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    IsDefault = table.Column<bool>(type: "bit", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    InsertBy = table.Column<long>(type: "bigint", nullable: false),
+                    InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<long>(type: "bigint", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_modelUsers", x => x.Id);
+                    table.PrimaryKey("PK_modelMenuMasters", x => x.MenuId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "modelUserMenuMappings",
+                columns: table => new
+                {
+                    UserMenuMappingId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    MenuId = table.Column<long>(type: "bigint", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    InsertBy = table.Column<long>(type: "bigint", nullable: false),
+                    InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<long>(type: "bigint", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_modelUserMenuMappings", x => x.UserMenuMappingId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "modelUserRoles",
+                columns: table => new
+                {
+                    UserRoleId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    InsertBy = table.Column<long>(type: "bigint", nullable: false),
+                    InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<long>(type: "bigint", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_modelUserRoles", x => x.UserRoleId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "modelUsers",
+                columns: table => new
+                {
+                    UserId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    EmailId = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    UserRoleId = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    InsertBy = table.Column<long>(type: "bigint", nullable: false),
+                    InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<long>(type: "bigint", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PasswordSalt = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_modelUsers", x => x.UserId);
                 });
         }
 
@@ -218,6 +281,15 @@ namespace MicroService_Template.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "modelDimWord");
+
+            migrationBuilder.DropTable(
+                name: "modelMenuMasters");
+
+            migrationBuilder.DropTable(
+                name: "modelUserMenuMappings");
+
+            migrationBuilder.DropTable(
+                name: "modelUserRoles");
 
             migrationBuilder.DropTable(
                 name: "modelUsers");

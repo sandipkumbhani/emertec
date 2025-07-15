@@ -1,5 +1,5 @@
-﻿using MicroService_Template.Application.DTO;
-using MicroService_Template.Application.Extension.Interface;
+﻿using MicroService_Template.Domain.DTO;
+using MicroService_Template.Domain.Extension.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MicroService_Template.Application.Services
+namespace MicroService_Template.Domain.Services
 {
     public class CryptoService : ICryptoService
     {

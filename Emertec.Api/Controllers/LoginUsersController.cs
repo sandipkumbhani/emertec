@@ -1,5 +1,5 @@
-﻿using MicroService_Template.Application.DTO;
-using MicroService_Template.Application.Extension.Interface;
+﻿using MicroService_Template.Domain.DTO;
+using MicroService_Template.Domain.Extension.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MicroService_Template.Controllers
@@ -13,14 +13,23 @@ namespace MicroService_Template.Controllers
         {
             _userLoginService = userLoginService;
         }
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginUserDTO logindto)
+        [HttpGet("getalluser")]
+        public async Task<IActionResult> GetAllUsers()
         {
-            var token = await _userLoginService.LoginAsync(logindto);
-            if (string.IsNullOrEmpty(token))
-                return Unauthorized("Invalid Login.");
-
-            return Ok(new { token });
+            var users = await _userLoginService.GetAllUsersAsync();
+            return Ok(users);
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] UserLoginRequestDTO userLoginRequestDto)
+        {
+            var result = await _userLoginService.LoginAsync(userLoginRequestDto.EmailId, userLoginRequestDto.Password);
+
+            if (result == null)
+                return Unauthorized("Invalid email or password.");
+
+            return Ok(result); 
+        }
+
     }
 }

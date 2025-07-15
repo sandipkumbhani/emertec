@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace MicroService_Template.Domain.DTO
 {
-    public class AudioPathsDTO
+    public class UserLoginRequestDTO
     {
-        public string BasePath { get; set; }
-
-        public string PublicKeyPath { get; set; }
-
-    }
+        public string EmailId { get; set; }
+        public string Password { get; set; }
+    
+}
 }

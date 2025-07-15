@@ -1,14 +1,14 @@
-﻿using MicroService_Template.Application.DTO;
+﻿using MicroService_Template.Domain.DTO;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using MicroService_Template.Domain.Model;
-using MicroService_Template.Application.Extension.Interface;
+using MicroService_Template.Domain.Extension.Interface;
 using MicroService_Template.Domain.Interface;
 
-namespace MicroService_Template.Application.Services
+namespace MicroService_Template.Domain.Services
 {
 
     public class ConvertRsaToJsonService : IConvertRsaToJsonService
@@ -267,6 +267,7 @@ namespace MicroService_Template.Application.Services
             transcript.CampaignName = metadata.CampaignName;
             transcript.CampaignDate = metadata.CampaignDate;
             transcript.CallNumber = metadata.CallNumber;
+            transcript.TelephoneNumber = metadata.TelephoneNumber;  
             transcript.CallDateTime = metadata.CallDateTime;
             transcript.TeamName = metadata.TeamName;
             transcript.CallRespondentFullPath = metadata.CallRespondentFullPath;
@@ -282,7 +283,11 @@ namespace MicroService_Template.Application.Services
                             word.word = word.word?.Trim();
                         }
                     }
+
                 }
+                var fullText = string.Join(" ", transcript.Segments.Select(s => s.text?.Trim()));
+                transcript.FullText = fullText;
+
             }
             string updatedJson = JsonConvert.SerializeObject(transcript, Formatting.Indented);
             File.WriteAllText(jsonPath, updatedJson);
@@ -326,14 +331,25 @@ namespace MicroService_Template.Application.Services
             {
                 result.CampaignDate = DateTime.ParseExact(dtRaw.Substring(0, 8), "ddMMyyyy", null).ToString("yyyy-MM-dd");
             }
+            string tnRaw = parts.FirstOrDefault(p => p.StartsWith("TN"));
+            if (!string.IsNullOrEmpty(tnRaw))
+            {
+                result.TelephoneNumber = tnRaw.Substring(2);
+            }
+
+            string cnRaw = parts.FirstOrDefault(p => p.StartsWith("CI"));
+            if (!string.IsNullOrEmpty(ciRaw))
+            {
+                result.CallNumber = ciRaw.Substring(2); // "CI" prefix is 2 characters
+            }
 
             string utcstRaw = parts.FirstOrDefault(p => p.StartsWith("UTCST"))?.Substring(5);
             if (!string.IsNullOrEmpty(utcstRaw) && utcstRaw.Length >= 14)
             {
-                result.CallNumber = utcstRaw.Substring(0, 14);
-                result.CallDateTime = DateTime.ParseExact(result.CallNumber, "yyyyMMddHHmmss", null)
+                result.CallDateTime = DateTime.ParseExact(utcstRaw.Substring(0, 14), "yyyyMMddHHmmss", null)
                     .ToString("yyyy-MM-ddTHH:mm:ss");
             }
+
 
             return result;
         }

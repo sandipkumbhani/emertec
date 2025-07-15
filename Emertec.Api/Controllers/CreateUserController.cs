@@ -1,5 +1,5 @@
-﻿using MicroService_Template.Application.DTO;
-using MicroService_Template.Application.Extension.Interface;
+﻿using MicroService_Template.Application.Extension.Interface;
+using MicroService_Template.Domain.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MicroService_Template.Controllers
@@ -8,23 +8,23 @@ namespace MicroService_Template.Controllers
     [ApiController]
     public class CreateUserController : ControllerBase
     {
-        private readonly IUserRegistrationService _userService;
-      
-        public CreateUserController(IUserRegistrationService userService, IUserLoginService loginService)
+        private readonly IModelCreateUserService _modelCreateUserService;
+
+        public CreateUserController(IModelCreateUserService modelCreateUserService)
         {
-            _userService = userService;
-          
+            _modelCreateUserService = modelCreateUserService;
+
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterUserDTO registrationdto)
+        [HttpPost("create")]
+        public async Task<IActionResult> Create([FromBody] CreateUserDTO createUserDTO)
         {
-            var success = await _userService.RegisterAsync(registrationdto);
-            if (!success)
-                return BadRequest("User already exists.");
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            return Ok("User registered successfully.");
+            var user = await _modelCreateUserService.CreateUserAsync(createUserDTO);
+            return Ok(user);
         }
-       
+
     }
 }

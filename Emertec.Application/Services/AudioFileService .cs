@@ -1,10 +1,10 @@
-﻿using MicroService_Template.Application.DTO;
-using MicroService_Template.Application.Extension.Interface;
+﻿using MicroService_Template.Domain.DTO;
+using MicroService_Template.Domain.Extension.Interface;
 using Microsoft.Extensions.Options;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
-namespace MicroService_Template.Application.Services
+namespace MicroService_Template.Domain.Services
 {
     public class AudioFileService : IAudioFileService
     {

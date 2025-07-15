@@ -17,7 +17,11 @@ public class AppDbContext : DbContext
     public DbSet<ModelDimAgent> modelDimAgent { get; set; }
     public DbSet<ModelDimTeam> modelDimTeam { get; set; }
     public DbSet<ModelDimRespondent> modelDimRespondent { get; set; }
-    public DbSet<ModelUserLogin> modelUsers { get; set; }
+    //public DbSet<ModelUserLogin> modelUserLogins { get; set; }
+    public DbSet<ModelUsers> modelUsers { get; set; }
 
+    public DbSet<ModelUserRole> modelUserRoles { get; set; }
+    public DbSet<ModelUserMenuMapping> modelUserMenuMappings { get; set; }
+    public DbSet<ModelMenuMaster> modelMenuMasters { get; set; }
 
 }

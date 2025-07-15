@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MicroService_Template.Application.DTO
+namespace MicroService_Template.Domain.DTO
 {
     public class MP3SettingsDTO
     {

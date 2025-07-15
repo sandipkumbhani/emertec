@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 
 namespace MicroService_Template.Domain.DTO
 {
-    public class RegisterUserDTO
+    public class CreateUserDTO
     {
-        public string? Username { get; set; }
-        public string? Email { get; set; }
-        public string? FullName { get; set; }
+
+        public long UserId { get; set; }
+        public string? Name { get; set; }
         public string? Password { get; set; }
+        public string? EmailId { get; set; }
+        public string Token { get; set; } 
+
+
     }
 }

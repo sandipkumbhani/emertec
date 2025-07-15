@@ -1,4 +1,6 @@
-﻿using MicroService_Template.Application.DTO;
+﻿
+using MicroService_Template.Domain.DTO;
+using MicroService_Template.Domain.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace MicroService_Template.Application.Extension.Interface
 {
-    public interface IUserRegistrationService
+    public interface IModelCreateUserService
     {
-        Task<bool> RegisterAsync(RegisterUserDTO dto);
+        Task<ModelUsers> CreateUserAsync(CreateUserDTO userDto);
     }
 }
