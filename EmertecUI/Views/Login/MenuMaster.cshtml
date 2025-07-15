@@ -1,0 +1,71 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/css/stylesheet.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/css/bootstrap.rtl.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/css/bootstrap.rtl.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/wwwroot/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/wwwroot/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="StyleSheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <title>AddUser</title>
+</head>
+<body>
+    <div class="app-content px-lg-3">
+        <div class="app-container container-fluid">
+            <div class="card">
+                <div class="card-header border-0 cursor-pointer">
+                    <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">Menu Master</h3>
+                    </div>
+                </div>
+                <form class="form" id="userForm" method="post" action="@Url.Action("MenuMaster", "Login")">
+                    <div class="card-body border-top p-9">
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="mb-3">
+                                    <label for="menuname" class="form-label col-form-label required fw-semibold fs-6">Menu Name</label>
+                                    <input type="text" class="form-control userinput" id="menuname" name="menuname" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label col-form-label required fw-semibold fs-6">Description</label>
+                                    <input type="email" class="form-control userinput" id="description" name="description" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="icon" class="form-label col-form-label required fw-semibold fs-6">Icon</label>
+                                    <input type="tel" class="form-control userinput" id="icon" name="icon" required>
+                                </div>
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" id="isdefault" name="isdefault" />
+                                    <label class="form-check-label fw-semibold fs-6" for="isdefault">IsDefault</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        @if (ViewBag.msg != null)
+                        {
+                            <div class="usermsg">
+                                @ViewBag.msg
+                            </div>
+                        }
+                    </div>
+                    <div class="card-footer d-flex justify-content-srtat py-6 px-9">
+                        <button type="submit" class="btn btn-primary me-2" style="width:95px;height:38px;">Save</button>
+                        <button class="btn btn-primary me-2" style="width:95px;height:38px;">View</button>
+                        <button class="btn btn-primary me-2" style="width:95px;height:38px;">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -5,6 +5,10 @@
       {
         "Path": "Emertec.Api\\Emertec.Api.csproj",
         "Action": "Start"
+      },
+      {
+        "Path": "EmertecUI\\EmertecUI.csproj",
+        "Action": "Start"
       }
     ]
   }
