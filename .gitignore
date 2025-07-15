@@ -13,3 +13,7 @@
 /Emertec.Domain/obj
 /Emertec.Infrastructure/bin/Debug/net8.0
 /Emertec.Infrastructure/obj
+/Emertac.UI.Application/obj
+/Emertac.UI.Domain/obj
+/Emertac.UI.Infrastructure/obj
+/EmertacUI/obj
