@@ -6,27 +6,23 @@ namespace MicroService_Template.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoginUsersController : ControllerBase
+    public class LoginController : ControllerBase
     {
         private readonly IUserLoginService _userLoginService;
-        public LoginUsersController(IUserLoginService userLoginService)
+        public LoginController(IUserLoginService userLoginService)
         {
             _userLoginService = userLoginService;
         }
-        [HttpGet("getalluser")]
-        public async Task<IActionResult> GetAllUsers()
-        {
-            var users = await _userLoginService.GetAllUsersAsync();
-            return Ok(users);
-        }
-
+       
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginRequestDTO userLoginRequestDto)
         {
             var result = await _userLoginService.LoginAsync(userLoginRequestDto.EmailId, userLoginRequestDto.Password);
 
             if (result == null)
+            {
                 return Unauthorized("Invalid email or password.");
+            }
 
             return Ok(result); 
         }

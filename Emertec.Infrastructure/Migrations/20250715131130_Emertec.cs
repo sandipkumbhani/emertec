@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MicroService_Template.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Emertac : Migration
+    public partial class Emertec : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -193,25 +193,6 @@ namespace MicroService_Template.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "modelUserMenuMappings",
-                columns: table => new
-                {
-                    UserMenuMappingId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    MenuId = table.Column<long>(type: "bigint", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    InsertBy = table.Column<long>(type: "bigint", nullable: false),
-                    InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateBy = table.Column<long>(type: "bigint", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_modelUserMenuMappings", x => x.UserMenuMappingId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "modelUserRoles",
                 columns: table => new
                 {
@@ -249,7 +230,59 @@ namespace MicroService_Template.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_modelUsers", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_modelUsers_modelUserRoles_UserRoleId",
+                        column: x => x.UserRoleId,
+                        principalTable: "modelUserRoles",
+                        principalColumn: "UserRoleId",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "modelUserMenuMappings",
+                columns: table => new
+                {
+                    UserMenuMappingId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    MenuId = table.Column<long>(type: "bigint", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    InsertBy = table.Column<long>(type: "bigint", nullable: false),
+                    InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<long>(type: "bigint", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_modelUserMenuMappings", x => x.UserMenuMappingId);
+                    table.ForeignKey(
+                        name: "FK_modelUserMenuMappings_modelMenuMasters_MenuId",
+                        column: x => x.MenuId,
+                        principalTable: "modelMenuMasters",
+                        principalColumn: "MenuId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_modelUserMenuMappings_modelUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "modelUsers",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_modelUserMenuMappings_MenuId",
+                table: "modelUserMenuMappings",
+                column: "MenuId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_modelUserMenuMappings_UserId",
+                table: "modelUserMenuMappings",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_modelUsers_UserRoleId",
+                table: "modelUsers",
+                column: "UserRoleId");
         }
 
         /// <inheritdoc />
@@ -283,16 +316,16 @@ namespace MicroService_Template.Infrastructure.Migrations
                 name: "modelDimWord");
 
             migrationBuilder.DropTable(
-                name: "modelMenuMasters");
-
-            migrationBuilder.DropTable(
                 name: "modelUserMenuMappings");
 
             migrationBuilder.DropTable(
-                name: "modelUserRoles");
+                name: "modelMenuMasters");
 
             migrationBuilder.DropTable(
                 name: "modelUsers");
+
+            migrationBuilder.DropTable(
+                name: "modelUserRoles");
         }
     }
 }

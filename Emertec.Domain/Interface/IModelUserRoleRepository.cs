@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace MicroService_Template.Domain.Interface
 {
-    public interface IModelUserLoginRepository
+    public interface IModelUserRoleRepository
     {
-        Task<ModelUsers?> GetByEmailAsync(string email);
-        Task<ModelUserRole?> GetUserWithRoleAsync(int userRoleId);
-
-
+        Task<ModelUserRole> AddUserRoleAsync(ModelUserRole modelUserRole);
+        Task<List<ModelUserRole>> GetAllUsersRole();
     }
 }

@@ -64,13 +64,21 @@ using System.Text;
     builder.Services.AddScoped<IModelDimTextWordRepositorycs, ModelDimTextWordRepositorycs>();
     builder.Services.AddScoped<IModelUserLoginRepository, ModelUserLoginRepository>();
     builder.Services.AddScoped<IModelCreateUserRepository, ModelCreateUserRepository>();
+    builder.Services.AddScoped<IModelMenuMasterRepository, ModelMenuMasterRepository>();
+    builder.Services.AddScoped<IModelUserMenuMappingRepository, ModelUserMenuMappingRepository>();
+    builder.Services.AddScoped<IModelUserRoleRepository, ModelUserRoleRepository>();
+
+
     //SERVICE INJECTION 
     builder.Services.AddScoped<IAudioFileService, AudioFileService>();
     builder.Services.AddScoped<IConvertRsaToJsonService, ConvertRsaToJsonService>();
     builder.Services.AddScoped<ICryptoService, CryptoService>();
     builder.Services.AddScoped<IConvertJsonToDbService, ConvertJsonToDbService>();
     builder.Services.AddScoped<IModelCreateUserService, ModelCreateUserService>();
+    builder.Services.AddScoped<IModelMenuMasterService, ModelMenuMasterService>();
     builder.Services.AddScoped<IUserLoginService, UserLoginService>();
+    builder.Services.AddScoped<IModelUserMenuMappingService,ModelUserMenuMappingService>();
+    builder.Services.AddScoped<IModelUserRoleService, ModelUserRoleService>();
 
 
     builder.Services.AddControllers();

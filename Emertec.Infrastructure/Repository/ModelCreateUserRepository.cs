@@ -23,5 +23,13 @@ namespace MicroService_Template.Infrastructure.Repository
             await _context.SaveChangesAsync();
             return user;
         }
+        public async Task<bool> EmailExistsAsync(string email)
+        {
+            return await _context.modelUsers.AnyAsync(u => u.EmailId == email);
+        }
+        public async Task<List<ModelUsers>> GetAllUsersAsync()
+        {
+            return await _context.modelUsers.Where(u => u.IsActive).ToListAsync();
+        }
     }
 }

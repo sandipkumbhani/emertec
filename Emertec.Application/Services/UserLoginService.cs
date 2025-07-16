@@ -18,7 +18,7 @@ namespace MicroService_Template.Domain.Services
 {
     public class UserLoginService : IUserLoginService
     {
-        private readonly IModelUserLoginRepository _userRepository;
+        private readonly IModelUserLoginRepository _userLoginRepository;
         private readonly IConfiguration _configuration;
         private readonly string _JwtKey;
         private readonly string _JwtIssuer;
@@ -26,7 +26,7 @@ namespace MicroService_Template.Domain.Services
         private readonly int _JwtExpiry;
         public UserLoginService(IModelUserLoginRepository userRepository, IConfiguration configuration)
         {
-            _userRepository = userRepository;
+            _userLoginRepository = userRepository;
             _configuration = configuration;
             _JwtKey = _configuration["Jwt:Key"];
             _JwtIssuer = _configuration["Jwt:Issuer"];
@@ -36,7 +36,8 @@ namespace MicroService_Template.Domain.Services
 
         public async Task<LoginUserDTO?> LoginAsync(string email, string password)
         {
-            var user = await _userRepository.GetByEmailAsync(email);
+            var user = await _userLoginRepository.GetByEmailAsync(email);
+
             if (user == null || string.IsNullOrEmpty(user.PasswordSalt))
                 return null;
 
@@ -45,31 +46,28 @@ namespace MicroService_Template.Domain.Services
             if (user.Password != hashedPassword)
                 return null;
 
-            var token = GenerateJWTToken(user); 
+            var role = await _userLoginRepository.GetUserWithRoleAsync(user.UserRoleId);
+
+            var token = GenerateJWTToken(user);
 
             return new LoginUserDTO
             {
-
                 UserId = user.UserId,
                 Name = user.Name,
-                Password=hashedPassword,
                 EmailId = user.EmailId,
-                Token = token 
+                Password = hashedPassword,
+                Token = token,
+                UserRoleId = user.UserRoleId,
+                UserRoleName = role.Name,
+                IsActive = user.IsActive,
+                UpdateBy = user.UpdateBy,
+                UpdateDate = user.UpdateDate,
+                InsertBy = user.InsertBy,
+                InsertDate = user.InsertDate
             };
         }
-        public async Task<List<UserDTO>> GetAllUsersAsync()
-        {
-            var users = await _userRepository.GetAllUsersAsync();
 
-            return users.Select(user => new UserDTO
-            {
-                UserId = user.UserId,
-                Name = user.Name,
-                EmailId = user.EmailId,
-                UserRoleId = user.UserRoleId,
-                IsActive = user.IsActive
-            }).ToList();
-        }
+
 
 
         private string HashPassword(string password, string salt)

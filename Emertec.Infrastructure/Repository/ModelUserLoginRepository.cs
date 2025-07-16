@@ -21,10 +21,12 @@ namespace MicroService_Template.Infrastructure.Repository
         {
             return await _context.modelUsers.FirstOrDefaultAsync(u => u.EmailId == email && u.IsActive);
         }
-        public async Task<List<ModelUsers>> GetAllUsersAsync()
+        public async Task<ModelUserRole?> GetUserWithRoleAsync(int userRoleId)
         {
-            return await _context.modelUsers.Where(u => u.IsActive).ToListAsync();
+            return await _context.modelUserRoles
+                .FirstOrDefaultAsync(r => r.UserRoleId == userRoleId);
         }
+
 
     }
 

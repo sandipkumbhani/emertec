@@ -28,8 +28,5 @@ namespace MicroService_Template.Domain.Model
         public long UpdateBy { get; set; }
 
         public DateTime UpdateDate { get; set; }
-
-
-
     }
 }
