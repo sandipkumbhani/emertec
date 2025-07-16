@@ -4,6 +4,7 @@ using MicroService_Template.Domain.Interface;
 using MicroService_Template.Domain.Model;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace MicroService_Template.Application.Services
         }
         public async Task<ModelUserMenuMapping> CreateMenuMasterMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
         {
-            var username= await _modelUserMenuMappingRepository.GetUserWithRoleAsync(modelUserMenuMapping.UserId);
+            
 
             var menuMasterMapping = new ModelUserMenuMapping
             {
@@ -47,6 +48,10 @@ namespace MicroService_Template.Application.Services
                 InsertDate = user.InsertDate,
                 UpdateBy = user.UpdateBy,
                 UpdateDate = user.UpdateDate,
+                User = user.User,
+                Menu = user.Menu
+
+
 
             }).ToList();
         }

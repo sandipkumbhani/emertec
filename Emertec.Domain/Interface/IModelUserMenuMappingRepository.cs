@@ -11,7 +11,7 @@ namespace MicroService_Template.Domain.Interface
     {
         Task<ModelUserMenuMapping> AddMenuMasterMappingAsync(ModelUserMenuMapping modelUserMenuMapping);
         Task<List<ModelUserMenuMapping>> GetAllMenuMapping();
-        Task<ModelUsers?> GetUserWithRoleAsync(long userId);
+        //Task<ModelUserMenuMapping?> GetMappingWithUserAndMenuAsync(ModelUserMenuMapping modelUserMenuMapping);
 
 
     }

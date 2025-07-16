@@ -6,8 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MicroService_Template.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class MenuMasterMappingController : Controller
     {
+
         private readonly IModelUserMenuMappingService _modelUserMenuMappingService;
         public MenuMasterMappingController(IModelUserMenuMappingService modelUserMenuMappingService)
         {
