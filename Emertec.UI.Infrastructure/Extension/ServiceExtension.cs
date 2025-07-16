@@ -9,6 +9,7 @@ namespace Emertec.UI.Infrastructure.Extension
         public static IServiceCollection AddEfcoreInfrastrucureService(this IServiceCollection services)
         {
             services.AddScoped<ILoginRepository, LoginRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             return services;
         }
     }

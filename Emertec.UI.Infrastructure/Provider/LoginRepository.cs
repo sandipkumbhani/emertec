@@ -23,26 +23,47 @@ namespace Emertec.UI.Infrastructure.Provider
         {
             try
             {
-                var baseUrl = apiCredential.url + "Login";
+                var baseUrl = apiCredential.url + "LoginUsers/login";
 
                 var user = JsonConvert.SerializeObject(userModel);
                 var requestContent = new StringContent(user, Encoding.UTF8, "application/json");
                 var response = await _httpClient.PostAsync(baseUrl, requestContent);
                 var responseData = await response.Content.ReadAsStringAsync();
-                var responseModel = JsonConvert.DeserializeObject<CommanResponseDto>(responseData);
-                if (responseModel != null)
+
+                if (!response.IsSuccessStatusCode)
                 {
-                    var responseToken = JsonConvert.DeserializeObject<ResponseToken>(responseModel?.Data.ToString()!);
-                    return responseToken.Token;
+                    var errorResponse = JsonConvert.DeserializeObject<CommanResponseDto>(responseData);
+
+                    var message = errorResponse?.ErrorMessage ?? errorResponse?.Message ?? "Login failed.";
+                    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        throw new UnauthorizedAccessException(message);
+                    }
+                    else
+                    {
+                        throw new Exception($"Login error: {message}");
+                    }
                 }
-                return string.Empty;
+                var responseModel = JsonConvert.DeserializeObject<CommanResponseDto>(responseData);
+
+                if (responseModel?.Data == null)
+                {
+                    Console.WriteLine("Login failed: No data received.");
+                }
+                var jsonData = JsonConvert.SerializeObject(responseModel?.Data);
+                var responseToken = JsonConvert.DeserializeObject<ResponseToken>(jsonData);
+
+                return responseToken?.Token ?? throw new Exception("Token not found in response.");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Console.WriteLine("Unauthorized: " + ex.Message);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                Console.WriteLine("Login Error: " + ex.Message);
             }
-            return null;
+            return "Something Is Wrong !";
         }
-
     }
 }

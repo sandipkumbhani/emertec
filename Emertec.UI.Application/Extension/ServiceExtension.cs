@@ -15,6 +15,8 @@ namespace Emertec.UI.Application.Extension
         public static IServiceCollection AddApplicationService(this IServiceCollection services)
         {
             services.AddScoped<ILoginServices, LoginServices>();
+            services.AddScoped<IUserServices, UserServices>();
+            
             return services;
         }
     }

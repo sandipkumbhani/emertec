@@ -2,11 +2,6 @@
 using Emertec.UI.Application.Interface;
 using Emertec.UI.Domain.Interfaces;
 using Emertec.UI.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Emertec.UI.Application.Services
 {

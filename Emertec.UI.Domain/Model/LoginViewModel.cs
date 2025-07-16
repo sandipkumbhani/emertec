@@ -7,7 +7,7 @@ namespace Emertec.UI.Domain.Models
     {
         [Required]
         [Display(Name = "Email Address")]
-        public string? Email { get; set; }
+        public string? EmailId { get; set; }
 
         [Required]
         [Display(Name = "Password")]

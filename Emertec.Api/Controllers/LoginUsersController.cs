@@ -1,4 +1,5 @@
-﻿using MicroService_Template.Domain.DTO;
+﻿using Emertec.UI.Domain.Comman;
+using MicroService_Template.Domain.DTO;
 using MicroService_Template.Domain.Extension.Interface;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,9 +27,21 @@ namespace MicroService_Template.Controllers
             var result = await _userLoginService.LoginAsync(userLoginRequestDto.EmailId, userLoginRequestDto.Password);
 
             if (result == null)
-                return Unauthorized("Invalid email or password.");
+            {
+                return Unauthorized(new CommanResponseDto
+                {
+                    StatusCode = 401,
+                    Message = "Unauthorized",
+                    ErrorMessage = "Invalid Email or password"
+                });
+            }
 
-            return Ok(result); 
+            return Ok(new CommanResponseDto
+            {
+                StatusCode = 200,
+                Message = "Login successful",
+                Data = result
+            });
         }
 
     }

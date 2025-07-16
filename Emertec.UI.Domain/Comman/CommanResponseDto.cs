@@ -11,7 +11,7 @@ namespace Emertec.UI.Domain.Comman
     {
         public int? StatusCode { get; set; }
 
-        public object Data { get; set; }
+        public object? Data { get; set; }
 
         public string? Message { get; set; }
 

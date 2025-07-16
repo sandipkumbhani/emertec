@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Emertec.Domain\Emertec.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

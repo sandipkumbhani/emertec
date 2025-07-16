@@ -44,7 +44,7 @@
             <div class="sign-page-center">
                 <div class="sign-left">
                     <div class="inner-sign-info">
-                       @*  <div class="single-logo">
+                        @*  <div class="single-logo">
                             <img src="images/logo.svg" alt="" />
                         </div> *@
                         <div class="login-main">
@@ -72,8 +72,8 @@
                                     <h5>OR</h5>
                                 </div>
                                 <div class="item-input">
-                                    <label class="form-label" for="email">Email</label>
-                                    <input class="form-control" type="email" required="" placeholder="admin@example.com"  id="email" name="email" />
+                                    <label class="form-label" for="EmailID">Email</label>
+                                    <input class="form-control" type="email" required="" placeholder="admin@example.com" id="EmailID" name="EmailID" />
                                     <div class="invalid-feedback"><i class="ri-information-line"></i> Please put valid Email Id</div>
                                 </div>
                                 <div class="item-input">
@@ -93,6 +93,12 @@
                                 <button type="submit" class="login-btns">
                                     Log In
                                 </button>
+                                @if (ViewData["LoginMessage"] != null)
+                                {
+                                    <div class="login-message">
+                                        @ViewData["LoginMessage"]
+                                    </div>
+                                }
                             </form>
                         </div>
                     </div>

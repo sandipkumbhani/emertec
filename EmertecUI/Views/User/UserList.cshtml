@@ -1,0 +1,53 @@
+﻿@model MicroService_Template.Domain.DTO.UserDTO
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    IList<MicroService_Template.Domain.DTO.UserDTO> UserList = ViewBag.UserList;
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/css/stylesheet.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/css/bootstrap.rtl.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/css/bootstrap.rtl.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/wwwroot/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/wwwroot/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="StyleSheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Users</title>
+</head>
+<body>
+    <button class="btn btn-primary me-2" style="width:95px;height:38px;" id="btnAddUser">Add User</button>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>User Role</th>
+                <th>Active</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in UserList)
+            {
+                <tr>
+                    <td>@user.Name</td>
+                    <td>@user.EmailId</td>
+                    <td>@user.UserRoleId</td>
+                    <td>@user.IsActive</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
+<script type="text/javascript">
+    $(document).on("click", "#btnAddUser", AddUser);
+
+    function AddUser(){
+       window.location.href = "/User/AddUser";
+     };
+</script>

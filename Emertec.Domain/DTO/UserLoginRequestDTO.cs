@@ -8,8 +8,8 @@ namespace MicroService_Template.Domain.DTO
 {
     public class UserLoginRequestDTO
     {
-        public string EmailId { get; set; }
-        public string Password { get; set; }
-    
-}
+        public string? EmailId { get; set; }
+        public string? Password { get; set; }
+
+    }
 }

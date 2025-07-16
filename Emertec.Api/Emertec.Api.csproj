@@ -28,6 +28,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Emertec.Application\Emertec.Application.csproj" />
     <ProjectReference Include="..\Emertec.Infrastructure\Emertec.Infrastructure.csproj" />
+    <ProjectReference Include="..\Emertec.UI.Domain\Emertec.UI.Domain.csproj" />
   </ItemGroup>
 
 </Project>

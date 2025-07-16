@@ -23,10 +23,9 @@ namespace EmertecUI.Controllers
             applicationURL = new ApplicationURL(configuration);
         }
 
-        [HttpGet]
-        public IActionResult Login()
+        public IActionResult Index()
         {
-            return View();
+            return View("~/Views/Login/Login.cshtml");
         }
 
         [HttpPost]
@@ -48,14 +47,14 @@ namespace EmertecUI.Controllers
                     var email = jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email || c.Type == "unique_name")?.Value;
                     var claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Email,email ?? viewModel.Email)
+                        new Claim(ClaimTypes.Email,email ?? viewModel.EmailId)
                     };
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(identity);
 
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                    return RedirectToAction("AddUser");
+                    return Redirect("~/User/UserList");
                 }
                 ViewData["LoginMessage"] = "Invalid username or password..!";
                 ViewBag.appUrl = applicationURL.url;
@@ -64,12 +63,6 @@ namespace EmertecUI.Controllers
             return View();
         }
 
-        [HttpGet]
-        public IActionResult AddUser()
-        {
-            return View();
-        
-        }
         public IActionResult MenuMaster()
         {
             return View();
