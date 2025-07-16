@@ -21,18 +21,24 @@ namespace MicroService_Template.Application.Services
         {
             _modelCreateUserRepository = modelUserRepository;
         }
-        public async Task<ModelUsers> CreateUserAsync(CreateUserDTO userDto)
+        public async Task<ModelUsers> CreateUserAsync(ModelUsers modelUsers)
         {
-            // Example password salting logic (for demo only)
+            bool emailExists = await _modelCreateUserRepository.EmailExistsAsync(modelUsers.EmailId);
+            if (emailExists)
+            {
+                throw new InvalidOperationException("Email already exists.");
+            }
+
             var salt = Guid.NewGuid().ToString("N").Substring(0, 8);
-            var hashedPassword = HashPassword(userDto.Password, salt);
+            var hashedPassword = HashPassword(modelUsers.Password, salt);
 
             var newUser = new ModelUsers
             {
-                Name = userDto.Name,
-                EmailId = userDto.EmailId,
+                Name = modelUsers.Name,
+                EmailId = modelUsers.EmailId,
                 Password = hashedPassword,
                 PasswordSalt = salt,
+                UserRoleId = modelUsers.UserRoleId,
                 IsActive = true,
                 InsertBy = 1,
                 InsertDate = DateTime.Now,
@@ -41,6 +47,24 @@ namespace MicroService_Template.Application.Services
             };
 
             return await _modelCreateUserRepository.AddUserAsync(newUser);
+        }
+        public async Task<List<ModelUsers>> GetAllUsersAsync()
+        {
+            var users = await _modelCreateUserRepository.GetAllUsersAsync();
+
+            return users.Select(user => new ModelUsers
+            {
+                UserId = user.UserId,
+                Name = user.Name,
+                EmailId = user.EmailId,
+                UserRoleId = user.UserRoleId,
+                IsActive = user.IsActive,
+                InsertBy = user.InsertBy,
+                InsertDate = user.InsertDate,
+                UpdateBy = user.UpdateBy,
+                UpdateDate = user.UpdateDate,
+
+            }).ToList();
         }
 
 

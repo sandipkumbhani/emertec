@@ -9,6 +9,8 @@ namespace MicroService_Template.Domain.Interface
 {
    public interface IModelCreateUserRepository
     {
+        Task<bool> EmailExistsAsync(string email);
        Task<ModelUsers> AddUserAsync(ModelUsers user);
+       Task<List<ModelUsers>> GetAllUsersAsync();
     }
 }

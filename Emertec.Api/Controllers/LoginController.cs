@@ -7,20 +7,14 @@ namespace MicroService_Template.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoginUsersController : ControllerBase
+    public class LoginController : ControllerBase
     {
         private readonly IUserLoginService _userLoginService;
-        public LoginUsersController(IUserLoginService userLoginService)
+        public LoginController(IUserLoginService userLoginService)
         {
             _userLoginService = userLoginService;
         }
-        [HttpGet("getalluser")]
-        public async Task<IActionResult> GetAllUsers()
-        {
-            var users = await _userLoginService.GetAllUsersAsync();
-            return Ok(users);
-        }
-
+       
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginRequestDTO userLoginRequestDto)
         {
@@ -34,6 +28,7 @@ namespace MicroService_Template.Controllers
                     Message = "Unauthorized",
                     ErrorMessage = "Invalid Email or password"
                 });
+            }
             }
 
             return Ok(new CommanResponseDto

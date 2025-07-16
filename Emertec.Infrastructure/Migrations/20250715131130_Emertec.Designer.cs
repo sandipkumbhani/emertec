@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroService_Template.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250715060509_Emertac")]
-    partial class Emertac
+    [Migration("20250715131130_Emertec")]
+    partial class Emertec
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -380,6 +380,10 @@ namespace MicroService_Template.Infrastructure.Migrations
 
                     b.HasKey("UserMenuMappingId");
 
+                    b.HasIndex("MenuId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("modelUserMenuMappings");
                 });
 
@@ -458,7 +462,39 @@ namespace MicroService_Template.Infrastructure.Migrations
 
                     b.HasKey("UserId");
 
+                    b.HasIndex("UserRoleId");
+
                     b.ToTable("modelUsers");
+                });
+
+            modelBuilder.Entity("MicroService_Template.Domain.Model.ModelUserMenuMapping", b =>
+                {
+                    b.HasOne("MicroService_Template.Domain.Model.ModelMenuMaster", "Menu")
+                        .WithMany()
+                        .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MicroService_Template.Domain.Model.ModelUsers", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Menu");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MicroService_Template.Domain.Model.ModelUsers", b =>
+                {
+                    b.HasOne("MicroService_Template.Domain.Model.ModelUserRole", "UserRole")
+                        .WithMany()
+                        .HasForeignKey("UserRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserRole");
                 });
 #pragma warning restore 612, 618
         }

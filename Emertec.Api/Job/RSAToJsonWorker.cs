@@ -1,5 +1,6 @@
-﻿//using MicroService_Template.Application.DTO;
-//using MicroService_Template.Application.Extension.Interface;
+﻿//using MicroService_Template.Application.Extension.Interface;
+//using MicroService_Template.Domain.DTO;
+//using MicroService_Template.Domain.Extension.Interface;
 //using Microsoft.Extensions.Options;
 //using Quartz;
 

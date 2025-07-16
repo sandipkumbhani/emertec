@@ -1,5 +1,6 @@
-﻿//using MicroService_Template.Application.DTO;
-//using MicroService_Template.Application.Extension.Interface;
+﻿
+//using MicroService_Template.Domain.DTO;
+//using MicroService_Template.Domain.Extension.Interface;
 //using Microsoft.Extensions.Options;
 //using Quartz;
 
@@ -19,7 +20,7 @@
 //        {
 //            try
 //            {
-//                var result = await _convertJsonToDbService.CheckGuidFromJsonAsync(_jsonToDB);
+//                var result = await _convertJsonToDbService.SaveJsonToDB(_jsonToDB);
 //                Console.WriteLine($"[Job3] Save All Data in Database {result.Count} at {DateTime.Now}");
 //            }
 //            catch (Exception ex)

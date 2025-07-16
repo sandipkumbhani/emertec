@@ -1,5 +1,4 @@
-﻿
-using MicroService_Template.Domain.DTO;
+﻿using MicroService_Template.Domain.DTO;
 using MicroService_Template.Domain.Model;
 using System;
 using System.Collections.Generic;
@@ -9,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace MicroService_Template.Application.Extension.Interface
 {
-    public interface IModelCreateUserService
+    public interface IModelMenuMasterService
     {
-        Task<ModelUsers> CreateUserAsync(ModelUsers modelUsers);
-        Task<List<ModelUsers>> GetAllUsersAsync();
+        Task<ModelMenuMaster> CreateMenuMasterAsync(MenuMasterDTO menuMasterDTO);
+        Task<List<ModelMenuMaster>> GetModelMenuMastersAsync();
     }
 }

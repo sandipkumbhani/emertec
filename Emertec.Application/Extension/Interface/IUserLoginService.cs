@@ -1,4 +1,5 @@
 ﻿using MicroService_Template.Domain.DTO;
+using MicroService_Template.Domain.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,6 @@ namespace MicroService_Template.Domain.Extension.Interface
     {
         //Task<string> LoginAsync(LoginUserDTO dto);
         Task<LoginUserDTO?> LoginAsync(string email, string password);
-        Task<List<UserDTO>> GetAllUsersAsync();
+        
     }
 }
