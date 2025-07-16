@@ -35,6 +35,36 @@ namespace MicroService_Template.Controllers
             var user = await _modelCreateUserService.CreateUserAsync(modelUsers);
             return Ok(user);
         }
+        [HttpDelete("Delete-User")]
+        public async Task <IActionResult> Delete(int id)
+        {
+            try
+            {
+                _modelCreateUserService.DeleteUserById(id);
+                return Ok($"User with ID {id} has been deleted successfully.");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return Ok($"User with ID {id} not found: {ex.Message}");
+            }
+        }
+        [HttpPut("Update-User")]
+        public IActionResult UpdateUserAsync(int userid, [FromBody]ModelUsers modelUsers)
+        {
+            if (userid != modelUsers.UserId)
+            {
+                return BadRequest("User ID mismatch.");
+            }
+            try
+            {
+                var updated = _modelCreateUserService.UpdateUserAsync(userid, modelUsers);
+                return Ok(updated);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+        }
 
     }
 }

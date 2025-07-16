@@ -12,5 +12,8 @@ namespace MicroService_Template.Domain.Interface
         Task<bool> EmailExistsAsync(string email);
        Task<ModelUsers> AddUserAsync(ModelUsers user);
        Task<List<ModelUsers>> GetAllUsersAsync();
+        ModelUsers GetUserById(int id);
+       Task DeleteAsync(ModelUsers modelUsers);
+       Task UserUpdateAsync(ModelUsers modelUsers);
     }
 }

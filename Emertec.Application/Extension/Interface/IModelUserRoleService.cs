@@ -11,5 +11,7 @@ namespace MicroService_Template.Application.Extension.Interface
     {
         Task<ModelUserRole> CreateUserRoleAsync(ModelUserRole modelUserRole);
         Task<List<ModelUserRole>> GetAllUsersRoleAsync();
+        Task DeleteUserRoleById(int roleid);
+        Task<ModelUserRole> UpdateUserRoleAsync(int roleid, ModelUserRole modelUserRole);
     }
 }

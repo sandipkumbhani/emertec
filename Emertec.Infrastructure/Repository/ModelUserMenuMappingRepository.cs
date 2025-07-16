@@ -16,7 +16,7 @@ namespace MicroService_Template.Infrastructure.Repository
         {
             _context = context;
         }
-        public async Task<ModelUserMenuMapping> AddMenuMasterMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
+        public async Task<ModelUserMenuMapping> AddMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
         {
             _context.modelUserMenuMappings.Add(modelUserMenuMapping);
             await _context.SaveChangesAsync();
@@ -33,7 +33,22 @@ namespace MicroService_Template.Infrastructure.Repository
          .Where(u => u.IsActive)
          .ToListAsync();
         }
-       
+        public ModelUserMenuMapping GetMenuMappingById(int menuMasterid)
+        {
+            return _context.modelUserMenuMappings
+                .FirstOrDefault(e => e.UserMenuMappingId == menuMasterid);
+        }
+        public async Task DeleteMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
+        {
+            _context.modelUserMenuMappings.Remove(modelUserMenuMapping);
+            await _context.SaveChangesAsync();
+        }
+        public async Task UpdatMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
+        {
+            _context.modelUserMenuMappings.Update(modelUserMenuMapping);
+            _context.SaveChanges();
+        }
+
 
     }
 }

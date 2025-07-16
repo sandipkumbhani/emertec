@@ -26,5 +26,20 @@ namespace MicroService_Template.Infrastructure.Repository
         {
             return await _context.modelMenuMasters.Where(u => u.IsActive).ToListAsync();
         }
+        public ModelMenuMaster GetMenuById(int menuid)
+        {
+            return _context.modelMenuMasters
+                .FirstOrDefault(e => e.MenuId == menuid);
+        }
+        public async Task DeleteMenuAsync(ModelMenuMaster modelMenuMaster)
+        {
+            _context.modelMenuMasters.Remove(modelMenuMaster);
+            await _context.SaveChangesAsync();
+        }
+        public async Task UpdatMenuAsync(ModelMenuMaster modelMenuMaster)
+        {
+            _context.modelMenuMasters.Update(modelMenuMaster);
+            _context.SaveChanges();
+        }
     }
 }

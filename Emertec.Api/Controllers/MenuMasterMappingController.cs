@@ -35,6 +35,37 @@ namespace MicroService_Template.Controllers
             var menuMaster = await _modelUserMenuMappingService.CreateMenuMasterMappingAsync(modelUserMenuMapping);
             return Ok(menuMaster);
         }
+        [HttpDelete("Delete-MenuMasterMapping")]
+        public async Task<IActionResult> DeleteMenuAsync(int userMenuMappingId)
+        {
+            try
+            {
+                await _modelUserMenuMappingService.DeleteMenuMappingById(userMenuMappingId);
+                return Ok($"Menu with ID {userMenuMappingId} has been deleted successfully.");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return Ok($"Menu Mapping with ID {userMenuMappingId} not found: {ex.Message}");
+            }
+        }
+        [HttpPut("Update-MenuMasterMapping")]
+        public IActionResult UpdateMenuAsync(int userMenuMappingId, [FromBody] ModelUserMenuMapping modelUserMenuMapping)
+        {
+            if (userMenuMappingId != modelUserMenuMapping.UserMenuMappingId)
+            {
+                return BadRequest("Menu Mapping ID mismatch.");
+            }
+            try
+            {
+                var updated = _modelUserMenuMappingService.UpdateMenuMappingAsync(userMenuMappingId, modelUserMenuMapping);
+                return Ok(updated);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+        }
+
 
     }
 }

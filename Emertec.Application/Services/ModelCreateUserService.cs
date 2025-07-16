@@ -10,6 +10,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MicroService_Template.Application.Services
 {
@@ -65,6 +66,38 @@ namespace MicroService_Template.Application.Services
                 UpdateDate = user.UpdateDate,
 
             }).ToList();
+        }
+        public async Task DeleteUserById(int id)
+        {
+            var deleteUser = _modelCreateUserRepository.GetUserById(id);
+            if (deleteUser == null)
+            {
+                throw new KeyNotFoundException($"User ID {id} not found.");
+            }
+
+           await _modelCreateUserRepository.DeleteAsync(deleteUser);
+        }
+        public async Task<ModelUsers> UpdateUserAsync(int userid, ModelUsers modelUsers)
+        {
+
+            var userExisting = _modelCreateUserRepository.GetUserById(userid);
+
+            if (userExisting == null)
+            {
+                throw new Exception($"User with ID {userid} not found.");
+            }
+            userExisting.Name = modelUsers.Name;
+            userExisting.EmailId = modelUsers.EmailId;
+            userExisting.IsActive =true;
+            userExisting.InsertBy = 1;
+            userExisting.InsertDate = DateTime.UtcNow; 
+            userExisting.UpdateBy = 1;
+            userExisting.UpdateDate = DateTime.UtcNow; 
+
+
+           await _modelCreateUserRepository.UserUpdateAsync(userExisting);
+
+            return userExisting;
         }
 
 

@@ -20,7 +20,7 @@ namespace MicroService_Template.Application.Services
         }
         public async Task<ModelUserMenuMapping> CreateMenuMasterMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
         {
-            
+
 
             var menuMasterMapping = new ModelUserMenuMapping
             {
@@ -33,7 +33,7 @@ namespace MicroService_Template.Application.Services
                 UpdateDate = DateTime.Now
             };
 
-            return await _modelUserMenuMappingRepository.AddMenuMasterMappingAsync(menuMasterMapping);
+            return await _modelUserMenuMappingRepository.AddMenuMappingAsync(menuMasterMapping);
         }
         public async Task<List<ModelUserMenuMapping>> GetAllMenuMappingAsync()
         {
@@ -41,7 +41,7 @@ namespace MicroService_Template.Application.Services
 
             return users.Select(user => new ModelUserMenuMapping
             {
-                UserId= user.UserId,
+                UserId = user.UserId,
                 MenuId = user.MenuId,
                 IsActive = user.IsActive,
                 InsertBy = user.InsertBy,
@@ -54,6 +54,41 @@ namespace MicroService_Template.Application.Services
 
 
             }).ToList();
+        }
+        public async Task DeleteMenuMappingById(int id)
+        {
+            var deleteMenu = _modelUserMenuMappingRepository.GetMenuMappingById(id);
+            if (deleteMenu == null)
+            {
+                throw new KeyNotFoundException($"User ID {id} not found.");
+            }
+
+            await _modelUserMenuMappingRepository.DeleteMenuMappingAsync(deleteMenu);
+        }
+        public async Task<ModelUserMenuMapping> UpdateMenuMappingAsync(int UserMenuMappingId, ModelUserMenuMapping modelUserMenuMapping)
+        {
+
+            var menuMasterMappingExisting = _modelUserMenuMappingRepository.GetMenuMappingById(UserMenuMappingId);
+
+            if (menuMasterMappingExisting == null)
+            {
+                throw new Exception($"Menu with ID {UserMenuMappingId} not found.");
+            }
+            menuMasterMappingExisting.MenuId = modelUserMenuMapping.MenuId;
+            menuMasterMappingExisting.UserId = modelUserMenuMapping.UserId;
+            menuMasterMappingExisting.IsActive = true;
+            menuMasterMappingExisting.InsertBy = 1;
+            menuMasterMappingExisting.InsertDate = DateTime.UtcNow;
+            menuMasterMappingExisting.UpdateBy = 1;
+            menuMasterMappingExisting.UpdateDate = DateTime.UtcNow;
+           
+
+
+
+
+            await _modelUserMenuMappingRepository.UpdatMenuMappingAsync(menuMasterMappingExisting);
+
+            return menuMasterMappingExisting;
         }
     }
 }

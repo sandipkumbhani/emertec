@@ -27,5 +27,20 @@ namespace MicroService_Template.Infrastructure.Repository
         {
             return await _context.modelUserRoles.Where(u => u.IsActive).ToListAsync();
         }
+        public ModelUserRole GetUserRoleById(int roleid)
+        {
+            return _context.modelUserRoles
+                .FirstOrDefault(e => e.UserRoleId == roleid);
+        }
+        public async Task DeleteRoleAsync(ModelUserRole modelUserRole)
+        {
+            _context.modelUserRoles.Remove(modelUserRole);
+            await _context.SaveChangesAsync();
+        }
+        public async Task UserRoleUpdateAsync(ModelUserRole modelUserRole)
+        {
+            _context.modelUserRoles.Update(modelUserRole);
+            _context.SaveChanges();
+        }
     }
 }

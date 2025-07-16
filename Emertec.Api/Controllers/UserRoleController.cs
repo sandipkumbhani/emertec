@@ -33,7 +33,37 @@ namespace MicroService_Template.Controllers
             var menuMaster = await _modelUserRoleService.CreateUserRoleAsync(modelUserRole);
             return Ok(menuMaster);
         }
-        
+        [HttpDelete("Delete-UserRole")]
+        public async Task<IActionResult> Delete(int roleid)
+        {
+            try
+            {
+                 await _modelUserRoleService.DeleteUserRoleById(roleid);
+                return Ok($"User with ID {roleid} has been deleted successfully.");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return Ok($"User Role with ID {roleid} not found: {ex.Message}");
+            }
+        }
+        [HttpPut("Update-User")]
+        public IActionResult UpdateUserAsync(int roleid, [FromBody] ModelUserRole modelUserRole)
+        {
+            if (roleid != modelUserRole.UserRoleId)
+            {
+                return BadRequest("User Role ID mismatch.");
+            }
+            try
+            {
+                var updated = _modelUserRoleService.UpdateUserRoleAsync(roleid, modelUserRole);
+                return Ok(updated);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+        }
+
 
 
 

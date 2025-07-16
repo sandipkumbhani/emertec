@@ -24,16 +24,46 @@ namespace MicroService_Template.Controllers
             return Ok(users);
         }
         [HttpPost("Menu-Master")]
-        public async Task<IActionResult> CreateMenuMaster([FromBody] MenuMasterDTO menuMasterDTO)
+        public async Task<IActionResult> CreateMenuMaster([FromBody]ModelMenuMaster modelMenuMaster)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var menuMaster = await _modelMenuMasterService.CreateMenuMasterAsync(menuMasterDTO);
+            var menuMaster = await _modelMenuMasterService.CreateMenuMasterAsync(modelMenuMaster);
             return Ok(menuMaster);
         }
-       
+        [HttpDelete("Delete-Menu-Master")]
+        public async Task<IActionResult> DeleteMenuAsync(int id)
+        {
+            try
+            {
+               await _modelMenuMasterService.DeleteMenuById(id);
+                return Ok($"Menu with ID {id} has been deleted successfully.");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return Ok($"Menu with ID {id} not found: {ex.Message}");
+            }
+        }
+        [HttpPut("Update-Menu")]
+        public IActionResult UpdateMenuAsync(int menuid, [FromBody] ModelMenuMaster modelMenuMaster)
+        {
+            if (menuid != modelMenuMaster.MenuId)
+            {
+                return BadRequest("Menu ID mismatch.");
+            }
+            try
+            {
+                var updated = _modelMenuMasterService.UpdateMenuAsync(menuid, modelMenuMaster);
+                return Ok(updated);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+        }
+
     }
 }

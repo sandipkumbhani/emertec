@@ -13,5 +13,7 @@ namespace MicroService_Template.Application.Extension.Interface
     {
         Task<ModelUsers> CreateUserAsync(ModelUsers modelUsers);
         Task<List<ModelUsers>> GetAllUsersAsync();
+         Task DeleteUserById(int id);
+        Task<ModelUsers> UpdateUserAsync(int userid, ModelUsers modelUsers);
     }
 }
