@@ -46,7 +46,7 @@ namespace MicroService_Template.Controllers
                 return Ok($"User Role with ID {roleid} not found: {ex.Message}");
             }
         }
-        [HttpPut("Update-User")]
+        [HttpPut("Update-UserRole")]
         public IActionResult UpdateUserAsync(int roleid, [FromBody] ModelUserRole modelUserRole)
         {
             if (roleid != modelUserRole.UserRoleId)

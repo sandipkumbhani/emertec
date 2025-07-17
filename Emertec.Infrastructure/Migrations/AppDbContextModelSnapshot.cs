@@ -126,7 +126,12 @@ namespace MicroService_Template.Infrastructure.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("smalldatetime");
 
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("modelDimJson");
                 });
@@ -462,6 +467,17 @@ namespace MicroService_Template.Infrastructure.Migrations
                     b.HasIndex("UserRoleId");
 
                     b.ToTable("modelUsers");
+                });
+
+            modelBuilder.Entity("MicroService_Template.Domain.Model.ModelDimJson", b =>
+                {
+                    b.HasOne("MicroService_Template.Domain.Model.ModelUsers", "ModelUsers")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ModelUsers");
                 });
 
             modelBuilder.Entity("MicroService_Template.Domain.Model.ModelUserMenuMapping", b =>

@@ -80,11 +80,13 @@ namespace MicroService_Template.Domain.Services
                     FileName = Path.GetFileName(file),
                     FilePath = file,
                     TelephoneNumber = data?.TelephoneNumber?.Trim(),
+                    UserId = 1,
                     IsActive = true,
                     InsertBy = 1, // or jsonToDb.UserId
                     InsertDate = DateTime.Now,
                     UpdateBy = 1,
-                    UpdateDate = DateTime.Now
+                    UpdateDate = DateTime.Now,
+                   
                 };
 
                 await _modelDimJsonRepository.InsertJsonRecordAsync(addrecord);
