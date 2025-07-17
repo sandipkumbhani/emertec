@@ -20,6 +20,7 @@ namespace MicroService_Template.Application.Services
         }
         public async Task<ModelUserMenuMapping> CreateMenuMasterMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
         {
+            //  var username = await _modelUserMenuMappingRepository.GetAllMenuMapping(modelUserMenuMapping.UserId);
 
 
             var menuMasterMapping = new ModelUserMenuMapping
@@ -41,6 +42,7 @@ namespace MicroService_Template.Application.Services
 
             return users.Select(user => new ModelUserMenuMapping
             {
+                UserMenuMappingId = user.UserMenuMappingId,
                 UserId = user.UserId,
                 MenuId = user.MenuId,
                 IsActive = user.IsActive,
@@ -81,7 +83,7 @@ namespace MicroService_Template.Application.Services
             menuMasterMappingExisting.InsertDate = DateTime.UtcNow;
             menuMasterMappingExisting.UpdateBy = 1;
             menuMasterMappingExisting.UpdateDate = DateTime.UtcNow;
-           
+
 
 
 

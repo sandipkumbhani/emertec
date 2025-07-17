@@ -10,6 +10,9 @@ namespace Emertec.UI.Infrastructure.Extension
         {
             services.AddScoped<ILoginRepository, LoginRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IMenuMasterRepository, MenuMasterRepository>();
+            services.AddScoped<IMenuMappingRepository, MenuMappingRepository>();
+
             return services;
         }
     }

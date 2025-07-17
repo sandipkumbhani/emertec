@@ -29,7 +29,7 @@ namespace MicroService_Template.Infrastructure.Repository
         }
         public async Task<List<ModelUsers>> GetAllUsersAsync()
         {
-            return await _context.modelUsers.Where(u => u.IsActive).ToListAsync();
+            return await _context.modelUsers.Include(x => x.UserRole).Where(u => u.IsActive).ToListAsync();
         }
         public ModelUsers GetUserById(int id)
         {

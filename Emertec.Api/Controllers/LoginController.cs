@@ -14,7 +14,7 @@ namespace MicroService_Template.Controllers
         {
             _userLoginService = userLoginService;
         }
-       
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginRequestDTO userLoginRequestDto)
         {
@@ -29,8 +29,6 @@ namespace MicroService_Template.Controllers
                     ErrorMessage = "Invalid Email or password"
                 });
             }
-            }
-
             return Ok(new CommanResponseDto
             {
                 StatusCode = 200,

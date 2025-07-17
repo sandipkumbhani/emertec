@@ -1,7 +1,7 @@
-﻿@model MicroService_Template.Domain.Model.ModelUsers
+﻿@model MicroService_Template.Domain.Model.ModelMenuMaster
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    IList<MicroService_Template.Domain.Model.ModelUsers> UserList = ViewBag.UserList;
+    IList<MicroService_Template.Domain.Model.ModelMenuMaster> MenuMastersList = ViewBag.MenuMasterList;
 }
 
 <html>
@@ -20,24 +20,22 @@
     <title>Users</title>
 </head>
 <body>
-    <button class="btn btn-primary me-2" style="width:95px;height:38px;" id="btnAddUser">Add User</button>
+    <button class="btn btn-primary me-2" style="width:95px;height:38px;" id="btnAddMenu">Add Menu</button>
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Email</th>
-                <th>User Role</th>
-                <th>Active</th>
+                <th>Description</th>
+                <th>Icon</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var user in UserList)
+            @foreach (var user in MenuMastersList)
             {
                 <tr>
                     <td>@user.Name</td>
-                    <td>@user.EmailId</td>
-                    <td>@user.UserRole.Name</td>
-                    <td>@user.IsActive</td>
+                    <td>@user.Description</td>
+                    <td>@user.Icon</td>
                 </tr>
             }
         </tbody>
@@ -45,9 +43,9 @@
 </body>
 </html>
 <script type="text/javascript">
-    $(document).on("click", "#btnAddUser", AddUser);
+    $(document).on("click", "#btnAddMenu", AddMenuMaster);
 
-    function AddUser(){
-       window.location.href = "/User/AddUser";
+    function AddMenuMaster(){
+       window.location.href = "/MenuMaster/AddMenuMaster";
      };
 </script>

@@ -64,6 +64,7 @@ namespace MicroService_Template.Application.Services
                 InsertDate = user.InsertDate,
                 UpdateBy = user.UpdateBy,
                 UpdateDate = user.UpdateDate,
+                UserRole = user.UserRole
 
             }).ToList();
         }

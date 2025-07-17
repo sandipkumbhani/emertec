@@ -19,7 +19,9 @@ namespace MicroService_Template.Domain.Model
         public string? EmailId { get; set; }
         [StringLength(500)]
         public string? Password { get; set; }
-      
+        [NotMapped]
+        [Compare("Password", ErrorMessage = "Passwords do not match.")]
+        public string? ConfirmPassword { get; set; }
         public int UserRoleId { get; set; }
         public bool IsActive { get; set; }
 
@@ -32,6 +34,6 @@ namespace MicroService_Template.Domain.Model
         public DateTime UpdateDate { get; set; }
         public string? PasswordSalt { get; set; }
         [ForeignKey("UserRoleId")]
-        public virtual ModelUserRole UserRole { get; set; }
+        public virtual ModelUserRole? UserRole { get; set; }
     }
 }

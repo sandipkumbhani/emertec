@@ -12,8 +12,12 @@ namespace Emertec.UI.Application.Interface
 {
     public interface IUserServices
     {
-        Task<List<UserDTO>> GetAllUsersAsync();
+        Task<List<ModelUsers>> GetAllUsersAsync();
         Task<string> AddUserAsync(ModelUsers user);
+
+        //UserRole
+
+        Task<List<ModelUserRole>> GetAllUserRoleAsync();
     }
 }
 

@@ -23,7 +23,7 @@ namespace Emertec.UI.Infrastructure.Provider
         {
             try
             {
-                var baseUrl = apiCredential.url + "LoginUsers/login";
+                var baseUrl = apiCredential.url + "Login/login";
 
                 var user = JsonConvert.SerializeObject(userModel);
                 var requestContent = new StringContent(user, Encoding.UTF8, "application/json");

@@ -1,39 +1,39 @@
-﻿using Emertec.UI.Domain.Comman;
+﻿
+using Emertec.UI.Domain.Comman;
 using Emertec.UI.Domain.Helper;
 using Emertec.UI.Domain.Interfaces;
-using Emertec.UI.Domain.Models;
-using MicroService_Template.Domain.DTO;
 using MicroService_Template.Domain.Model;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System.Net.Http;
 using System.Text;
 
 namespace Emertec.UI.Infrastructure.Provider
 {
-    public class UserRepository : IUserRepository
+    public class MenuMappingRepository : IMenuMappingRepository
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
         private APICredential apiCredential;
-        public UserRepository(HttpClient httpClient, IConfiguration configuration)
+        public MenuMappingRepository(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
             _configuration = configuration;
             apiCredential = new APICredential(configuration);
         }
-        public async Task<List<ModelUsers>> GetAllUsersAsync()
+        public async Task<List<ModelUserMenuMapping>> GetAllMenuMappingAsync()
         {
-            var baseUrl = apiCredential.url + "User/get-all-user";
+            var baseUrl = apiCredential.url + "MenuUserMapping/get-all-Menu-Mapping";
             var response = await _httpClient.GetAsync(baseUrl);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<ModelUsers>>(json)!;
+            return JsonConvert.DeserializeObject<List<ModelUserMenuMapping>>(json)!;
         }
-        public async Task<string> AddUserAsync(ModelUsers user)
+        public async Task<string> AddMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
         {
-            var baseUrl = apiCredential.url + "User/create";
+            var baseUrl = apiCredential.url + "MenuUserMapping/Menu-Master-Mapping";
 
-            var userJson = JsonConvert.SerializeObject(user);
+            var userJson = JsonConvert.SerializeObject(modelUserMenuMapping);
             var requestContent = new StringContent(userJson, Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PostAsync(baseUrl, requestContent);
@@ -48,17 +48,7 @@ namespace Emertec.UI.Infrastructure.Provider
 
                 throw new Exception($"API Error ({response.StatusCode}): {message}");
             }
-            return "User created successfully.";
-        }
-        //user role
-        public async Task<List<ModelUserRole>> GetAllUserRoleAsync()
-        {
-            var baseUrl = apiCredential.url + "UserRole/get-all-userRole";
-            var response = await _httpClient.GetAsync(baseUrl);
-            response.EnsureSuccessStatusCode();
-            var json = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<ModelUserRole>>(json)!;
+            return "Menu Added successfully.";
         }
     }
 }
-

@@ -15,13 +15,17 @@ namespace Emertec.UI.Application.Services
         {
             _userRepository = userRepository;
         }
-        public async Task<List<UserDTO>> GetAllUsersAsync()
+        public async Task<List<ModelUsers>> GetAllUsersAsync()
         {
             return await _userRepository.GetAllUsersAsync();
         }
         public async Task<string> AddUserAsync(ModelUsers user)
         {
             return await _userRepository.AddUserAsync(user);
+        }
+        public async Task<List<ModelUserRole>> GetAllUserRoleAsync()
+        {
+            return await _userRepository.GetAllUserRoleAsync();
         }
     }
 }

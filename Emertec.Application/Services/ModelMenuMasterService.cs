@@ -20,7 +20,7 @@ namespace MicroService_Template.Application.Services
                 Description = modelMenuMaster.Description,
                 Icon = modelMenuMaster.Icon,
                 IsActive = true,
-                InsertBy = 1, 
+                InsertBy = 1,
                 InsertDate = DateTime.Now,
                 UpdateBy = 1,
                 UpdateDate = DateTime.Now
