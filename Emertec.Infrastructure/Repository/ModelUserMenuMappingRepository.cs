@@ -16,14 +16,15 @@ namespace MicroService_Template.Infrastructure.Repository
         {
             _context = context;
         }
-        public async Task<ModelUserMenuMapping> AddMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
+        public async Task<List<ModelUserMenuMapping>> AddMenuMappingAsync(IList<ModelUserMenuMapping> modelUserMenuMappingList)
         {
-            _context.modelUserMenuMappings.Add(modelUserMenuMapping);
+            _context.modelUserMenuMappings.AddRange(modelUserMenuMappingList);
             await _context.SaveChangesAsync();
             return await _context.modelUserMenuMappings
-       .Include(m => m.User)
-       .Include(m => m.Menu)
-       .FirstOrDefaultAsync(m => m.UserMenuMappingId == modelUserMenuMapping.UserMenuMappingId);
+                .Include(m => m.User)
+                .Include(m => m.Menu)
+                 .Where(s => s.UserId == modelUserMenuMappingList.First().UserId)
+        .ToListAsync();
         }
         public async Task<List<ModelUserMenuMapping>> GetAllMenuMapping()
         {

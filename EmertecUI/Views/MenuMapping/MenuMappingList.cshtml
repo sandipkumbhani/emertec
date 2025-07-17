@@ -1,7 +1,7 @@
-﻿@model MicroService_Template.Domain.Model.ModelUserMenuMapping
+﻿@model IList<MicroService_Template.Domain.Model.ModelUserMenuMapping>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    IList<MicroService_Template.Domain.Model.ModelUserMenuMapping> MenuMappingList = ViewBag.MenuMappingList;
+    //IList<MicroService_Template.Domain.Model.ModelUserMenuMapping> MenuMappingList = ViewBag.MenuMappingList;
 }
 
 <html>
@@ -20,19 +20,31 @@
     <title>Users</title>
 </head>
 <body>
-    <button class="btn btn-primary me-2"  id="btnAddMenuMapping">Add MenuMapping</button>
+    <button class="btn btn-primary me-2" id="btnAddMenuMapping">Add MenuMapping</button>
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th>User Name</th>
+                <th>Menu Name</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var menuMapping in MenuMappingList)
-            {
-                <tr>
-                    <td>@menuMapping.User.Name</td>
-                </tr>
+            @{
+                var MenuMappingList = Model
+                .GroupBy(m => new { m.User.UserId, m.User.Name })
+                .Select(g => new
+                {
+                    UserName = g.Key.Name,
+                    MenuList = string.Join(", ", g.Select(x => x.Menu.Name).Distinct())
+                })
+                .ToList();
+                foreach (var menuMapping in MenuMappingList)
+                {
+                    <tr>
+                        <td>@menuMapping.UserName</td>
+                        <td>@menuMapping.MenuList</td>
+                    </tr>
+                }
             }
         </tbody>
     </table>

@@ -8,6 +8,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MicroService_Template.Application.Services
 {
@@ -18,21 +19,25 @@ namespace MicroService_Template.Application.Services
         {
             _modelUserMenuMappingRepository = modelUserMenuMappingRepository;
         }
-        public async Task<ModelUserMenuMapping> CreateMenuMasterMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
+        public async Task<List<ModelUserMenuMapping>> CreateMenuMasterMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
         {
-            var menuMasterMapping = new ModelUserMenuMapping
+            string[] MenuId = modelUserMenuMapping.MenuIds.Split(',');
+            IList<ModelUserMenuMapping> ModelUserMenuMappingList = new List<ModelUserMenuMapping>();
+            foreach (var item in MenuId)
             {
-                
-                MenuId = modelUserMenuMapping.MenuId,
-                UserId = modelUserMenuMapping.UserId,
-                IsActive = true,
-                InsertBy = 1,
-                InsertDate = DateTime.Now,
-                UpdateBy = 1,
-                UpdateDate = DateTime.Now
-            };
+                ModelUserMenuMappingList.Add(new ModelUserMenuMapping()
+                {
+                    MenuId = Convert.ToInt32(item),
+                    UserId = modelUserMenuMapping.UserId,
+                    IsActive = true,
+                    InsertBy = 1,
+                    InsertDate = DateTime.Now,
+                    UpdateBy = 1,
+                    UpdateDate = DateTime.Now
+                });
+            }
 
-            return await _modelUserMenuMappingRepository.AddMenuMappingAsync(menuMasterMapping);
+            return await _modelUserMenuMappingRepository.AddMenuMappingAsync(ModelUserMenuMappingList);
         }
         public async Task<List<ModelUserMenuMapping>> GetAllMenuMappingAsync()
         {
