@@ -67,6 +67,7 @@ using System.Text;
     builder.Services.AddScoped<IModelMenuMasterRepository, ModelMenuMasterRepository>();
     builder.Services.AddScoped<IModelUserMenuMappingRepository, ModelUserMenuMappingRepository>();
     builder.Services.AddScoped<IModelUserRoleRepository, ModelUserRoleRepository>();
+    builder.Services.AddScoped<IShowTrancriptRepository, ShowTrancriptRepository>();
 
 
     //SERVICE INJECTION 
@@ -79,6 +80,7 @@ using System.Text;
     builder.Services.AddScoped<IUserLoginService, UserLoginService>();
     builder.Services.AddScoped<IModelUserMenuMappingService,ModelUserMenuMappingService>();
     builder.Services.AddScoped<IModelUserRoleService, ModelUserRoleService>();
+    builder.Services.AddScoped<IShowTrancriptService, ShowTrancriptService>();
 
 
     builder.Services.AddControllers();
