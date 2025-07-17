@@ -31,5 +31,22 @@ namespace MicroService_Template.Infrastructure.Repository
         {
             return await _context.modelUsers.Where(u => u.IsActive).ToListAsync();
         }
+        public ModelUsers GetUserById(int id)
+        {
+            return _context.modelUsers
+                .Include(e => e.UserRole)
+                .FirstOrDefault(e => e.UserId == id);
+        }
+        public async Task DeleteAsync(ModelUsers modelUsers)
+        {
+            _context.modelUsers.Remove(modelUsers);
+            await _context.SaveChangesAsync();
+        }
+        public async Task UserUpdateAsync(ModelUsers modelUsers)
+        {
+            _context.modelUsers.Update(modelUsers);
+            _context.SaveChanges();
+        }
+
     }
 }

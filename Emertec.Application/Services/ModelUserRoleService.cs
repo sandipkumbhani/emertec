@@ -45,8 +45,39 @@ namespace MicroService_Template.Application.Services
                 InsertDate = user.InsertDate,
                 UpdateBy = user.UpdateBy,
                 UpdateDate = user.UpdateDate,
-
+               
             }).ToList();
+        }
+        public async Task DeleteUserRoleById(int roleid)
+        {
+            var deleteUserRole = _modelUserRoleRepository.GetUserRoleById(roleid);
+            if (deleteUserRole == null)
+            {
+                throw new KeyNotFoundException($"UserRole ID {roleid} not found.");
+            }
+
+            await _modelUserRoleRepository.DeleteRoleAsync(deleteUserRole);
+        }
+        public async Task<ModelUserRole> UpdateUserRoleAsync(int roleid, ModelUserRole modelUserRole)
+        {
+
+            var userRoleExisting = _modelUserRoleRepository.GetUserRoleById(roleid);
+
+            if (userRoleExisting == null)
+            {
+                throw new Exception($"UserRole with ID {roleid} not found.");
+            }
+            userRoleExisting.Name = modelUserRole.Name;
+            userRoleExisting.IsActive = true;
+            userRoleExisting.InsertBy = 1;
+            userRoleExisting.InsertDate = DateTime.UtcNow;
+            userRoleExisting.UpdateBy = 1;
+            userRoleExisting.UpdateDate = DateTime.UtcNow;
+
+
+            await _modelUserRoleRepository.UserRoleUpdateAsync(userRoleExisting);
+
+            return userRoleExisting;
         }
     }
 }

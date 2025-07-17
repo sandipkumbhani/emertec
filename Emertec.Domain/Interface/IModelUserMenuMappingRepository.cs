@@ -9,9 +9,11 @@ namespace MicroService_Template.Domain.Interface
 {
     public interface IModelUserMenuMappingRepository
     {
-        Task<ModelUserMenuMapping> AddMenuMasterMappingAsync(ModelUserMenuMapping modelUserMenuMapping);
+        Task<ModelUserMenuMapping> AddMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping);
         Task<List<ModelUserMenuMapping>> GetAllMenuMapping();
-        Task<ModelUsers?> GetUserWithRoleAsync(long userId);
+        ModelUserMenuMapping GetMenuMappingById(int menuMasterid);
+        Task DeleteMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping);
+        Task UpdatMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping);
 
 
     }

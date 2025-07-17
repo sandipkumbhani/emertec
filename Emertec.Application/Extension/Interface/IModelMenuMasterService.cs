@@ -10,7 +10,10 @@ namespace MicroService_Template.Application.Extension.Interface
 {
     public interface IModelMenuMasterService
     {
-        Task<ModelMenuMaster> CreateMenuMasterAsync(MenuMasterDTO menuMasterDTO);
+        Task<ModelMenuMaster> CreateMenuMasterAsync(ModelMenuMaster modelMenuMaster);
         Task<List<ModelMenuMaster>> GetModelMenuMastersAsync();
+       Task DeleteMenuById(int id);
+        Task<ModelMenuMaster> UpdateMenuAsync(int menuid, ModelMenuMaster modelMenuMaster);
+
     }
 }

@@ -16,21 +16,39 @@ namespace MicroService_Template.Infrastructure.Repository
         {
             _context = context;
         }
-        public async Task<ModelUserMenuMapping> AddMenuMasterMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
+        public async Task<ModelUserMenuMapping> AddMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
         {
             _context.modelUserMenuMappings.Add(modelUserMenuMapping);
             await _context.SaveChangesAsync();
-            return modelUserMenuMapping;
+            return await _context.modelUserMenuMappings
+       .Include(m => m.User)
+       .Include(m => m.Menu)
+       .FirstOrDefaultAsync(m => m.UserMenuMappingId == modelUserMenuMapping.UserMenuMappingId);
         }
         public async Task<List<ModelUserMenuMapping>> GetAllMenuMapping()
         {
-            return await _context.modelUserMenuMappings.Where(u => u.IsActive).ToListAsync();
+            return await _context.modelUserMenuMappings
+         .Include(x => x.User)
+         .Include(x => x.Menu)
+         .Where(u => u.IsActive)
+         .ToListAsync();
         }
-        public async Task<ModelUsers?> GetUserWithRoleAsync(long userId)
+        public ModelUserMenuMapping GetMenuMappingById(int menuMasterid)
         {
-            return await _context.modelUsers
-                .FirstOrDefaultAsync(r => r.UserRoleId == userId);
+            return _context.modelUserMenuMappings
+                .FirstOrDefault(e => e.UserMenuMappingId == menuMasterid);
         }
+        public async Task DeleteMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
+        {
+            _context.modelUserMenuMappings.Remove(modelUserMenuMapping);
+            await _context.SaveChangesAsync();
+        }
+        public async Task UpdatMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
+        {
+            _context.modelUserMenuMappings.Update(modelUserMenuMapping);
+            _context.SaveChanges();
+        }
+
 
     }
 }
