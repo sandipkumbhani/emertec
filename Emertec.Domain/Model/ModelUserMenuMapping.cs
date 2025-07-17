@@ -16,6 +16,9 @@ namespace MicroService_Template.Domain.Model
         public long UserId { get; set; }
 
         public long MenuId { get; set; }
+        
+        [NotMapped]
+        public string? MenuIds { get; set; }
    
         public bool IsActive { get; set; }
 
@@ -28,10 +31,10 @@ namespace MicroService_Template.Domain.Model
         public DateTime UpdateDate { get; set; }
 
         [ForeignKey("UserId")]
-        public virtual ModelUsers User { get; set; }
+        public virtual ModelUsers? User { get; set; }
         
 
         [ForeignKey("MenuId")]
-        public virtual ModelMenuMaster Menu { get; set; }
+        public virtual ModelMenuMaster? Menu { get; set; }
     }
 }

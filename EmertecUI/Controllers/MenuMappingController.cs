@@ -21,8 +21,8 @@ namespace EmertecUI.Controllers
         public async Task<IActionResult> MenuMappingList()
         {
             IList<ModelUserMenuMapping> MenuMappingList = await _menuMappingServices.GetAllMenuMappingAsync();
-            ViewBag.MenuMappingList = MenuMappingList;
-            return View("~/Views/MenuMapping/MenuMappingList.cshtml");
+            //ViewBag.MenuMappingList = MenuMappingList;
+            return View("~/Views/MenuMapping/MenuMappingList.cshtml" , MenuMappingList);
         }
         [HttpGet]
         public async Task<IActionResult> AddMenuMapping()
@@ -46,6 +46,18 @@ namespace EmertecUI.Controllers
             InitViewBag();
             //return View(modelUsers);
             //}
+            string MenuIds =string.Empty;
+            if (!string.IsNullOrEmpty(Request.Form["SelectedMenuIds"]))
+            {
+                string[] MenuIdList = Request.Form["SelectedMenuIds"];
+                foreach (var item in MenuIdList)
+                {
+                    MenuIds += item + ",";
+                }
+                MenuIds = MenuIds.Substring(0, MenuIds.Length - 1);
+            }
+            modelUserMenuMapping.MenuIds = MenuIds;
+
 
             var user = await _menuMappingServices.AddMenuMappingAsync(modelUserMenuMapping);
             ViewBag.msg = "User added successfully!";
