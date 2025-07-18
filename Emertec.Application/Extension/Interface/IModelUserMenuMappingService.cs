@@ -14,5 +14,6 @@ namespace MicroService_Template.Application.Extension.Interface
         Task<List<ModelUserMenuMapping>> GetAllMenuMappingAsync();
         Task<ModelUserMenuMapping> UpdateMenuMappingAsync(int UserMenuMappingId, ModelUserMenuMapping modelUserMenuMapping);
         Task DeleteMenuMappingById(int id);
+        Task<ModelUserMenuMapping> GetMenuMappingDetailsById(int Menuid);
     }
 }

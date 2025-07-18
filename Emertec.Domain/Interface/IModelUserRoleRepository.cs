@@ -13,6 +13,6 @@ namespace MicroService_Template.Domain.Interface
         Task<List<ModelUserRole>> GetAllUsersRole();
         Task UserRoleUpdateAsync(ModelUserRole modelUserRole);
         Task DeleteRoleAsync(ModelUserRole modelUserRole);
-        ModelUserRole GetUserRoleById(int roleid);
+        Task<ModelUserRole> GetUserRoleById(int roleid);
     }
 }

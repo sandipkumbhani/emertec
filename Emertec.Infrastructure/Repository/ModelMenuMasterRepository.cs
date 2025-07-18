@@ -26,7 +26,7 @@ namespace MicroService_Template.Infrastructure.Repository
         {
             return await _context.modelMenuMasters.Where(u => u.IsActive).ToListAsync();
         }
-        public ModelMenuMaster GetMenuById(int menuid)
+        public async Task<ModelMenuMaster> GetMenuById(int menuid)
         {
             return _context.modelMenuMasters
                 .FirstOrDefault(e => e.MenuId == menuid);

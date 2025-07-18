@@ -14,6 +14,7 @@ namespace MicroService_Template.Application.Extension.Interface
         Task<List<ModelMenuMaster>> GetModelMenuMastersAsync();
        Task DeleteMenuById(int id);
         Task<ModelMenuMaster> UpdateMenuAsync(int menuid, ModelMenuMaster modelMenuMaster);
+        Task<ModelMenuMaster> GetMenuMsaterById(int id);
 
     }
 }

@@ -22,7 +22,7 @@ namespace MicroService_Template.Controllers
             var usersRole = await _modelUserRoleService.GetAllUsersRoleAsync();
             return Ok(usersRole);
         }
-        [HttpPost("User-Role")]
+        [HttpPost("Create-User-Role")]
         public async Task<IActionResult> CreateMenuMaster([FromBody] ModelUserRole modelUserRole)
         {
             if (!ModelState.IsValid)
@@ -62,6 +62,21 @@ namespace MicroService_Template.Controllers
             {
                 return NotFound(new { message = ex.Message });
             }
+        }
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+
+        {
+            try
+            {
+                var menumaster = _modelUserRoleService.GetUserRoleById(id);
+                return Ok(menumaster);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+
         }
 
 

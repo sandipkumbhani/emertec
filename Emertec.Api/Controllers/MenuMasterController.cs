@@ -64,6 +64,20 @@ namespace MicroService_Template.Controllers
                 return NotFound(new { message = ex.Message });
             }
         }
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
 
+        {
+            try
+            {
+                var menumaster = _modelMenuMasterService.GetMenuMsaterById(id);
+                return Ok(menumaster);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+
+        }
     }
 }
