@@ -1,5 +1,6 @@
 ﻿@{
     Layout = null;
+    string LoginMessage = ViewBag.LoginMessage != null ? ViewBag.LoginMessage : "";
 }
 
 <!DOCTYPE html>
@@ -48,8 +49,7 @@
                             <img src="images/logo.svg" alt="" />
                         </div> *@
                         <div class="login-main">
-                            <form class="theme-form all-custom-class requires-validation" novalidate method="post" action="@Url.Action("Login", "Login")">
-                                >
+                            <form class="theme-form all-custom-class requires-validation" novalidate method="post" action="@Url.Action("Login", "Login")" >
                                 <h2>Emertec</h2>
                                 <p>Don’t have an account? <a href="sign-up.html">Create an Account</a></p>
                                 <a href="#" class="google-btn">
@@ -73,13 +73,13 @@
                                 </div>
                                 <div class="item-input">
                                     <label class="form-label" for="EmailID">Email</label>
-                                    <input class="form-control" type="email" required="" placeholder="admin@example.com" id="EmailID" name="EmailID" />
+                                    <input class="form-control" type="email" required="" placeholder="admin@example.com" id="EmailID" name="EmailID" ,required />
                                     <div class="invalid-feedback"><i class="ri-information-line"></i> Please put valid Email Id</div>
                                 </div>
                                 <div class="item-input">
                                     <label class="form-label" for="password">Password</label>
                                     <div class="form-input position-relative">
-                                        <input class="form-control" type="password" id="password" name="password" required="" placeholder="*********" />
+                                        <input class="form-control" type="password" id="password" name="password" required="" placeholder="" ,required />
                                         <div class="show-hide">
                                             <span class="show">
                                             </span>
@@ -90,15 +90,16 @@
                                 <div class="forget-item">
                                     <a href="forgot-password.html">Forget Password?</a>
                                 </div>
+                               
+                                @if (!string.IsNullOrEmpty(LoginMessage))
+                                {
+                                    <div class="alert alert-danger mt-3" role="alert">
+                                        @LoginMessage
+                                    </div>
+                                }
                                 <button type="submit" class="login-btns">
                                     Log In
                                 </button>
-                                @if (ViewData["LoginMessage"] != null)
-                                {
-                                    <div class="login-message">
-                                        @ViewData["LoginMessage"]
-                                    </div>
-                                }
                             </form>
                         </div>
                     </div>

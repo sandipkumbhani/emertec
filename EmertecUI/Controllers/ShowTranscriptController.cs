@@ -15,22 +15,16 @@ namespace EmertecUI.Controllers
         }
 
         [HttpGet]
-        public IActionResult ShowTranscript()
-        {
-            return View(new ModelDimJson());
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ShowTranscript(string telephoneNo)
+        public async Task<IActionResult> ShowTranscript(string? telephoneNo)
         {
             if (string.IsNullOrWhiteSpace(telephoneNo))
             {
-                ViewBag.Error = "Please enter a valid telephone number.";
+                //ViewBag.Error = "Please enter a valid telephone number.";
                 return View(new ModelDimJson());
             }
 
             var modelDimJson = await _showTranscriptServices.GetTranscriptsByTelephoneNoAsync(telephoneNo);
-            if (modelDimJson == null)
+            if (modelDimJson == null || modelDimJson.Sentences == null || !modelDimJson.Sentences.Any())
             {
                 ViewBag.Error = "Transcript not found.";
                 return View(new ModelDimJson());

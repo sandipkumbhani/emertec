@@ -22,7 +22,7 @@
                         <div class="card com-profile-info">
                             <div class="top-details">
                                 <h2 class="page-form-title">Profile Details</h2>
-                                <form class="row all-custom-class" method="post" action="@Url.Action("AddUser", "User")">
+                                <form class="row all-custom-class" method="post" action="@Url.Action("AddMenu", "MenuMaster")">
                                     <div class="col-xl-4 col-lg-6">
                                         <input type="hidden" id="UserId" value="@Model.MenuId" />
                                         <div class="item-input">
@@ -44,22 +44,12 @@
                                             }
                                         </div>
                                     </div>
-                                    <div class="col-xl-4 col-lg-6">
-                                        <div class="item-input">
-                                            <label for="Description" class="form-label col-form-label required fw-semibold fs-6">Description</label>
-                                            <input type="text" class="form-control userinput" id="Description" name="Description" value="@Model.Description">
-                                            @if (!string.IsNullOrEmpty(DescriptionMsg))
-                                            {
-                                                <span class="text-danger">@DescriptionMsg</span>
-                                            }
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-4 col-lg-6">
+                                  @*   <div class="col-xl-4 col-lg-6">
                                         <div class="item-input">
                                             <label for="Icon" class="form-label col-form-label required fw-semibold fs-6">Icon</label>
                                             <input type="file" class="form-control userinput" id="Icon" name="Icon" value="@Model.Icon">
                                         </div>
-                                    </div>
+                                    </div> *@
                                 </form>
                             </div>
                             <div class="button-main">

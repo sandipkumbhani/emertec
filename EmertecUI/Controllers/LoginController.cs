@@ -23,7 +23,7 @@ namespace EmertecUI.Controllers
             applicationURL = new ApplicationURL(configuration);
         }
 
-        public IActionResult Index()
+        public IActionResult Login()
         {
             return View("~/Views/Login/Login.cshtml");
         }
@@ -31,11 +31,11 @@ namespace EmertecUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var tokenString = await _loginServices.Login(viewModel);
-                if (!string.IsNullOrEmpty(tokenString))
+                if (ModelState.IsValid)
                 {
+                    var tokenString = await _loginServices.Login(viewModel);
                     Response.Cookies.Append("jwtToken", tokenString, new CookieOptions
                     {
                         HttpOnly = true,
@@ -56,11 +56,17 @@ namespace EmertecUI.Controllers
 
                     return Redirect("~/User/UserList");
                 }
-                ViewData["LoginMessage"] = "Invalid username or password..!";
-                ViewBag.appUrl = applicationURL.url;
-                return View();
+                else
+                {
+                    ViewBag.LoginMessage = "";
+                    return View(viewModel);
+                }
             }
-            return View();
+            catch (Exception ex)
+            {
+                ViewBag.LoginMessage = ex.Message;
+                return View(viewModel);
+            }
         }
 
         public IActionResult MenuMaster()

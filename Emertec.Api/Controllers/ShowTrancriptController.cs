@@ -1,5 +1,7 @@
 ﻿using MicroService_Template.Application.Extension.Interface;
+using MicroService_Template.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
+using static MicroService_Template.Domain.Model.ModelDimJson;
 
 namespace MicroService_Template.Controllers
 {
@@ -27,8 +29,13 @@ namespace MicroService_Template.Controllers
             {
                 return NotFound("No sentences found for this telephone number.");
             }
+            var result = new ModelDimJson
+            {
+                TelephoneNumber = telephone,
+                Sentences = sentences.Select(s => new ModelSentence { Text = s }).ToList()
+            };
 
-            return Ok(sentences);
+            return Ok(result);
         }
 
 

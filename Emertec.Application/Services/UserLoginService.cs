@@ -36,39 +36,46 @@ namespace MicroService_Template.Domain.Services
 
         public async Task<LoginUserDTO?> LoginAsync(string email, string password)
         {
-            var user = await _userLoginRepository.GetByEmailAsync(email);
-
-            if (user == null || string.IsNullOrEmpty(user.PasswordSalt))
-                return null;
-
-            var hashedPassword = HashPassword(password, user.PasswordSalt);
-
-            if (user.Password != hashedPassword)
-                return null;
-
-            var role = await _userLoginRepository.GetUserWithRoleAsync(user.UserRoleId);
-
-            var token = GenerateJWTToken(user);
-
-            return new LoginUserDTO
+            try
             {
-                UserId = user.UserId,
-                Name = user.Name,
-                EmailId = user.EmailId,
-                Password = hashedPassword,
-                Token = token,
-                UserRoleId = user.UserRoleId,
-                UserRoleName = role.Name,
-                IsActive = user.IsActive,
-                UpdateBy = user.UpdateBy,
-                UpdateDate = user.UpdateDate,
-                InsertBy = user.InsertBy,
-                InsertDate = user.InsertDate
-            };
+                var user = await _userLoginRepository.GetByEmailAsync(email);
+
+                if (user == null || string.IsNullOrEmpty(user.PasswordSalt))
+                {
+                    return null;
+                }
+                var hashedPassword = HashPassword(password, user.PasswordSalt);
+
+                if (user.Password != hashedPassword)
+                {
+                    return null;
+                }
+                var role = await _userLoginRepository.GetUserWithRoleAsync(user.UserRoleId);
+
+                var token = GenerateJWTToken(user);
+
+                return new LoginUserDTO
+                {
+                    UserId = user.UserId,
+                    Name = user.Name,
+                    EmailId = user.EmailId,
+                    Password = hashedPassword,
+                    Token = token,
+                    UserRoleId = user.UserRoleId,
+                    UserRoleName = role.Name,
+                    IsActive = user.IsActive,
+                    UpdateBy = user.UpdateBy,
+                    UpdateDate = user.UpdateDate,
+                    InsertBy = user.InsertBy,
+                    InsertDate = user.InsertDate
+                };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during login: {ex.Message}");
+            }
+            return null;
         }
-
-
-
 
         private string HashPassword(string password, string salt)
         {
@@ -107,5 +114,5 @@ namespace MicroService_Template.Domain.Services
     }
 
 }
-    
+
 

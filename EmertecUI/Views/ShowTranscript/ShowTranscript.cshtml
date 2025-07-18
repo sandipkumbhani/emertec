@@ -1,31 +1,60 @@
-﻿@* @model ModelDimJson
+﻿@model MicroService_Template.Domain.Model.ModelDimJson
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<html>
+<body>
+    <div class="content-page">
+        <div class="content">
+            <div class="main-inner container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box">
+                            <h1 class="page-title">Show Transcript</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card com-profile-info">
+                            <div class="top-details">
+                                <h2 class="page-form-title">Search Transcript by Telephone</h2>
+                                <form class="row all-custom-class" method="get" action="@Url.Action("ShowTranscript", "ShowTranscript")">
+                                    <div class="col-xl-4 col-lg-6">
+                                        <input type="hidden" id="Id" value="@Model.Id" />
+                                        <div class="item-input">
+                                            <label for="telephoneNo" class="form-label col-form-label required fw-semibold fs-6">Telephone Number</label>
+                                            <input type="text" class="form-control userinput" id="telephoneNo" name="telephoneNo" value="@Model.TelephoneNumber">&nbsp;
 
-<h2>Search Transcript by Telephone</h2>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6" style="align-content:center;">
+                                        <div class="item-input">
+                                        <button type="submit" class="btn btn-primary" style="margin-top:3.5%;">Search</button>
+                                        </div>
+                                    </div>
+                                </form>
 
-<form asp-action="ShowTranscript" method="post">
-    <div class="form-group">
-        <label for="telephoneNo">Telephone Number</label>
-        <input type="text" class="form-control" id="telephoneNo" name="telephoneNo" required />
+                                @if (!string.IsNullOrEmpty(ViewBag.Error))
+                                {
+                                    <div class="alert alert-danger mt-3">@ViewBag.Error</div>
+                                }
+
+                                @if (Model?.Sentences != null && Model.Sentences.Any())
+                                {
+                                    <ul class="list-group mt-2">
+                                        @foreach (var sentence in Model.Sentences)
+                                        {
+                                            <li class="form-control userinput">@sentence.Text</li>
+                                        }
+                                    </ul>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <button type="submit" class="btn btn-primary">Search</button>
-</form>
-
-@if (!string.IsNullOrEmpty(ViewBag.Error))
-{
-        <div class="alert alert-danger mt-3">@ViewBag.Error</div>
-}
-
-@if (Model != null && Model.Sentences != null && Model.Sentences.Any())
-{
-        <h4 class="mt-4">Transcript Sentences</h4>
-        <ul class="list-group mt-2">
-        @foreach (var sentence in Model.Sentences)
-        {
-                    <li class="list-group-item">@sentence.Text</li>
-        }
-        </ul>
-}
- *@
+</body>
+</html>

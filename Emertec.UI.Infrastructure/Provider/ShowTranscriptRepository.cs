@@ -26,7 +26,7 @@ namespace Emertec.UI.Infrastructure.Provider
         }
         public async Task<ModelDimJson> GetTranscriptsByTelephoneNoAsync(string Telephoneno)
         {
-            var baseUrl = $"{apiCredential.url}ShowTrancript/sentences-from-telephone?telephoneNo={Telephoneno}";
+            var baseUrl = apiCredential.url + $"ShowTrancript/sentences-from-telephone?telephone={Telephoneno}";
             var response = await _httpClient.GetAsync(baseUrl);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();

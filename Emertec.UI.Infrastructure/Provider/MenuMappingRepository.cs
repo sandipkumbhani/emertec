@@ -23,7 +23,7 @@ namespace Emertec.UI.Infrastructure.Provider
         }
         public async Task<List<ModelUserMenuMapping>> GetAllMenuMappingAsync()
         {
-            var baseUrl = apiCredential.url + "MenuUserMapping/get-all-Menu-Mapping";
+            var baseUrl = apiCredential.url + "UserMenuMapping/get-all-Menu-Mapping";
             var response = await _httpClient.GetAsync(baseUrl);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
