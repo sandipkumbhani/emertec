@@ -1,12 +1,7 @@
-﻿
-using Emertec.UI.Application.Interface;
+﻿using Emertec.UI.Application.Interface;
 using Emertec.UI.Application.Services;
-using MicroService_Template.Domain.DTO;
 using MicroService_Template.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Net.Http.Headers;
-using static Azure.Core.HttpHeader;
 
 namespace EmertecUI.Controllers
 {
@@ -21,21 +16,32 @@ namespace EmertecUI.Controllers
 
         public async Task<IActionResult> UserList()
         {
+            //var users = await _userServices.GetAllUsersAsync();
+            //ViewBag.UserList = users;
+            //return View(users);
             IList<ModelUsers> UserList = await _userServices.GetAllUsersAsync();
             ViewBag.UserList = UserList;
             return View("~/Views/User/UserList.cshtml");
         }
         [HttpGet]
-        public async Task<IActionResult> AddUser()
+        public async Task<IActionResult> AddUser(int? id)
         {
-            InitViewBag();
-            ViewBag.NameMsg = string.Empty;
-            ModelUsers modelUsers = new ModelUsers();
-            return View("~/Views/User/AddUser.cshtml", modelUsers);
+            await InitViewBag();
+            if (id == null)
+            {
+                return View(new ModelUsers());
+
+            }
+            var user = await _userServices.GetUserByIdAsync(id.Value);
+            return View(user);
+           
+            //ViewBag.NameMsg = string.Empty;
+            //ModelUsers modelUsers = new ModelUsers();
+            //return View("~/Views/User/AddUser.cshtml", modelUsers);
         }
         [HttpPost]
         public async Task<IActionResult> AddUser(ModelUsers modelUsers)
-        {   
+        {
             string NameMsg = string.Empty;
             if (string.IsNullOrEmpty(modelUsers.Name))
             {
@@ -68,66 +74,32 @@ namespace EmertecUI.Controllers
             }
             if (ViewBag.NameMsg != null || ViewBag.EmailMsg != null || ViewBag.passwordMsg != null || ViewBag.UserRoleMsg != null)
             {
-                InitViewBag();
+                await InitViewBag();
+                return View(modelUsers);
+            }
+            if (!ModelState.IsValid)
+            {
+                ViewBag.RoleList = await _userServices.GetAllUserRoleAsync();
                 return View(modelUsers);
             }
 
-            var user = await _userServices.AddUserAsync(modelUsers);
-            ViewBag.msg = "User added successfully!";
+            if (modelUsers.UserId == 0)
+            {
+                await _userServices.AddUserAsync(modelUsers);
+            }
+            else
+            {
+                await _userServices.UpdateUserAsync(modelUsers);
+
+            }
             return RedirectToAction("UserList");
+            //var user = await _userServices.AddUserAsync(modelUsers);
+            //ViewBag.msg = "User added successfully!";
+            //return RedirectToAction("UserList");
         }
-        [HttpGet]
-        public async Task<IActionResult> EditUser(int id)
+        private async Task InitViewBag()
         {
-            try
-            {
-                var user = await _userServices.GetUserByIdAsync(id);
-                if (user == null)
-                {
-                    ViewBag.ErrorMessage = $"User with ID {id} not found.";
-                    return View();
-                }
-
-                return View(user);
-            }
-            catch (Exception ex)
-            {
-                ViewBag.ErrorMessage = $"Error: {ex.Message}";
-                return View();
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult>EditUser(int id, ModelUsers user)
-        {
-            if (id != user.UserId)
-            {
-                return BadRequest("User ID mismatch.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return View(user);
-            }
-
-            try
-            {
-                var result = await _userServices.UpdateUserAsync(user);
-                TempData["SuccessMessage"] = "User updated successfully.";
-                return RedirectToAction("UserList");
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", "Update failed: " + ex.Message);
-                return View(user);
-            }
-        }
-
-
-
-        private void InitViewBag()
-        {
-            IList<ModelUserRole> userRoles = _userServices.GetAllUserRoleAsync().Result;
+            IList<ModelUserRole> userRoles = await _userServices.GetAllUserRoleAsync();
             ViewBag.RoleList = userRoles;
         }
     }

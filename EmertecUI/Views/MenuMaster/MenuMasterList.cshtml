@@ -20,6 +20,80 @@
     <title>Users</title>
 </head>
 <body>
+    <div class="content-page" style="margin:35px 0 0 0">
+        <div class="content">
+            <div class="main-inner container-fluid">
+                <div class="row">
+                    <!-- Month Filter Dropdown (styled exactly like screenshot) -->
+                    <div class="col-12 mb-3">
+                        <button class="btn btn-primary me-2" id="btnAddMenu">Add Menu</button>
+                        @*  <div class="dropdown">
+                        <button id="filterDropdown"
+                                class="btn btn-outline-secondary dropdown-toggle month-filter"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            -- All Months -- <i class="ri-arrow-down-s-fill" style="font-size:larger"></i>
+                        </button>
+                        <ul class="dropdown-menu" id="monthDropdownMenu" aria-labelledby="filterDropdown"></ul>
+                    </div> *@
+                    </div>
+                    <div class="col-12">
+                        <div class="card com-profile-info">
+                            <!-- Top Header -->
+                            <div class="table-top-header">
+                                <h3>Menu Master</h3>
+                                <div class="d-flex gap-2">
+                                    @*  <div class="table-search-box">
+                                    <input type="text" id="customFranchiseSearch" class="form-control form-control-sm" placeholder="Search...">
+                                    <button type="submit"><i class="ri-search-line"></i></button>
+                                </div> *@
+                                    @*  <div id="exportFranchiseButtons">
+                                    <button id="exportExcel" class="btn-btn-outline-secondary">
+                                        <i class="bi bi-file-earmark-excel"></i> Export
+                                    </button>
+                                </div> *@
+                                </div>
+                            </div>
+                            <!-- Table -->
+                            <div class="table-responsive">
+                                <table id="franchiseTable" class="table dt-responsive nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th class="dt-orderable-asc dt-orderable-desc">Name</th>
+                                            <th>Description</th>
+                                            <th>Icon</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var user in MenuMastersList)
+                                        {
+                                            <tr>
+                                                <td>@user.Name</td>
+                                                <td>@user.Description</td>
+                                                <td>@user.Icon</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <!-- Bottom Area -->
+                                <div class="datatable-footer-bottom">
+                                    <div class="totle-left">
+                                        <span id="totalList">Total List: <span id="recordCount">0</span></span>
+                                    </div>
+                                    <div id="customFranchisePagination" class="dataTables_paginate paging_simple_numbers"></div>
+                                    <div class="show-page">
+                                        <span>Show per page:</span>
+                                        <select id="pageLength" class="form-select"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+@* <body>
     <button class="btn btn-primary me-2" style="width:95px;height:38px;" id="btnAddMenu">Add Menu</button>
     <table class="table table-bordered">
         <thead>
@@ -40,7 +114,7 @@
             }
         </tbody>
     </table>
-</body>
+</body> *@
 </html>
 <script type="text/javascript">
     $(document).on("click", "#btnAddMenu", AddMenuMaster);

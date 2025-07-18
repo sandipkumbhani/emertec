@@ -6,7 +6,6 @@ using MicroService_Template.Domain.DTO;
 using MicroService_Template.Domain.Model;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System.Net.Http.Json;
 using System.Text;
 
 namespace Emertec.UI.Infrastructure.Provider
@@ -60,36 +59,34 @@ namespace Emertec.UI.Infrastructure.Provider
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<ModelUserRole>>(json)!;
         }
-        public async Task<ModelUsers?> GetUserByIdAsync(int userId)
-        {
-            var baseUrl = apiCredential.url + $"User/GetById?userid={userId}";
 
+        public async Task<ModelUsers> GetUsersByIdAsync(int? id)
+        {
+            if (id == null)
+                throw new ArgumentNullException(nameof(id));
+
+            var baseUrl = apiCredential.url + $"User/GetById?userid={id}";
             var response = await _httpClient.GetAsync(baseUrl);
-            response.EnsureSuccessStatusCode();
 
-            var json = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ModelUsers>(json);
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Failed to get user. Status code: {response.StatusCode}");
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ModelUsers>(jsonString)!;
         }
-        public async Task<string> UpdateUserAsync(ModelUsers model)
-        {
-            var baseUrl = apiCredential.url + $"User/Update-User?userid={model.UserId}";
 
-            var response = await _httpClient.PutAsJsonAsync(baseUrl, model);
-            response.EnsureSuccessStatusCode();
+        public async Task<string> UpdateUserAsync(ModelUsers user)
+        {
+            var baseUrl = $"{apiCredential.url}User/Update-User";
+            var jsonContent = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync(baseUrl, jsonContent);
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Failed to update user. Status code: {response.StatusCode}");
 
             return await response.Content.ReadAsStringAsync();
         }
-        public async Task<string> DeleteUserAsync(int userId)
-        {
-            var baseUrl = apiCredential.url + $"User/Delete-User?id={userId}";
-
-            var response = await _httpClient.DeleteAsync(baseUrl);
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadAsStringAsync();
-        }
-
-
     }
 }
 

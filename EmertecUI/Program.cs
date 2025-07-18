@@ -68,6 +68,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=MenuMapping}/{action=MenuMappingList}/{id?}");
+    pattern: "{controller=User}/{action=UserList}/{id?}");
     
 app.Run();

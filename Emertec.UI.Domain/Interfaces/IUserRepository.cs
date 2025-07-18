@@ -7,12 +7,10 @@ namespace Emertec.UI.Domain.Interfaces
     public interface IUserRepository
     {
         Task<List<ModelUsers>> GetAllUsersAsync();
+        Task<ModelUsers> GetUsersByIdAsync(int? id);
         Task<string> AddUserAsync(ModelUsers user);
-
+        Task<string> UpdateUserAsync(ModelUsers user);
         //UserRole
         Task<List<ModelUserRole>> GetAllUserRoleAsync();
-        Task<ModelUsers?> GetUserByIdAsync(int userId);
-        Task<string> UpdateUserAsync(ModelUsers model);
-        Task<string> DeleteUserAsync(int userId);
     }
 }

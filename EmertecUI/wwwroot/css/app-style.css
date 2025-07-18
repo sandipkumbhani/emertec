@@ -361,7 +361,7 @@ select:disabled {
 }
 .content-page{
   position: relative;
-  margin-left: var(--ft-leftbar-width);
+  margin-left: 144px;
   min-height: calc(100vh - var(--ft-topbar-height) - 2px);
   padding: 0 .75rem var(--ft-footer-height);
   -webkit-transition: all .25s ease-in-out;

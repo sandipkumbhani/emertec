@@ -19,6 +19,18 @@ namespace Emertec.UI.Application.Services
         {
             return await _userRepository.GetAllUsersAsync();
         }
+        public async Task<ModelUsers?> GetUserByIdAsync(int userId)
+        {
+            return await _userRepository.GetUsersByIdAsync(userId);
+        }
+        public async Task<string> UpdateUserAsync(ModelUsers model)
+        {
+            return await _userRepository.UpdateUserAsync(model);
+        }
+        //public async Task<string> DeleteUserAsync(int userId)
+        //{
+        //    return await _userRepository.DeleteUserAsync(userId);
+        //}
         public async Task<string> AddUserAsync(ModelUsers user)
         {
             return await _userRepository.AddUserAsync(user);
@@ -26,18 +38,6 @@ namespace Emertec.UI.Application.Services
         public async Task<List<ModelUserRole>> GetAllUserRoleAsync()
         {
             return await _userRepository.GetAllUserRoleAsync();
-        }
-        public async Task<ModelUsers?> GetUserByIdAsync(int userId)
-        {
-            return await _userRepository.GetUserByIdAsync(userId);
-        }
-        public async Task<string> UpdateUserAsync(ModelUsers model)
-        {
-            return await _userRepository.UpdateUserAsync(model);
-        }
-        public async Task<string> DeleteUserAsync(int userId)
-        {
-            return await _userRepository.DeleteUserAsync(userId);
         }
     }
 }

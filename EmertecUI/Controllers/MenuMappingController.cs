@@ -56,6 +56,10 @@ namespace EmertecUI.Controllers
                 }
                 MenuIds = MenuIds.Substring(0, MenuIds.Length - 1);
             }
+            else
+            {
+                return View(modelUserMenuMapping);
+            }
             modelUserMenuMapping.MenuIds = MenuIds;
 
 
