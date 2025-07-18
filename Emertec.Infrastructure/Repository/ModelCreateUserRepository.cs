@@ -39,8 +39,12 @@ namespace MicroService_Template.Infrastructure.Repository
         }
         public async Task DeleteAsync(ModelUsers modelUsers)
         {
-            _context.modelUsers.Remove(modelUsers);
-            await _context.SaveChangesAsync();
+            var existingMenu = await _context.modelUsers.FindAsync(modelUsers.UserId);
+            if (existingMenu != null)
+            {
+                existingMenu.IsActive = false;
+                await _context.SaveChangesAsync();
+            }
         }
         public async Task UserUpdateAsync(ModelUsers modelUsers)
         {

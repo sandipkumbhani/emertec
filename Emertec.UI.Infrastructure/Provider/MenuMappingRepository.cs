@@ -23,7 +23,7 @@ namespace Emertec.UI.Infrastructure.Provider
         }
         public async Task<List<ModelUserMenuMapping>> GetAllMenuMappingAsync()
         {
-            var baseUrl = apiCredential.url + "MenuUserMapping/get-all-Menu-Mapping";
+            var baseUrl = apiCredential.url + "UserMenuMapping/get-all-Menu-Mapping";
             var response = await _httpClient.GetAsync(baseUrl);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
@@ -31,7 +31,7 @@ namespace Emertec.UI.Infrastructure.Provider
         }
         public async Task<string> AddMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
         {
-            var baseUrl = apiCredential.url + "MenuUserMapping/Menu-Master-Mapping";
+            var baseUrl = apiCredential.url + "UserMenuMapping/Menu-Master-Mapping";
 
             var userJson = JsonConvert.SerializeObject(modelUserMenuMapping);
             var requestContent = new StringContent(userJson, Encoding.UTF8, "application/json");
@@ -50,5 +50,53 @@ namespace Emertec.UI.Infrastructure.Provider
             }
             return "Menu Added successfully.";
         }
+        public async Task<List<ModelUserRole>> GetAllUserRoleAsync()
+        {
+            var baseUrl = apiCredential.url + "UserRole/get-all-userRole";
+            var response = await _httpClient.GetAsync(baseUrl);
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<ModelUserRole>>(json)!;
+        }
+       
+
+        public async Task<ModelUserMenuMapping> GetMenuMappingByIdAsync(int? id)
+        {
+            if (id == null)
+                throw new ArgumentNullException(nameof(id));
+
+            var baseUrl = apiCredential.url + $"UserMenuMapping/GetMenuMappingById?Menuid={id}";
+            var response = await _httpClient.GetAsync(baseUrl);
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Failed to Menu Mapping user. Status code: {response.StatusCode}");
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ModelUserMenuMapping>(jsonString)!;
+        }
+
+        public async Task<string> UpdateMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
+        {
+            var baseUrl = $"{apiCredential.url}UserMenuMapping/Update-MenuMasterMapping/{modelUserMenuMapping.UserMenuMappingId}";
+            var jsonContent = new StringContent(JsonConvert.SerializeObject(modelUserMenuMapping), Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync(baseUrl, jsonContent);
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Failed to update  Menu Mapping. Status code: {response.StatusCode}");
+
+            return await response.Content.ReadAsStringAsync();
+        }
+        public async Task<string> DeleteMenuMappingAsync(int id)
+        {
+            var baseUrl = apiCredential.url + $"UserMenuMapping/Delete-Menu-Mapping/id={id}";
+            var response = await _httpClient.DeleteAsync(baseUrl);
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Failed to delete Menu Mapping. Status code: {response.StatusCode}");
+
+            return await response.Content.ReadAsStringAsync();
+        }
+
     }
 }

@@ -1,7 +1,7 @@
 ﻿@model IList<MicroService_Template.Domain.Model.ModelUserMenuMapping>
+
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    //IList<MicroService_Template.Domain.Model.ModelUserMenuMapping> MenuMappingList = ViewBag.MenuMappingList;
 }
 
 <html>
@@ -10,50 +10,53 @@
     <link href="~/css/stylesheet.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap/css/bootstrap.rtl.min.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap/css/bootstrap.rtl.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
-    <link href="~/wwwroot/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
-    <link href="~/wwwroot/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="StyleSheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <title>Users</title>
+    <title>Menu Mappings</title>
 </head>
 <body>
-    <button class="btn btn-primary me-2" id="btnAddMenuMapping">Add MenuMapping</button>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>User Name</th>
-                <th>Menu Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                var MenuMappingList = Model
-                .GroupBy(m => new { m.User.UserId, m.User.Name })
-                .Select(g => new
+    <div class="container mt-4">
+        <button class="btn btn-primary mb-3" id="btnAddMenuMapping">Add Menu Mapping</button>
+
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>User Name</th>
+                    <th>Menu Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var group in Model.GroupBy(m => new { m.User.UserId, m.User.Name }))
                 {
-                    UserName = g.Key.Name,
-                    MenuList = string.Join(", ", g.Select(x => x.Menu.Name).Distinct())
-                })
-                .ToList();
-                foreach (var menuMapping in MenuMappingList)
-                {
+                    var firstMapping = group.First(); // To get a valid ID
+                    var userId = group.Key.UserId;
+                    var userName = group.Key.Name;
+                    var menuList = string.Join(", ", group.Select(x => x.Menu.Name).Distinct());
+
                     <tr>
-                        <td>@menuMapping.UserName</td>
-                        <td>@menuMapping.MenuList</td>
+                        <td>@userName</td>
+                        <td>@menuList</td>
+                        <td>
+                            <a href="@Url.Action("AddMenuMapping", "MenuMapping", new { id = firstMapping.UserMenuMappingId })" class="btn btn-sm btn-warning me-1">
+                                <i class="fa fa-edit"></i> Edit
+                            </a>
+                            <a href="@Url.Action("DeleteUser", "MenuMapping", new { menuid = firstMapping.UserMenuMappingId })"
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirm('Are you sure you want to delete this mapping?');">
+                                <i class="fa fa-trash"></i> Delete
+                            </a>
+                        </td>
                     </tr>
                 }
-            }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
-<script type="text/javascript">
-    $(document).on("click", "#btnAddMenuMapping", AddMenuMapping);
 
-    function AddMenuMapping(){
-       window.location.href = "/MenuMapping/AddMenuMapping";
-     };
+<script type="text/javascript">
+    $(document).on("click", "#btnAddMenuMapping", function () {
+        window.location.href = "/MenuMapping/AddMenuMapping";
+    });
 </script>

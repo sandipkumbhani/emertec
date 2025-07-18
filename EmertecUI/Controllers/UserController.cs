@@ -16,9 +16,6 @@ namespace EmertecUI.Controllers
 
         public async Task<IActionResult> UserList()
         {
-            //var users = await _userServices.GetAllUsersAsync();
-            //ViewBag.UserList = users;
-            //return View(users);
             IList<ModelUsers> UserList = await _userServices.GetAllUsersAsync();
             ViewBag.UserList = UserList;
             return View("~/Views/User/UserList.cshtml");
@@ -34,10 +31,6 @@ namespace EmertecUI.Controllers
             }
             var user = await _userServices.GetUserByIdAsync(id.Value);
             return View(user);
-           
-            //ViewBag.NameMsg = string.Empty;
-            //ModelUsers modelUsers = new ModelUsers();
-            //return View("~/Views/User/AddUser.cshtml", modelUsers);
         }
         [HttpPost]
         public async Task<IActionResult> AddUser(ModelUsers modelUsers)
@@ -93,10 +86,23 @@ namespace EmertecUI.Controllers
 
             }
             return RedirectToAction("UserList");
-            //var user = await _userServices.AddUserAsync(modelUsers);
-            //ViewBag.msg = "User added successfully!";
-            //return RedirectToAction("UserList");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            try
+            {
+                await _userServices.Deleteuserasync(id);
+                return RedirectToAction("UserList");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                ViewBag.ErrorMessage = $"User with ID {id} not found: {ex.Message}";
+                return View("Error");
+            }
+        }
+
         private async Task InitViewBag()
         {
             IList<ModelUserRole> userRoles = await _userServices.GetAllUserRoleAsync();

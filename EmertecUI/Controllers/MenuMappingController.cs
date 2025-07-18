@@ -22,15 +22,23 @@ namespace EmertecUI.Controllers
         {
             IList<ModelUserMenuMapping> MenuMappingList = await _menuMappingServices.GetAllMenuMappingAsync();
             //ViewBag.MenuMappingList = MenuMappingList;
-            return View("~/Views/MenuMapping/MenuMappingList.cshtml" , MenuMappingList);
+            return View("~/Views/MenuMapping/MenuMappingList.cshtml", MenuMappingList);
         }
         [HttpGet]
-        public async Task<IActionResult> AddMenuMapping()
+        public async Task<IActionResult> AddMenuMapping(int? id)
         {
-            InitViewBag();
-            ViewBag.NameMsg = string.Empty;
+            await InitViewBag();
+            if (id == null)
+            {
+                return View(new ModelUserMenuMapping());
+
+            }
+            var user = await _menuMappingServices.GetMenuMappingByIdAsync(id.Value);
             ModelUserMenuMapping modelUserMenuMapping = new ModelUserMenuMapping();
             return View("~/Views/MenuMapping/AddMenuMapping.cshtml", modelUserMenuMapping);
+            //ViewBag.NameMsg = string.Empty;
+            //ModelUserMenuMapping modelUserMenuMapping = new ModelUserMenuMapping();
+            //return View("~/Views/MenuMapping/AddMenuMapping.cshtml", modelUserMenuMapping);
         }
         [HttpPost]
         public async Task<IActionResult> AddMenuMapping(ModelUserMenuMapping modelUserMenuMapping)
@@ -43,10 +51,10 @@ namespace EmertecUI.Controllers
             //}
             //if (ViewBag.NameMsg != null || ViewBag.EmailMsg != null || ViewBag.passwordMsg != null || ViewBag.UserRoleMsg != null)
             //{
-            InitViewBag();
+            await InitViewBag();
             //return View(modelUsers);
             //}
-            string MenuIds =string.Empty;
+            string MenuIds = string.Empty;
             if (!string.IsNullOrEmpty(Request.Form["SelectedMenuIds"]))
             {
                 string[] MenuIdList = Request.Form["SelectedMenuIds"];
@@ -61,15 +69,37 @@ namespace EmertecUI.Controllers
                 return View(modelUserMenuMapping);
             }
             modelUserMenuMapping.MenuIds = MenuIds;
+            if (modelUserMenuMapping.UserMenuMappingId == 0)
+            {
+                await _menuMappingServices.AddMenuMappingAsync(modelUserMenuMapping);
+            }
+            else
+            {
+                await _menuMappingServices.UpdateMenuMappingAsync(modelUserMenuMapping);
 
-
-            var user = await _menuMappingServices.AddMenuMappingAsync(modelUserMenuMapping);
-            ViewBag.msg = "User added successfully!";
+            }
             return RedirectToAction("MenuMappingList");
+            //var user = await _menuMappingServices.AddMenuMappingAsync(modelUserMenuMapping);
+            //ViewBag.msg = "User added successfully!";
+
         }
-        private void InitViewBag()
+        [HttpGet]
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            IList<ModelUsers> users = _userServices.GetAllUsersAsync().Result;
+            try
+            {
+                await _menuMappingServices.DeleteMenuMappingAsync(id);
+                return RedirectToAction("UserList");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                ViewBag.ErrorMessage = $"User with ID {id} not found: {ex.Message}";
+                return View("Error");
+            }
+        }
+        private async Task InitViewBag()
+        {
+            IList<ModelUsers> users = await _userServices.GetAllUsersAsync();
             ViewBag.UserList = users;
             IList<ModelMenuMaster> menuMasters = _menuMasterServices.GetAllMenuMasterAsync().Result;
             ViewBag.MenuMasterList = menuMasters;

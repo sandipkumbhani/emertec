@@ -34,8 +34,12 @@ namespace MicroService_Template.Infrastructure.Repository
         }
         public async Task DeleteRoleAsync(ModelUserRole modelUserRole)
         {
-            _context.modelUserRoles.Remove(modelUserRole);
-            await _context.SaveChangesAsync();
+            var existingMenu = await _context.modelUserRoles.FindAsync(modelUserRole.UserRoleId);
+            if (existingMenu != null)
+            {
+                existingMenu.IsActive = false;
+                await _context.SaveChangesAsync();
+            }
         }
         public async Task UserRoleUpdateAsync(ModelUserRole modelUserRole)
         {

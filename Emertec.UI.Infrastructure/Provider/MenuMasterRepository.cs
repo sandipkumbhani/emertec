@@ -54,5 +54,28 @@ namespace Emertec.UI.Infrastructure.Provider
             }
             return "Menu Added successfully.";
         }
+
+        public async Task<ModelMenuMaster> GetMenuByIdAsync(int? id)
+        {
+            var baseUrl = apiCredential.url + $"MenuMaster/{id}";
+            var response = await _httpClient.GetAsync(baseUrl);
+            var jsonString = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ModelMenuMaster>(jsonString)!;
+        }
+
+        public async Task<string> UpdateMenuAsync(ModelMenuMaster menuMaster)
+        {
+            var baseUrl = apiCredential.url + $"MenuMaster/Update-Menu/{menuMaster.MenuId}";
+            var jsonContent = new StringContent(JsonConvert.SerializeObject(menuMaster), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PutAsync(baseUrl, jsonContent);
+            return await response.Content.ReadAsStringAsync();
+        }
+
+        public async Task<string> DeletemenuAsync(int id)
+        {
+            var baseUrl = apiCredential.url + $"MenuMaster/Delete-Menu-Master?id={id}";
+            var response = await _httpClient.DeleteAsync(baseUrl);
+            return await response.Content.ReadAsStringAsync();
+        }
     }
 }

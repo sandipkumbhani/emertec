@@ -33,8 +33,12 @@ namespace MicroService_Template.Infrastructure.Repository
         }
         public async Task DeleteMenuAsync(ModelMenuMaster modelMenuMaster)
         {
-            _context.modelMenuMasters.Remove(modelMenuMaster);
-            await _context.SaveChangesAsync();
+            var existingMenu = await _context.modelMenuMasters.FindAsync(modelMenuMaster.MenuId);
+            if (existingMenu != null)
+            {
+                existingMenu.IsActive = false;
+                await _context.SaveChangesAsync();
+            }
         }
         public async Task UpdatMenuAsync(ModelMenuMaster modelMenuMaster)
         {
