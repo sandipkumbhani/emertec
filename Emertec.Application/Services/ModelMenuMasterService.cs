@@ -49,7 +49,7 @@ namespace MicroService_Template.Application.Services
         }
         public async Task DeleteMenuById(int id)
         {
-            var deleteMenu = _modelMenuMasterRepository.GetMenuById(id);
+            var deleteMenu = await _modelMenuMasterRepository.GetMenuById(id);
             if (deleteMenu == null)
             {
                 throw new KeyNotFoundException($"Menu Master ID {id} not found.");
@@ -60,7 +60,7 @@ namespace MicroService_Template.Application.Services
         public async Task<ModelMenuMaster> UpdateMenuAsync(int menuid, ModelMenuMaster modelMenuMaster)
         {
 
-            var menuExisting = _modelMenuMasterRepository.GetMenuById(menuid);
+            var menuExisting =  await _modelMenuMasterRepository.GetMenuById(menuid);
 
             if (menuExisting == null)
             {
@@ -80,6 +80,16 @@ namespace MicroService_Template.Application.Services
            await _modelMenuMasterRepository.UpdatMenuAsync(menuExisting);
 
             return menuExisting;
+        }
+        public async Task<ModelMenuMaster> GetMenuMsaterById(int id)
+        {
+            var menuMaster =await _modelMenuMasterRepository.GetMenuById(id);
+            if (menuMaster == null)
+            {
+                throw new KeyNotFoundException($"Menu Mater with ID {id} not found.");
+            }
+
+            return menuMaster;
         }
 
     }

@@ -11,5 +11,8 @@ namespace Emertec.UI.Domain.Interfaces
 
         //UserRole
         Task<List<ModelUserRole>> GetAllUserRoleAsync();
+        Task<ModelUsers?> GetUserByIdAsync(int userId);
+        Task<string> UpdateUserAsync(ModelUsers model);
+        Task<string> DeleteUserAsync(int userId);
     }
 }

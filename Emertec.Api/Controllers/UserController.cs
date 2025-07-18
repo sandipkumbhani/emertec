@@ -65,6 +65,20 @@ namespace MicroService_Template.Controllers
                 return NotFound(new { message = ex.Message });
             }
         }
+        [HttpGet("GetById")]
+        public IActionResult UserGetById(int userid)
+        {
+            try
+            {
+                var result = _modelCreateUserService.GetUserDetailsById(userid);
+                return Ok(result);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound("User Not Found");
+            }
+
+        }
 
     }
 }

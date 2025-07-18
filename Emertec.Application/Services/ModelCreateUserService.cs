@@ -100,6 +100,29 @@ namespace MicroService_Template.Application.Services
 
             return userExisting;
         }
+        public ModelUsers GetUserDetailsById(int userid)
+        {
+            var UserDetails = _modelCreateUserRepository.GetUserById(userid);
+            if (UserDetails == null)
+            {
+                throw new KeyNotFoundException($"User Id with ID {userid} not found.");
+            }
+
+            return new ModelUsers
+            {
+                UserId = UserDetails.UserId,
+                Name = UserDetails.Name,
+                EmailId = UserDetails.EmailId,
+                UserRoleId = UserDetails.UserRoleId,
+                IsActive = UserDetails.IsActive,
+                InsertBy = UserDetails.InsertBy,
+                InsertDate = UserDetails.InsertDate,
+                UpdateBy = UserDetails.UpdateBy,
+                UpdateDate = UserDetails.UpdateDate,
+                UserRole = UserDetails.UserRole
+
+            };
+        }
 
 
 

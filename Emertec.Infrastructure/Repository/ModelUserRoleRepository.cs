@@ -27,9 +27,9 @@ namespace MicroService_Template.Infrastructure.Repository
         {
             return await _context.modelUserRoles.Where(u => u.IsActive).ToListAsync();
         }
-        public ModelUserRole GetUserRoleById(int roleid)
+        public async Task<ModelUserRole> GetUserRoleById(int roleid)
         {
-            return _context.modelUserRoles
+            return  _context.modelUserRoles
                 .FirstOrDefault(e => e.UserRoleId == roleid);
         }
         public async Task DeleteRoleAsync(ModelUserRole modelUserRole)

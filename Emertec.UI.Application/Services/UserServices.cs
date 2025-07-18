@@ -27,5 +27,17 @@ namespace Emertec.UI.Application.Services
         {
             return await _userRepository.GetAllUserRoleAsync();
         }
+        public async Task<ModelUsers?> GetUserByIdAsync(int userId)
+        {
+            return await _userRepository.GetUserByIdAsync(userId);
+        }
+        public async Task<string> UpdateUserAsync(ModelUsers model)
+        {
+            return await _userRepository.UpdateUserAsync(model);
+        }
+        public async Task<string> DeleteUserAsync(int userId)
+        {
+            return await _userRepository.DeleteUserAsync(userId);
+        }
     }
 }

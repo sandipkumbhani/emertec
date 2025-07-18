@@ -50,7 +50,7 @@ namespace MicroService_Template.Application.Services
         }
         public async Task DeleteUserRoleById(int roleid)
         {
-            var deleteUserRole = _modelUserRoleRepository.GetUserRoleById(roleid);
+            var deleteUserRole = await _modelUserRoleRepository.GetUserRoleById(roleid);
             if (deleteUserRole == null)
             {
                 throw new KeyNotFoundException($"UserRole ID {roleid} not found.");
@@ -61,7 +61,7 @@ namespace MicroService_Template.Application.Services
         public async Task<ModelUserRole> UpdateUserRoleAsync(int roleid, ModelUserRole modelUserRole)
         {
 
-            var userRoleExisting = _modelUserRoleRepository.GetUserRoleById(roleid);
+            var userRoleExisting = await _modelUserRoleRepository.GetUserRoleById(roleid);
 
             if (userRoleExisting == null)
             {
@@ -78,6 +78,16 @@ namespace MicroService_Template.Application.Services
             await _modelUserRoleRepository.UserRoleUpdateAsync(userRoleExisting);
 
             return userRoleExisting;
+        }
+        public async Task<ModelUserRole> GetUserRoleById(int id)
+        {
+            var menuMaster = await _modelUserRoleRepository.GetUserRoleById(id);
+            if (menuMaster == null)
+            {
+                throw new KeyNotFoundException($"User Role with ID {id} not found.");
+            }
+
+            return menuMaster;
         }
     }
 }

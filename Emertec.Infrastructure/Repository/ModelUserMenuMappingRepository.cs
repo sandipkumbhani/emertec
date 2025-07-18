@@ -34,11 +34,14 @@ namespace MicroService_Template.Infrastructure.Repository
          .Where(u => u.IsActive)
          .ToListAsync();
         }
-        public ModelUserMenuMapping GetMenuMappingById(int menuMasterid)
+        public async Task<ModelUserMenuMapping?> GetMenuMappingById(int menuMasterid)
         {
-            return _context.modelUserMenuMappings
-                .FirstOrDefault(e => e.UserMenuMappingId == menuMasterid);
+            return await _context.modelUserMenuMappings
+                .Include(x => x.User)
+                .Include(x => x.Menu)
+                .FirstOrDefaultAsync(e => e.UserMenuMappingId == menuMasterid);
         }
+
         public async Task DeleteMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
         {
             _context.modelUserMenuMappings.Remove(modelUserMenuMapping);

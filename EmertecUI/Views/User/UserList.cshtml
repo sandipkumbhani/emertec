@@ -38,6 +38,9 @@
                     <td>@user.EmailId</td>
                     <td>@user.UserRole.Name</td>
                     <td>@user.IsActive</td>
+                    <a href="@Url.Action("Edit", "User", new { id = user.UserId })" class="btn btn-sm btn-warning">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
                 </tr>
             }
         </tbody>

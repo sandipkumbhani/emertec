@@ -67,13 +67,12 @@ namespace MicroService_Template.Application.Services
             {
                 throw new KeyNotFoundException($"User ID {id} not found.");
             }
-
-            await _modelUserMenuMappingRepository.DeleteMenuMappingAsync(deleteMenu);
+            await _modelUserMenuMappingRepository.DeleteMenuMappingAsync(deleteMenu.Result);
         }
         public async Task<ModelUserMenuMapping> UpdateMenuMappingAsync(int UserMenuMappingId, ModelUserMenuMapping modelUserMenuMapping)
         {
 
-            var menuMasterMappingExisting = _modelUserMenuMappingRepository.GetMenuMappingById(UserMenuMappingId);
+            var menuMasterMappingExisting = await _modelUserMenuMappingRepository.GetMenuMappingById(UserMenuMappingId);
 
             if (menuMasterMappingExisting == null)
             {
@@ -88,12 +87,34 @@ namespace MicroService_Template.Application.Services
             menuMasterMappingExisting.UpdateDate = DateTime.UtcNow;
 
 
-
-
-
             await _modelUserMenuMappingRepository.UpdatMenuMappingAsync(menuMasterMappingExisting);
 
             return menuMasterMappingExisting;
+        }
+        public async Task<ModelUserMenuMapping> GetMenuMappingDetailsById(int Menuid)
+        {
+            var menuDetails=await _modelUserMenuMappingRepository.GetMenuMappingById(Menuid);
+            if (menuDetails == null)
+            {
+                throw new KeyNotFoundException($"Menu Mapping Id with ID {Menuid} not found.");
+            }
+
+            return new ModelUserMenuMapping
+            {
+                UserMenuMappingId = menuDetails.UserMenuMappingId,
+                UserId = menuDetails.UserId,
+                MenuId = menuDetails.MenuId,
+                IsActive = menuDetails.IsActive,
+                InsertBy = menuDetails.InsertBy,
+                InsertDate = menuDetails.InsertDate,
+                UpdateBy = menuDetails.UpdateBy,
+                UpdateDate = menuDetails.UpdateDate,
+                User = menuDetails.User,
+                Menu = menuDetails.Menu
+
+
+
+            };
         }
     }
 }

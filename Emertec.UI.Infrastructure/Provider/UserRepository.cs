@@ -6,6 +6,7 @@ using MicroService_Template.Domain.DTO;
 using MicroService_Template.Domain.Model;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System.Net.Http.Json;
 using System.Text;
 
 namespace Emertec.UI.Infrastructure.Provider
@@ -59,6 +60,36 @@ namespace Emertec.UI.Infrastructure.Provider
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<ModelUserRole>>(json)!;
         }
+        public async Task<ModelUsers?> GetUserByIdAsync(int userId)
+        {
+            var baseUrl = apiCredential.url + $"User/GetById?userid={userId}";
+
+            var response = await _httpClient.GetAsync(baseUrl);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ModelUsers>(json);
+        }
+        public async Task<string> UpdateUserAsync(ModelUsers model)
+        {
+            var baseUrl = apiCredential.url + $"User/Update-User?userid={model.UserId}";
+
+            var response = await _httpClient.PutAsJsonAsync(baseUrl, model);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsStringAsync();
+        }
+        public async Task<string> DeleteUserAsync(int userId)
+        {
+            var baseUrl = apiCredential.url + $"User/Delete-User?id={userId}";
+
+            var response = await _httpClient.DeleteAsync(baseUrl);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsStringAsync();
+        }
+
+
     }
 }
 
