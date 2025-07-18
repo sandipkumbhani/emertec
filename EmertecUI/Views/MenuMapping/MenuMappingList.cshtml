@@ -1,7 +1,7 @@
 ﻿@model IList<MicroService_Template.Domain.Model.ModelUserMenuMapping>
+
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    //IList<MicroService_Template.Domain.Model.ModelUserMenuMapping> MenuMappingList = ViewBag.MenuMappingList;
 }
 
 <html>
@@ -10,134 +10,53 @@
     <link href="~/css/stylesheet.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap/css/bootstrap.rtl.min.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap/css/bootstrap.rtl.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
-    <link href="~/wwwroot/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
-    <link href="~/wwwroot/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="StyleSheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <title>Users</title>
+    <title>Menu Mappings</title>
 </head>
 <body>
-    <div class="content-page" style="margin:35px 0 0 0">
-        <div class="content">
-            <div class="main-inner container-fluid">
-                <div class="row">
-                    <!-- Month Filter Dropdown (styled exactly like screenshot) -->
-                    <div class="col-12 mb-3">
-                        <button class="btn btn-primary me-2" id="btnAddMenuMapping">Add MenuMapping</button>
-                        @*  <div class="dropdown">
-                        <button id="filterDropdown"
-                                class="btn btn-outline-secondary dropdown-toggle month-filter"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                            -- All Months -- <i class="ri-arrow-down-s-fill" style="font-size:larger"></i>
-                        </button>
-                        <ul class="dropdown-menu" id="monthDropdownMenu" aria-labelledby="filterDropdown"></ul>
-                    </div> *@
-                    </div>
-                    <div class="col-12">
-                        <div class="card com-profile-info">
-                            <!-- Top Header -->
-                            <div class="table-top-header">
-                                <h3>Users</h3>
-                                <div class="d-flex gap-2">
-                                    @*  <div class="table-search-box">
-                                    <input type="text" id="customFranchiseSearch" class="form-control form-control-sm" placeholder="Search...">
-                                    <button type="submit"><i class="ri-search-line"></i></button>
-                                </div> *@
-                                    @*  <div id="exportFranchiseButtons">
-                                    <button id="exportExcel" class="btn-btn-outline-secondary">
-                                        <i class="bi bi-file-earmark-excel"></i> Export
-                                    </button>
-                                </div> *@
-                                </div>
-                            </div>
-                            <!-- Table -->
-                            <div class="table-responsive">
-                                <table id="franchiseTable" class="table dt-responsive nowrap">
-                                    <thead>
-                                        <tr>
-                                            <th>User Name</th>
-                                            <th>Menu Name</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @{
-                                            var MenuMappingList = Model
-                                            .GroupBy(m => new { m.User.UserId, m.User.Name })
-                                            .Select(g => new
-                                            {
-                                                UserName = g.Key.Name,
-                                                MenuList = string.Join(", ", g.Select(x => x.Menu.Name).Distinct())
-                                            })
-                                            .ToList();
-                                            foreach (var menuMapping in MenuMappingList)
-                                            {
-                                                <tr>
-                                                    <td>@menuMapping.UserName</td>
-                                                    <td>@menuMapping.MenuList</td>
+    <div class="container mt-4">
+        <button class="btn btn-primary mb-3" id="btnAddMenuMapping">Add Menu Mapping</button>
 
-                                                </tr>
-                                            }
-                                        }
-                                    </tbody>
-                                </table>
-                                <!-- Bottom Area -->
-                                <div class="datatable-footer-bottom">
-                                    <div class="totle-left">
-                                        <span id="totalList">Total List: <span id="recordCount">0</span></span>
-                                    </div>
-                                    <div id="customFranchisePagination" class="dataTables_paginate paging_simple_numbers"></div>
-                                    <div class="show-page">
-                                        <span>Show per page:</span>
-                                        <select id="pageLength" class="form-select"></select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>User Name</th>
+                    <th>Menu Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var group in Model.GroupBy(m => new { m.User.UserId, m.User.Name }))
+                {
+                    var firstMapping = group.First(); // To get a valid ID
+                    var userId = group.Key.UserId;
+                    var userName = group.Key.Name;
+                    var menuList = string.Join(", ", group.Select(x => x.Menu.Name).Distinct());
 
-@* <body>
-    <button class="btn btn-primary me-2" id="btnAddMenuMapping">Add MenuMapping</button>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>User Name</th>
-                <th>Menu Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                var MenuMappingList = Model
-                .GroupBy(m => new { m.User.UserId, m.User.Name })
-                .Select(g => new
-                {
-                    UserName = g.Key.Name,
-                    MenuList = string.Join(", ", g.Select(x => x.Menu.Name).Distinct())
-                })
-                .ToList();
-                foreach (var menuMapping in MenuMappingList)
-                {
                     <tr>
-                        <td>@menuMapping.UserName</td>
-                        <td>@menuMapping.MenuList</td>
+                        <td>@userName</td>
+                        <td>@menuList</td>
+                        <td>
+                            <a href="@Url.Action("AddMenuMapping", "MenuMapping", new { id = firstMapping.UserMenuMappingId })" class="btn btn-sm btn-warning me-1">
+                                <i class="fa fa-edit"></i> Edit
+                            </a>
+                            <a href="@Url.Action("DeleteUser", "MenuMapping", new { menuid = firstMapping.UserMenuMappingId })"
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirm('Are you sure you want to delete this mapping?');">
+                                <i class="fa fa-trash"></i> Delete
+                            </a>
+                        </td>
                     </tr>
                 }
-            }
-        </tbody>
-    </table>
-</body> *@
+            </tbody>
+        </table>
+    </div>
+</body>
 </html>
-<script type="text/javascript">
-    $(document).on("click", "#btnAddMenuMapping", AddMenuMapping);
 
-    function AddMenuMapping(){
-       window.location.href = "/MenuMapping/AddMenuMapping";
-     };
+<script type="text/javascript">
+    $(document).on("click", "#btnAddMenuMapping", function () {
+        window.location.href = "/MenuMapping/AddMenuMapping";
+    });
 </script>

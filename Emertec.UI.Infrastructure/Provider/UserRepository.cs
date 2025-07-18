@@ -77,7 +77,7 @@ namespace Emertec.UI.Infrastructure.Provider
 
         public async Task<string> UpdateUserAsync(ModelUsers user)
         {
-            var baseUrl = $"{apiCredential.url}User/Update-User";
+            var baseUrl = apiCredential.url + $"User/Update-User/{user.UserId}";
             var jsonContent = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PutAsync(baseUrl, jsonContent);
@@ -86,6 +86,15 @@ namespace Emertec.UI.Infrastructure.Provider
                 throw new Exception($"Failed to update user. Status code: {response.StatusCode}");
 
             return await response.Content.ReadAsStringAsync();
+        }
+        public async Task<string> DeleteUserAsync(int id)
+        {
+            var baseUrl = $"{apiCredential.url}User/Delete-User?id={id}";
+            var response = await _httpClient.DeleteAsync(baseUrl);
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Failed to delete user. Status code: {response.StatusCode}");
+            return await response.Content.ReadAsStringAsync();
+
         }
     }
 }

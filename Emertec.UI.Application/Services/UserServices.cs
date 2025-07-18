@@ -23,21 +23,24 @@ namespace Emertec.UI.Application.Services
         {
             return await _userRepository.GetUsersByIdAsync(userId);
         }
-        public async Task<string> UpdateUserAsync(ModelUsers model)
-        {
-            return await _userRepository.UpdateUserAsync(model);
-        }
-        //public async Task<string> DeleteUserAsync(int userId)
-        //{
-        //    return await _userRepository.DeleteUserAsync(userId);
-        //}
         public async Task<string> AddUserAsync(ModelUsers user)
         {
             return await _userRepository.AddUserAsync(user);
         }
+        public async Task<string> UpdateUserAsync(ModelUsers model)
+        {
+            return await _userRepository.UpdateUserAsync(model);
+        }
+        public async Task<string> Deleteuserasync(int userid)
+        {
+            return await _userRepository.DeleteUserAsync(userid);
+        }
+
+        //UsrRole
         public async Task<List<ModelUserRole>> GetAllUserRoleAsync()
         {
             return await _userRepository.GetAllUserRoleAsync();
         }
     }
+
 }

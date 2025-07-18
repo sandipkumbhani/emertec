@@ -72,7 +72,7 @@
                                             <tr>
                                                 <td>@user.Name</td>
                                                 <td>@user.EmailId</td>
-                                                <td>@user.UserRole.Name</td>
+                                                <td>@user.UserRole?.Name</td>
                                                 <td>@user.IsActive</td>
                                                 <td>
                                                     <a href="@Url.Action("AddUser", "User", new { id = user.UserId })" class="btn btn-sm btn-warning me-1">

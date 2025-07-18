@@ -22,12 +22,14 @@ namespace EmertecUI.Controllers
             return View("~/Views/MenuMaster/MenuMasterList.cshtml");
         }
         [HttpGet]
-        public async Task<IActionResult> AddMenuMaster()
+        public async Task<IActionResult> AddMenuMaster(int? id)
         {
-            InitViewBag();
-            ViewBag.NameMsg = string.Empty;
-            ModelMenuMaster modelMenuMaster = new ModelMenuMaster();
-            return View("~/Views/MenuMaster/AddMenuMaster.cshtml", modelMenuMaster);
+            if (id == null)
+            {
+                return View(new ModelMenuMaster());
+            }
+            var user = await _menuMasterServices.GetMenuByIdAsync(id.Value);
+            return View(user);
         }
         [HttpPost]
         public async Task<IActionResult> AddMenuMaster(ModelMenuMaster modelMenuMaster)
@@ -44,19 +46,34 @@ namespace EmertecUI.Controllers
                 DescriptionMsg = "Please Enter Description.";
                 ViewBag.DescriptionMsg = DescriptionMsg;
             }
-            if (ViewBag.NameMsg != null || ViewBag.EmailMsg != null)
+            if (ViewBag.NameMsg != null || ViewBag.DescriptionMsg != null)
             {
-                InitViewBag();
                 return View(modelMenuMaster);
             }
+            if (modelMenuMaster.MenuId == 0)
+            {
+                await _menuMasterServices.AddMenuAsync(modelMenuMaster);
+            }
+            else
+            {
+                await _menuMasterServices.UpdateMenuAsync(modelMenuMaster);
 
-            var user = await _menuMasterServices.AddMenuAsync(modelMenuMaster);
-            ViewBag.msg = "Menu added successfully!";
+            }
             return RedirectToAction("MenuMasterList");
         }
-        private void InitViewBag()
+        [HttpGet]
+        public async Task<IActionResult> DeleteMenu(int id)
         {
-            IList<ModelMenuMaster> userRoles = _menuMasterServices.GetAllMenuMasterAsync().Result;
+            try
+            {
+                await _menuMasterServices.DeleteMenuAsync(id);
+                return RedirectToAction("MenuMasterList");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                ViewBag.ErrorMessage = $"User with ID {id} not found: {ex.Message}";
+                return View("Error");
+            }
         }
     }
 }

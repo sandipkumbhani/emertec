@@ -24,7 +24,7 @@ namespace MicroService_Template.Controllers
             return Ok(users);
         }
         [HttpPost("Menu-Master")]
-        public async Task<IActionResult> CreateMenuMaster([FromBody]ModelMenuMaster modelMenuMaster)
+        public async Task<IActionResult> CreateMenuMaster([FromBody] ModelMenuMaster modelMenuMaster)
         {
             if (!ModelState.IsValid)
             {
@@ -39,7 +39,7 @@ namespace MicroService_Template.Controllers
         {
             try
             {
-               await _modelMenuMasterService.DeleteMenuById(id);
+                await _modelMenuMasterService.DeleteMenuById(id);
                 return Ok($"Menu with ID {id} has been deleted successfully.");
             }
             catch (KeyNotFoundException ex)
@@ -48,20 +48,28 @@ namespace MicroService_Template.Controllers
             }
         }
         [HttpPut("Update-Menu")]
-        public IActionResult UpdateMenuAsync(int menuid, [FromBody] ModelMenuMaster modelMenuMaster)
+        public async Task<IActionResult> UpdateMenuAsync(int menuid, [FromBody] ModelMenuMaster modelMenuMaster)
         {
-            if (menuid != modelMenuMaster.MenuId)
+            var existingUser = _modelMenuMasterService.GetMenuMsaterById(menuid);
+            if (existingUser == null && menuid != modelMenuMaster.MenuId)
             {
                 return BadRequest("Menu ID mismatch.");
             }
-            try
+            else if (!ModelState.IsValid)
             {
-                var updated = _modelMenuMasterService.UpdateMenuAsync(menuid, modelMenuMaster);
-                return Ok(updated);
+                return BadRequest(ModelState);
             }
-            catch (Exception ex)
+            else
             {
-                return NotFound(new { message = ex.Message });
+                try
+                {
+                    var updatedUser = await _modelMenuMasterService.UpdateMenuAsync(menuid, modelMenuMaster);
+                    return Ok(updatedUser);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, new { message = ex.Message });
+                }
             }
         }
         [HttpGet("{id}")]

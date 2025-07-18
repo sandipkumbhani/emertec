@@ -36,7 +36,7 @@ namespace MicroService_Template.Controllers
             return Ok(user);
         }
         [HttpDelete("Delete-User")]
-        public async Task <IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
@@ -48,23 +48,33 @@ namespace MicroService_Template.Controllers
                 return Ok($"User with ID {id} not found: {ex.Message}");
             }
         }
-        [HttpPut("Update-User")]
-        public IActionResult UpdateUserAsync(int userid, [FromBody]ModelUsers modelUsers)
+        [HttpPut("Update-User/{userid}")]
+        public async Task<IActionResult> UpdateUserAsync(int userid, [FromBody] ModelUsers modelUsers)
         {
-            if (userid != modelUsers.UserId)
+
+            var existingUser = _modelCreateUserService.GetUserDetailsById(userid);
+            if (existingUser == null && userid != modelUsers.UserId)
             {
                 return BadRequest("User ID mismatch.");
             }
-            try
+            else if (!ModelState.IsValid)
             {
-                var updated = _modelCreateUserService.UpdateUserAsync(userid, modelUsers);
-                return Ok(updated);
+                return BadRequest(ModelState);
             }
-            catch (Exception ex)
+            else
             {
-                return NotFound(new { message = ex.Message });
+                try
+                {
+                    var updatedUser = await _modelCreateUserService.UpdateUserAsync(userid, modelUsers);
+                    return Ok(updatedUser);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, new { message = ex.Message });
+                }
             }
         }
+
         [HttpGet("GetById")]
         public IActionResult UserGetById(int userid)
         {

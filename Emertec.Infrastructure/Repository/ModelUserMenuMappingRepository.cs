@@ -44,9 +44,16 @@ namespace MicroService_Template.Infrastructure.Repository
 
         public async Task DeleteMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
         {
-            _context.modelUserMenuMappings.Remove(modelUserMenuMapping);
-            await _context.SaveChangesAsync();
+            var existingMenu = await _context.modelUserMenuMappings
+                .FirstOrDefaultAsync(m => m.UserMenuMappingId == modelUserMenuMapping.UserMenuMappingId);
+
+            if (existingMenu != null)
+            {
+                existingMenu.IsActive = false; 
+                await _context.SaveChangesAsync();
+            }
         }
+
         public async Task UpdatMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
         {
             _context.modelUserMenuMappings.Update(modelUserMenuMapping);

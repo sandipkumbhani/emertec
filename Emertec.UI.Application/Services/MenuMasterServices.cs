@@ -22,9 +22,21 @@ namespace Emertec.UI.Application.Services
         {
             return await _menuMasterRepository.GetAllMenuAsync();
         }
+        public async Task<ModelMenuMaster?> GetMenuByIdAsync(int menuId)
+        {
+            return await _menuMasterRepository.GetMenuByIdAsync(menuId);
+        }
         public async Task<string> AddMenuAsync(ModelMenuMaster modelMenuMaster)
         {
             return await _menuMasterRepository.AddMenuAsync(modelMenuMaster);
+        }
+        public async Task<string> UpdateMenuAsync(ModelMenuMaster modelMenuMaster)
+        {
+            return await _menuMasterRepository.UpdateMenuAsync(modelMenuMaster);
+        }
+        public async Task<string> DeleteMenuAsync(int menuId)
+        {
+            return await _menuMasterRepository.DeletemenuAsync(menuId);
         }
     }
 }
