@@ -24,8 +24,8 @@
                                 <h2 class="page-form-title">Menu Details</h2>
                                 <form class="row all-custom-class" method="post" action="@Url.Action("AddMenuMaster", "MenuMaster")">
                                     <div class="col-xl-4 col-lg-6">
-                                        <input type="hidden" id="UserId" value="@Model.MenuId" />
                                         <div class="item-input">
+                                            <input type="text" hidden id="MenuId" name="MenuId" value="@Model.MenuId" />
                                             <label for="name" class="form-label col-form-label required fw-semibold fs-6">Name</label>
                                             <input type="text" class="form-control userinput" id="Name" name="name" value="@Model.Name">
                                             @if (!string.IsNullOrEmpty(NameMsg))

@@ -34,8 +34,7 @@ namespace EmertecUI.Controllers
 
             }
             var user = await _menuMappingServices.GetMenuMappingByIdAsync(id.Value);
-            ModelUserMenuMapping modelUserMenuMapping = new ModelUserMenuMapping();
-            return View("~/Views/MenuMapping/AddMenuMapping.cshtml", modelUserMenuMapping);
+            return View("~/Views/MenuMapping/AddMenuMapping.cshtml", user);
             //ViewBag.NameMsg = string.Empty;
             //ModelUserMenuMapping modelUserMenuMapping = new ModelUserMenuMapping();
             //return View("~/Views/MenuMapping/AddMenuMapping.cshtml", modelUserMenuMapping);
@@ -43,32 +42,19 @@ namespace EmertecUI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMenuMapping(ModelUserMenuMapping modelUserMenuMapping)
         {
-            //string UserRoleMsg = string.Empty;
-            //if (modelUsers.UserRoleId == 0)
-            //{
-            //    UserRoleMsg = "Please select a role.";
-            //    ViewBag.UserRoleMsg = UserRoleMsg;
-            //}
-            //if (ViewBag.NameMsg != null || ViewBag.EmailMsg != null || ViewBag.passwordMsg != null || ViewBag.UserRoleMsg != null)
-            //{
             await InitViewBag();
-            //return View(modelUsers);
-            //}
             string MenuIds = string.Empty;
-            if (!string.IsNullOrEmpty(Request.Form["SelectedMenuIds"]))
+            var selectedMenus = Request.Form["SelectedMenuIds"];
+
+            if (selectedMenus.Count == 0)
             {
-                string[] MenuIdList = Request.Form["SelectedMenuIds"];
-                foreach (var item in MenuIdList)
-                {
-                    MenuIds += item + ",";
-                }
-                MenuIds = MenuIds.Substring(0, MenuIds.Length - 1);
-            }
-            else
-            {
+                ModelState.AddModelError("", "Please select at least one menu.");
                 return View(modelUserMenuMapping);
             }
+
+            MenuIds = string.Join(",", selectedMenus);
             modelUserMenuMapping.MenuIds = MenuIds;
+
             if (modelUserMenuMapping.UserMenuMappingId == 0)
             {
                 await _menuMappingServices.AddMenuMappingAsync(modelUserMenuMapping);
@@ -76,12 +62,9 @@ namespace EmertecUI.Controllers
             else
             {
                 await _menuMappingServices.UpdateMenuMappingAsync(modelUserMenuMapping);
-
             }
-            return RedirectToAction("MenuMappingList");
-            //var user = await _menuMappingServices.AddMenuMappingAsync(modelUserMenuMapping);
-            //ViewBag.msg = "User added successfully!";
 
+            return RedirectToAction("MenuMappingList");
         }
         [HttpGet]
         public async Task<IActionResult> DeleteUser(int id)

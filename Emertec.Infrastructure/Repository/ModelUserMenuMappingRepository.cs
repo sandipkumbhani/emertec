@@ -18,13 +18,21 @@ namespace MicroService_Template.Infrastructure.Repository
         }
         public async Task<List<ModelUserMenuMapping>> AddMenuMappingAsync(IList<ModelUserMenuMapping> modelUserMenuMappingList)
         {
-            _context.modelUserMenuMappings.AddRange(modelUserMenuMappingList);
-            await _context.SaveChangesAsync();
-            return await _context.modelUserMenuMappings
-                .Include(m => m.User)
-                .Include(m => m.Menu)
-                 .Where(s => s.UserId == modelUserMenuMappingList.First().UserId)
-        .ToListAsync();
+            try
+            {
+                if (modelUserMenuMappingList == null || !modelUserMenuMappingList.Any())
+                {
+                    throw new ArgumentException("Mapping list is null or empty");
+                }
+                _context.modelUserMenuMappings.AddRange(modelUserMenuMappingList);
+                await _context.SaveChangesAsync();
+                long userId = modelUserMenuMappingList.First().UserId;
+                return await _context.modelUserMenuMappings.Where(m => m.UserId == userId && m.IsActive).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in AddMenuMappingAsync: " + ex.Message, ex);
+            }
         }
         public async Task<List<ModelUserMenuMapping>> GetAllMenuMapping()
         {
@@ -34,12 +42,34 @@ namespace MicroService_Template.Infrastructure.Repository
          .Where(u => u.IsActive)
          .ToListAsync();
         }
-        public async Task<ModelUserMenuMapping?> GetMenuMappingById(int menuMasterid)
+        public async Task<ModelUserMenuMapping?> GetMenuMappingById(int UserId)
         {
-            return await _context.modelUserMenuMappings
-                .Include(x => x.User)
-                .Include(x => x.Menu)
-                .FirstOrDefaultAsync(e => e.UserMenuMappingId == menuMasterid);
+            //ModelUserMenuMapping modelUserMenuMapping = new ModelUserMenuMapping();
+            //IList<ModelUserMenuMapping> ModelUserMenuMappingList = await _context.modelUserMenuMappings.Where(e => e.UserId == UserId).ToListAsync();
+            //if (ModelUserMenuMappingList.Count > 0)
+            //{
+            //    modelUserMenuMapping = ModelUserMenuMappingList.First();
+            //    string MenuIds = string.Empty;
+            //    foreach (var ModelUserMenuMapping in ModelUserMenuMappingList)
+            //    {
+            //        MenuIds += ModelUserMenuMapping.MenuId.ToString() + ",";
+            //    }
+            //    MenuIds = MenuIds.Substring(0, MenuIds.Length - 1);
+            //    modelUserMenuMapping.MenuIds = MenuIds;
+            //}
+            //return modelUserMenuMapping;
+            var mappings = await _context.modelUserMenuMappings
+       .Where(m => m.UserId == UserId && m.IsActive)
+       .ToListAsync();
+
+            var model = new ModelUserMenuMapping
+            {
+                UserId = UserId,
+                MenuIds = string.Join(",", mappings.Select(m => m.MenuId)),
+                UserMenuMappingId = mappings.FirstOrDefault()?.UserMenuMappingId ?? 0
+            };
+
+            return model;
         }
 
         public async Task DeleteMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
@@ -49,7 +79,7 @@ namespace MicroService_Template.Infrastructure.Repository
 
             if (existingMenu != null)
             {
-                existingMenu.IsActive = false; 
+                existingMenu.IsActive = false;
                 await _context.SaveChangesAsync();
             }
         }

@@ -47,10 +47,10 @@ namespace MicroService_Template.Controllers
                 return Ok($"Menu with ID {id} not found: {ex.Message}");
             }
         }
-        [HttpPut("Update-Menu")]
+        [HttpPut("Update-Menu/{menuid}")]
         public async Task<IActionResult> UpdateMenuAsync(int menuid, [FromBody] ModelMenuMaster modelMenuMaster)
         {
-            var existingUser = _modelMenuMasterService.GetMenuMsaterById(menuid);
+            var existingUser = await _modelMenuMasterService.GetMenuMsaterById(menuid);
             if (existingUser == null && menuid != modelMenuMaster.MenuId)
             {
                 return BadRequest("Menu ID mismatch.");
@@ -73,12 +73,12 @@ namespace MicroService_Template.Controllers
             }
         }
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
 
         {
             try
             {
-                var menumaster = _modelMenuMasterService.GetMenuMsaterById(id);
+                var menumaster = await _modelMenuMasterService.GetMenuMsaterById(id);
                 return Ok(menumaster);
             }
             catch (KeyNotFoundException ex)

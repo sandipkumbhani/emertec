@@ -38,7 +38,7 @@
                         <td>@userName</td>
                         <td>@menuList</td>
                         <td>
-                            <a href="@Url.Action("AddMenuMapping", "MenuMapping", new { id = firstMapping.UserMenuMappingId })" class="btn btn-sm btn-warning me-1">
+                            <a href="@Url.Action("AddMenuMapping", "MenuMapping", new { id = firstMapping.UserId })" class="btn btn-sm btn-warning me-1">
                                 <i class="fa fa-edit"></i> Edit
                             </a>
                             <a href="@Url.Action("DeleteUser", "MenuMapping", new { menuid = firstMapping.UserMenuMappingId })"

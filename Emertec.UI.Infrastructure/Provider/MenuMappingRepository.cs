@@ -1,5 +1,4 @@
-﻿
-using Emertec.UI.Domain.Comman;
+﻿using Emertec.UI.Domain.Comman;
 using Emertec.UI.Domain.Helper;
 using Emertec.UI.Domain.Interfaces;
 using MicroService_Template.Domain.Model;
@@ -44,7 +43,7 @@ namespace Emertec.UI.Infrastructure.Provider
                 var errorResponse = JsonConvert.DeserializeObject<CommanResponseDto>(responseData);
                 var message = errorResponse?.ErrorMessage
                               ?? errorResponse?.Message
-                              ?? "Failed to create user.";
+                              ?? "Failed to create menu.";
 
                 throw new Exception($"API Error ({response.StatusCode}): {message}");
             }
@@ -58,19 +57,12 @@ namespace Emertec.UI.Infrastructure.Provider
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<ModelUserRole>>(json)!;
         }
-       
+
 
         public async Task<ModelUserMenuMapping> GetMenuMappingByIdAsync(int? id)
         {
-            if (id == null)
-                throw new ArgumentNullException(nameof(id));
-
             var baseUrl = apiCredential.url + $"UserMenuMapping/GetMenuMappingById?Menuid={id}";
             var response = await _httpClient.GetAsync(baseUrl);
-
-            if (!response.IsSuccessStatusCode)
-                throw new Exception($"Failed to Menu Mapping user. Status code: {response.StatusCode}");
-
             var jsonString = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ModelUserMenuMapping>(jsonString)!;
         }
@@ -79,12 +71,7 @@ namespace Emertec.UI.Infrastructure.Provider
         {
             var baseUrl = $"{apiCredential.url}UserMenuMapping/Update-MenuMasterMapping/{modelUserMenuMapping.UserMenuMappingId}";
             var jsonContent = new StringContent(JsonConvert.SerializeObject(modelUserMenuMapping), Encoding.UTF8, "application/json");
-
             var response = await _httpClient.PutAsync(baseUrl, jsonContent);
-
-            if (!response.IsSuccessStatusCode)
-                throw new Exception($"Failed to update  Menu Mapping. Status code: {response.StatusCode}");
-
             return await response.Content.ReadAsStringAsync();
         }
         public async Task<string> DeleteMenuMappingAsync(int id)

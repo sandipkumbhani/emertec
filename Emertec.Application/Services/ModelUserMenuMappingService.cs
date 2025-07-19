@@ -69,14 +69,14 @@ namespace MicroService_Template.Application.Services
             }
             await _modelUserMenuMappingRepository.DeleteMenuMappingAsync(deleteMenu.Result);
         }
-        public async Task<ModelUserMenuMapping> UpdateMenuMappingAsync(int UserMenuMappingId, ModelUserMenuMapping modelUserMenuMapping)
+        public async Task<ModelUserMenuMapping> UpdateMenuMappingAsync(int userId, ModelUserMenuMapping modelUserMenuMapping)
         {
 
-            var menuMasterMappingExisting = await _modelUserMenuMappingRepository.GetMenuMappingById(UserMenuMappingId);
+            var menuMasterMappingExisting = await _modelUserMenuMappingRepository.GetMenuMappingById(userId);
 
             if (menuMasterMappingExisting == null)
             {
-                throw new Exception($"Menu with ID {UserMenuMappingId} not found.");
+                throw new Exception($"Menu Mapping not found for userId: {userId}");
             }
             menuMasterMappingExisting.MenuId = modelUserMenuMapping.MenuId;
             menuMasterMappingExisting.UserId = modelUserMenuMapping.UserId;
@@ -91,26 +91,25 @@ namespace MicroService_Template.Application.Services
 
             return menuMasterMappingExisting;
         }
-        public async Task<ModelUserMenuMapping> GetMenuMappingDetailsById(int Menuid)
+        public async Task<ModelUserMenuMapping> GetMenuMappingDetailsById(int userId)
         {
-            var menuDetails=await _modelUserMenuMappingRepository.GetMenuMappingById(Menuid);
+            var menuDetails = await _modelUserMenuMappingRepository.GetMenuMappingById(userId);
             if (menuDetails == null)
             {
-                throw new KeyNotFoundException($"Menu Mapping Id with ID {Menuid} not found.");
+                throw new KeyNotFoundException($"Menu Mapping Id with ID {userId} not found.");
             }
 
             return new ModelUserMenuMapping
             {
                 UserMenuMappingId = menuDetails.UserMenuMappingId,
                 UserId = menuDetails.UserId,
-                MenuId = menuDetails.MenuId,
+                MenuIds = menuDetails.MenuIds,
                 IsActive = menuDetails.IsActive,
                 InsertBy = menuDetails.InsertBy,
                 InsertDate = menuDetails.InsertDate,
                 UpdateBy = menuDetails.UpdateBy,
                 UpdateDate = menuDetails.UpdateDate,
-                User = menuDetails.User,
-                Menu = menuDetails.Menu
+                User = menuDetails.User
 
 
 
