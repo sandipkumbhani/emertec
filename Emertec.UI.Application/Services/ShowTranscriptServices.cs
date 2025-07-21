@@ -1,12 +1,6 @@
-﻿
-using Emertec.UI.Application.Interface;
+﻿using Emertec.UI.Application.Interface;
 using Emertec.UI.Domain.Interfaces;
 using MicroService_Template.Domain.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Emertec.UI.Application.Services
 {

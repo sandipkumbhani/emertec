@@ -1,12 +1,4 @@
-﻿
-using Emertec.UI.Domain.Models;
-using MicroService_Template.Domain.DTO;
-using MicroService_Template.Domain.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MicroService_Template.Domain.Model;
 
 namespace Emertec.UI.Application.Interface
 {
@@ -17,10 +9,8 @@ namespace Emertec.UI.Application.Interface
         Task<string> AddUserAsync(ModelUsers user);
         Task<string> UpdateUserAsync(ModelUsers model);
         Task<string> Deleteuserasync(int userid);
-
         //UserRole
         Task<List<ModelUserRole>> GetAllUserRoleAsync();
-
     }
 }
 

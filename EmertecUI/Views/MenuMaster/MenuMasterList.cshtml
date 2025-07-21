@@ -102,28 +102,6 @@
         </div>
     </div>
 </body>
-@* <body>
-    <button class="btn btn-primary me-2" style="width:95px;height:38px;" id="btnAddMenu">Add Menu</button>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Icon</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var user in MenuMastersList)
-            {
-                <tr>
-                    <td>@user.Name</td>
-                    <td>@user.Description</td>
-                    <td>@user.Icon</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</body> *@
 </html>
 <script type="text/javascript">
     $(document).on("click", "#btnAddMenu", AddMenuMaster);

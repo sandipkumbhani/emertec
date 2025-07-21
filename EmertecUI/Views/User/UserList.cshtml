@@ -3,7 +3,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     IList<MicroService_Template.Domain.Model.ModelUsers> UserList = ViewBag.UserList;
 }
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -116,31 +115,3 @@
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="~/js/record.js" defer></script>
-
-@* <body>
-    <button class="btn btn-primary me-2" style="width:95px;height:38px;" id="btnAddUser">Add User</button>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>User Role</th>
-                <th>Active</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var user in UserList)
-            {
-                <tr>
-                    <td>@user.Name</td>
-                    <td>@user.EmailId</td>
-                    <td>@user.UserRole.Name</td>
-                    <td>@user.IsActive</td>
-                    <a href="@Url.Action("Edit", "User", new { id = user.UserId })" class="btn btn-sm btn-warning">
-                        <i class="fas fa-edit"></i> Edit
-                    </a>
-                </tr>
-            }
-        </tbody>
-    </table>
-</body> *@

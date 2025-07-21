@@ -4,7 +4,6 @@ using Emertec.UI.Domain.Interfaces;
 using MicroService_Template.Domain.Model;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System.Net.Http;
 using System.Text;
 
 namespace Emertec.UI.Infrastructure.Provider
@@ -57,17 +56,13 @@ namespace Emertec.UI.Infrastructure.Provider
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<ModelUserRole>>(json)!;
         }
-
-
         public async Task<ModelUserMenuMapping> GetMenuMappingByIdAsync(int? userId)
         {
             var baseUrl = apiCredential.url + $"UserMenuMapping/GetMenuMappingById?userId={userId}";
             var response = await _httpClient.GetAsync(baseUrl);
             var jsonString = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ModelUserMenuMapping>(jsonString)!;
-
         }
-
         public async Task<string> UpdateMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
         {
             var baseUrl = $"{apiCredential.url}UserMenuMapping/Update-MenuMasterMapping/{modelUserMenuMapping.UserId}";
@@ -79,12 +74,7 @@ namespace Emertec.UI.Infrastructure.Provider
         {
             var baseUrl = apiCredential.url + $"UserMenuMapping/Delete-Menu-Mapping?userId={userId}";
             var response = await _httpClient.DeleteAsync(baseUrl);
-
-            if (!response.IsSuccessStatusCode)
-                throw new Exception($"Failed to delete Menu Mapping. Status code: {response.StatusCode}");
-
             return await response.Content.ReadAsStringAsync();
         }
-
     }
 }

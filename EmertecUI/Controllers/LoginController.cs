@@ -6,8 +6,6 @@ using System.IdentityModel.Tokens.Jwt;
 using Emertec.UI.Application.Interface;
 using Emertec.UI.Domain.Models;
 using Emertec.UI.Domain.Helper;
-using Microsoft.Extensions.Configuration;
-
 
 namespace EmertecUI.Controllers
 {
@@ -22,12 +20,10 @@ namespace EmertecUI.Controllers
             _configuration = configuration;
             applicationURL = new ApplicationURL(configuration);
         }
-
         public IActionResult Login()
         {
             return View("~/Views/Login/Login.cshtml");
         }
-
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel viewModel)
         {
@@ -51,9 +47,7 @@ namespace EmertecUI.Controllers
                     };
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(identity);
-
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
                     return Redirect("~/User/UserList");
                 }
                 else
@@ -68,11 +62,5 @@ namespace EmertecUI.Controllers
                 return View(viewModel);
             }
         }
-
-        public IActionResult MenuMaster()
-        {
-            return View();
-        }
-
     }
 }

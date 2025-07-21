@@ -1,6 +1,4 @@
-﻿
-using Emertec.UI.Application.Interface;
-using Emertec.UI.Application.Services;
+﻿using Emertec.UI.Application.Interface;
 using MicroService_Template.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,12 +7,10 @@ namespace EmertecUI.Controllers
     public class MenuMasterController : Controller
     {
         IMenuMasterServices _menuMasterServices;
-
         public MenuMasterController(IMenuMasterServices menuMasterServices)
         {
             _menuMasterServices = menuMasterServices;
         }
-
         public async Task<IActionResult> MenuMasterList()
         {
             IList<ModelMenuMaster> MenuMasterList = await _menuMasterServices.GetAllMenuMasterAsync();

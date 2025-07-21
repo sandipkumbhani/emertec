@@ -1,15 +1,8 @@
-﻿
-using Emertec.UI.Domain.Helper;
+﻿using Emertec.UI.Domain.Helper;
 using Emertec.UI.Domain.Interfaces;
-using MicroService_Template.Domain.Interface;
 using MicroService_Template.Domain.Model;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Emertec.UI.Infrastructure.Provider
 {

@@ -1,6 +1,4 @@
-﻿
-using Emertec.UI.Application.Interface;
-using Emertec.UI.Application.Services;
+﻿using Emertec.UI.Application.Interface;
 using MicroService_Template.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +9,6 @@ namespace EmertecUI.Controllers
         IMenuMappingServices _menuMappingServices;
         IUserServices _userServices;
         IMenuMasterServices _menuMasterServices;
-
         public MenuMappingController(IMenuMappingServices menuMappingServices, IUserServices userServices, IMenuMasterServices menuMasterServices)
         {
             _menuMappingServices = menuMappingServices;
@@ -21,7 +18,6 @@ namespace EmertecUI.Controllers
         public async Task<IActionResult> MenuMappingList()
         {
             IList<ModelUserMenuMapping> MenuMappingList = await _menuMappingServices.GetAllMenuMappingAsync();
-            //ViewBag.MenuMappingList = MenuMappingList;
             return View("~/Views/MenuMapping/MenuMappingList.cshtml", MenuMappingList);
         }
         [HttpGet]
@@ -42,16 +38,13 @@ namespace EmertecUI.Controllers
             await InitViewBag();
             string MenuIds = string.Empty;
             var selectedMenus = Request.Form["SelectedMenuIds"];
-
             if (selectedMenus.Count == 0)
             {
                 ModelState.AddModelError("", "Please select at least one menu.");
                 return View(modelUserMenuMapping);
             }
-
             MenuIds = string.Join(",", selectedMenus);
             modelUserMenuMapping.MenuIds = MenuIds;
-
             if (modelUserMenuMapping.UserMenuMappingId == 0)
             {
                 await _menuMappingServices.AddMenuMappingAsync(modelUserMenuMapping);
@@ -60,7 +53,6 @@ namespace EmertecUI.Controllers
             {
                 await _menuMappingServices.UpdateMenuMappingAsync(modelUserMenuMapping);
             }
-
             return RedirectToAction("MenuMappingList");
         }
         [HttpGet]

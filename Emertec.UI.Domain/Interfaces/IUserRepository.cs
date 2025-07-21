@@ -1,6 +1,4 @@
-﻿using Emertec.UI.Domain.Models;
-using MicroService_Template.Domain.DTO;
-using MicroService_Template.Domain.Model;
+﻿using MicroService_Template.Domain.Model;
 
 namespace Emertec.UI.Domain.Interfaces
 {
@@ -13,6 +11,5 @@ namespace Emertec.UI.Domain.Interfaces
         Task<string> DeleteUserAsync(int id);
         //UserRole
         Task<List<ModelUserRole>> GetAllUserRoleAsync();
-       
     }
 }

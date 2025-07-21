@@ -1,8 +1,6 @@
 ﻿using Emertec.UI.Domain.Comman;
 using Emertec.UI.Domain.Helper;
 using Emertec.UI.Domain.Interfaces;
-using Emertec.UI.Domain.Models;
-using MicroService_Template.Domain.DTO;
 using MicroService_Template.Domain.Model;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -50,16 +48,6 @@ namespace Emertec.UI.Infrastructure.Provider
             }
             return "User created successfully.";
         }
-        //user role
-        public async Task<List<ModelUserRole>> GetAllUserRoleAsync()
-        {
-            var baseUrl = apiCredential.url + "UserRole/get-all-userRole";
-            var response = await _httpClient.GetAsync(baseUrl);
-            response.EnsureSuccessStatusCode();
-            var json = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<ModelUserRole>>(json)!;
-        }
-
         public async Task<ModelUsers> GetUsersByIdAsync(int? id)
         {
             if (id == null)
@@ -74,7 +62,6 @@ namespace Emertec.UI.Infrastructure.Provider
             var jsonString = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ModelUsers>(jsonString)!;
         }
-
         public async Task<string> UpdateUserAsync(ModelUsers user)
         {
             var baseUrl = apiCredential.url + $"User/Update-User/{user.UserId}";
@@ -95,6 +82,15 @@ namespace Emertec.UI.Infrastructure.Provider
                 throw new Exception($"Failed to delete user. Status code: {response.StatusCode}");
             return await response.Content.ReadAsStringAsync();
 
+        }
+        //user role
+        public async Task<List<ModelUserRole>> GetAllUserRoleAsync()
+        {
+            var baseUrl = apiCredential.url + "UserRole/get-all-userRole";
+            var response = await _httpClient.GetAsync(baseUrl);
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<ModelUserRole>>(json)!;
         }
     }
 }

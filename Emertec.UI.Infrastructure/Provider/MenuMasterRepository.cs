@@ -1,16 +1,10 @@
-﻿
-using Emertec.UI.Domain.Comman;
+﻿using Emertec.UI.Domain.Comman;
 using Emertec.UI.Domain.Helper;
 using Emertec.UI.Domain.Interfaces;
 using MicroService_Template.Domain.Model;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Emertec.UI.Infrastructure.Provider
 {
@@ -54,7 +48,6 @@ namespace Emertec.UI.Infrastructure.Provider
             }
             return "Menu Added successfully.";
         }
-
         public async Task<ModelMenuMaster> GetMenuByIdAsync(int? id)
         {
             var baseUrl = apiCredential.url + $"MenuMaster/{id}";
@@ -70,7 +63,6 @@ namespace Emertec.UI.Infrastructure.Provider
             var response = await _httpClient.PutAsync(baseUrl, jsonContent);
             return await response.Content.ReadAsStringAsync();
         }
-
         public async Task<string> DeletemenuAsync(int id)
         {
             var baseUrl = apiCredential.url + $"MenuMaster/Delete-Menu-Master?id={id}";

@@ -1,6 +1,4 @@
-﻿
-using Emertec.UI.Application.Interface;
-using Emertec.UI.Application.Services;
+﻿using Emertec.UI.Application.Interface;
 using MicroService_Template.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,25 +11,20 @@ namespace EmertecUI.Controllers
         {
             _showTranscriptServices = showTranscriptServices;
         }
-
         [HttpGet]
         public async Task<IActionResult> ShowTranscript(string? telephoneNo)
         {
             if (string.IsNullOrWhiteSpace(telephoneNo))
             {
-                //ViewBag.Error = "Please enter a valid telephone number.";
                 return View(new ModelDimJson());
             }
-
             var modelDimJson = await _showTranscriptServices.GetTranscriptsByTelephoneNoAsync(telephoneNo);
             if (modelDimJson == null || modelDimJson.Sentences == null || !modelDimJson.Sentences.Any())
             {
                 ViewBag.Error = "Transcript not found.";
                 return View(new ModelDimJson());
             }
-
             return View(modelDimJson);
         }
-
     }
 }

@@ -4,7 +4,6 @@ using Emertec.UI.Domain.Interfaces;
 using Emertec.UI.Domain.Models;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using Quartz.Impl.Triggers;
 using System.Text;
 
 namespace Emertec.UI.Infrastructure.Provider

@@ -1,8 +1,5 @@
-﻿
-using Emertec.UI.Application.Interface;
+﻿using Emertec.UI.Application.Interface;
 using Emertec.UI.Domain.Interfaces;
-using Emertec.UI.Domain.Models;
-using MicroService_Template.Domain.DTO;
 using MicroService_Template.Domain.Model;
 
 namespace Emertec.UI.Application.Services
@@ -10,7 +7,6 @@ namespace Emertec.UI.Application.Services
     public class UserServices : IUserServices
     {
         private readonly IUserRepository _userRepository;
-
         public UserServices(IUserRepository userRepository)
         {
             _userRepository = userRepository;
@@ -35,12 +31,10 @@ namespace Emertec.UI.Application.Services
         {
             return await _userRepository.DeleteUserAsync(userid);
         }
-
         //UsrRole
         public async Task<List<ModelUserRole>> GetAllUserRoleAsync()
         {
             return await _userRepository.GetAllUserRoleAsync();
         }
     }
-
 }

@@ -1,5 +1,4 @@
 ﻿using Emertec.UI.Application.Interface;
-using Emertec.UI.Application.Services;
 using MicroService_Template.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,12 +7,10 @@ namespace EmertecUI.Controllers
     public class UserController : Controller
     {
         IUserServices _userServices;
-
         public UserController(IUserServices userServices)
         {
             _userServices = userServices;
         }
-
         public async Task<IActionResult> UserList()
         {
             IList<ModelUsers> UserList = await _userServices.GetAllUsersAsync();
@@ -75,7 +72,6 @@ namespace EmertecUI.Controllers
                 ViewBag.RoleList = await _userServices.GetAllUserRoleAsync();
                 return View(modelUsers);
             }
-
             if (modelUsers.UserId == 0)
             {
                 await _userServices.AddUserAsync(modelUsers);
@@ -83,11 +79,9 @@ namespace EmertecUI.Controllers
             else
             {
                 await _userServices.UpdateUserAsync(modelUsers);
-
             }
             return RedirectToAction("UserList");
         }
-
         [HttpGet]
         public async Task<IActionResult> DeleteUser(int id)
         {
@@ -102,7 +96,6 @@ namespace EmertecUI.Controllers
                 return View("Error");
             }
         }
-
         private async Task InitViewBag()
         {
             IList<ModelUserRole> userRoles = await _userServices.GetAllUserRoleAsync();

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>@ViewData["Title"] - Emertec.UI</title>
+    <title>@ViewData["Title"] - Emertec.UI</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
@@ -51,53 +51,84 @@
         </nav>
     </header>
 
-	<body data-sidenav-size="default" style="background:#F2F5F9;">
-		<div class="wrapper">
+    <body data-sidenav-size="default" style="background:#F2F5F9;">
+        <div class="wrapper">
 
-			<div class="topbar container-fluid">
-				<div class="d-flex align-items-center gap-lg-2 gap-1">
-					<div class="logo-topbar">
-						<a href="#">
-							<span class="logo-sm" style="font-size:x-large;color:#0466C8;">
-								<i class="ri-first-aid-kit-fill" style="font-size:35px"></i>
-							</span>
-						</a>
-					</div>
-					<button class="button-toggle-menu">
-						<i class="ri-menu-line"></i>
-					</button>
-				</div>
-			</div>
+            <div class="topbar container-fluid">
+                <div class="d-flex align-items-center gap-lg-2 gap-1">
+                    <div class="logo-topbar">
+                        <a href="#">
+                            <span class="logo-sm" style="font-size:x-large;color:#0466C8;">
+                                <i class="ri-first-aid-kit-fill" style="font-size:35px"></i>
+                            </span>
+                        </a>
+                    </div>
+                    <button class="button-toggle-menu">
+                        <i class="ri-menu-line"></i>
+                    </button>
+                </div>
+            </div>
 
-			<div class="leftside-menu">
-				<div class="left-toplogo">
-					<a href="#" class="logo logo-light">
-						<span class="logo-lg" style="font-size:x-large;color:#0466C8;">
-							@* <i class="ri-first-aid-kit-line" style="font-size:35px"></i> *@
-							<b>Emertec</b>
-						</span>
-						<span class="logo-sm" style="font-size:x-large;color:#0466C8;">
-							<i class="ri-first-aid-kit-fill" style="font-size:35px"></i>
-						</span>
-					</a>
-					<button type="button" class="sidebar-toggle">
-						<i class="ri-arrow-left-double-line"></i>
-					</button>
-					<button type="button" class="sidebar-close-btn">
-						<i class="ri-close-line"></i>
-					</button>
-				</div>
-				<div class="leftbar custom-scroll">
-					<div class="left-sidebar-wrap">
-						<div class="sidebar-menu-area">
-							<!--- Sidemenu -->
-							@await Component.InvokeAsync("SidebarMenu")
-							<!--- End Sidemenu -->
-							<div class="clearfix"></div>
-						</div>
-					</div>
-				</div>
-				@* <div class="left-footer">
+            <div class="leftside-menu">
+                <div class="left-toplogo">
+                    <a href="#" class="logo logo-light">
+                        <span class="logo-lg" style="font-size:x-large;color:#0466C8;">
+                            @* <i class="ri-first-aid-kit-line" style="font-size:35px"></i> *@
+                            <b>Emertec</b>
+                        </span>
+                        <span class="logo-sm" style="font-size:x-large;color:#0466C8;">
+                            <i class="ri-first-aid-kit-fill" style="font-size:35px"></i>
+                        </span>
+                    </a>
+                    <button type="button" class="sidebar-toggle">
+                        <i class="ri-arrow-left-double-line"></i>
+                    </button>
+                    <button type="button" class="sidebar-close-btn">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+                <div class="leftbar custom-scroll">
+                    <div class="left-sidebar-wrap">
+                        <div class="sidebar-menu-area">
+                            <!--- Sidemenu -->
+                            <ul id="leftside-menu-container" class="side-nav" style="padding:initial;">
+                                <li class="side-nav-item">
+                                    <a class="nav-link" asp-controller="User" asp-action="UserList">
+                                        <i class="ri-time-line"></i>
+                                        <i class="ri-time-fill"></i>
+                                        <span> Users </span>
+                                    </a>
+                                </li>
+                                <li class="side-nav-item">
+                                    <a class="nav-link" asp-controller="MenuMaster" asp-action="MenuMasterList">
+                                        <i class="ri-time-line"></i>
+                                        <i class="ri-time-fill"></i>
+                                        <span> Menu Master </span>
+                                    </a>
+                                </li>
+                                <li class="side-nav-item">
+                                    <a class="nav-link" asp-controller="MenuMapping" asp-action="MenuMappingList">
+                                        <i class="ri-time-line"></i>
+                                        <i class="ri-time-fill"></i>
+                                        <span> User MenuMapping </span>
+                                    </a>
+                                </li>
+                                <li class="side-nav-item">
+                                    <a class="nav-link" asp-controller="ShowTranscript" asp-action="ShowTranscript">
+                                        <i class="ri-time-line"></i>
+                                        <i class="ri-time-fill"></i>
+                                        <span> Show Transcript </span>
+                                    </a>
+                                </li>
+
+
+                            </ul>
+                            <!--- End Sidemenu -->
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                @* <div class="left-footer">
 					<ul class="side-nav">
 						<li class="side-nav-item">
 							<a href="@ViewBag.appUrl/Dashboard/Dashboard" class="side-nav-link">
@@ -107,42 +138,42 @@
 						</li>
 					</ul>
 				</div> *@
-			</div>
-			<div class="content-page">
-				<div class="content">
-					@RenderBody()
-				</div>
-			</div>
-		</div>
-		<!-- Jquery Min JS -->
-		<script src="~/js/jquery.min.js"></script>
-		<!-- Bootstrap Bundle JS -->
-		<script src="~/js/bootstrap.bundle.min.js"></script>
-		<!-- SimpleBar JS -->
-		<script src="~/js/simplebar.min.js"></script>
-		<!-- Select2 JS -->
-		<script src="~/js/select2.min.js"></script>
-		<!-- intl-tel-input JS -->
-		<script src="~/js/intlTelInput.min.js"></script>
-		<!-- Dropzone JS -->
-		<script src="~/js/dropzone.min.js"></script>
-		<!-- Repeater JS -->
-		<script src="~/js/jquery.repeater.min.js"></script>
-		<!-- Datatables js -->
-		<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-		<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-		<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
-		<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
-		<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
-		<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-		<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
-		<!-- Datatable Init js -->
-		<script src="~/js/datatable-init.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"> </script>
-		<!-- Script App JS -->
-		<script src="~/js/script-app.js"></script>
-		@RenderSection("Scripts", required: false)
-	</body>
+            </div>
+            <div class="content-page">
+                <div class="content">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+        <!-- Jquery Min JS -->
+        <script src="~/js/jquery.min.js"></script>
+        <!-- Bootstrap Bundle JS -->
+        <script src="~/js/bootstrap.bundle.min.js"></script>
+        <!-- SimpleBar JS -->
+        <script src="~/js/simplebar.min.js"></script>
+        <!-- Select2 JS -->
+        <script src="~/js/select2.min.js"></script>
+        <!-- intl-tel-input JS -->
+        <script src="~/js/intlTelInput.min.js"></script>
+        <!-- Dropzone JS -->
+        <script src="~/js/dropzone.min.js"></script>
+        <!-- Repeater JS -->
+        <script src="~/js/jquery.repeater.min.js"></script>
+        <!-- Datatables js -->
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+        <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+        <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+        <!-- Datatable Init js -->
+        <script src="~/js/datatable-init.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"> </script>
+        <!-- Script App JS -->
+        <script src="~/js/script-app.js"></script>
+        @RenderSection("Scripts", required: false)
+    </body>
     <footer class="border-top footer text-muted mt-3">
         <div class="container">
             &copy; 2025 - Emertec - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
