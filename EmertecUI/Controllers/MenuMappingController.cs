@@ -35,9 +35,6 @@ namespace EmertecUI.Controllers
             }
             var user = await _menuMappingServices.GetMenuMappingByIdAsync(id.Value);
             return View("~/Views/MenuMapping/AddMenuMapping.cshtml", user);
-            //ViewBag.NameMsg = string.Empty;
-            //ModelUserMenuMapping modelUserMenuMapping = new ModelUserMenuMapping();
-            //return View("~/Views/MenuMapping/AddMenuMapping.cshtml", modelUserMenuMapping);
         }
         [HttpPost]
         public async Task<IActionResult> AddMenuMapping(ModelUserMenuMapping modelUserMenuMapping)
@@ -67,16 +64,16 @@ namespace EmertecUI.Controllers
             return RedirectToAction("MenuMappingList");
         }
         [HttpGet]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(int userId)
         {
             try
             {
-                await _menuMappingServices.DeleteMenuMappingAsync(id);
-                return RedirectToAction("UserList");
+                await _menuMappingServices.DeleteMenuMappingAsync(userId);
+                return RedirectToAction("MenuMappingList");
             }
             catch (KeyNotFoundException ex)
             {
-                ViewBag.ErrorMessage = $"User with ID {id} not found: {ex.Message}";
+                ViewBag.ErrorMessage = $"User with ID {userId} not found: {ex.Message}";
                 return View("Error");
             }
         }

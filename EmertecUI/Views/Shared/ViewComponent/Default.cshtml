@@ -1,0 +1,14 @@
+﻿@model List<MicroService_Template.Domain.Model.ModelMenuMaster>
+
+<ul id="leftside-menu-container" class="side-nav" style="padding:initial;">
+    @foreach (var menu in Model)
+    {
+        <li class="side-nav-item">
+            <a class="nav-link" asp-controller="@menu.Name" asp-action="@($"{menu.Name}List")">
+                <i class="ri-time-line"></i>
+                <span>@menu.Name</span>
+            </a>
+        </li>
+    }
+</ul>
+</ul>

@@ -59,24 +59,25 @@ namespace Emertec.UI.Infrastructure.Provider
         }
 
 
-        public async Task<ModelUserMenuMapping> GetMenuMappingByIdAsync(int? id)
+        public async Task<ModelUserMenuMapping> GetMenuMappingByIdAsync(int? userId)
         {
-            var baseUrl = apiCredential.url + $"UserMenuMapping/GetMenuMappingById?Menuid={id}";
+            var baseUrl = apiCredential.url + $"UserMenuMapping/GetMenuMappingById?userId={userId}";
             var response = await _httpClient.GetAsync(baseUrl);
             var jsonString = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ModelUserMenuMapping>(jsonString)!;
+
         }
 
         public async Task<string> UpdateMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
         {
-            var baseUrl = $"{apiCredential.url}UserMenuMapping/Update-MenuMasterMapping/{modelUserMenuMapping.UserMenuMappingId}";
+            var baseUrl = $"{apiCredential.url}UserMenuMapping/Update-MenuMasterMapping/{modelUserMenuMapping.UserId}";
             var jsonContent = new StringContent(JsonConvert.SerializeObject(modelUserMenuMapping), Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync(baseUrl, jsonContent);
             return await response.Content.ReadAsStringAsync();
         }
-        public async Task<string> DeleteMenuMappingAsync(int id)
+        public async Task<string> DeleteMenuMappingAsync(int userId)
         {
-            var baseUrl = apiCredential.url + $"UserMenuMapping/Delete-Menu-Mapping/id={id}";
+            var baseUrl = apiCredential.url + $"UserMenuMapping/Delete-Menu-Mapping?userId={userId}";
             var response = await _httpClient.DeleteAsync(baseUrl);
 
             if (!response.IsSuccessStatusCode)

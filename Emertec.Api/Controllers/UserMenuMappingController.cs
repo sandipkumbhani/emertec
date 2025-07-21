@@ -35,32 +35,29 @@ namespace MicroService_Template.Controllers
             return Ok(menuMaster);
         }
         [HttpDelete("Delete-Menu-Mapping")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int userId)
         {
             try
             {
-                _modelUserMenuMappingService.DeleteMenuMappingById(id);
-                return Ok($"User with ID {id} has been deleted successfully.");
+                await _modelUserMenuMappingService.DeleteMenuMappingById(userId);
+                return Ok($"User with ID {userId} has been deleted successfully.");
             }
             catch (KeyNotFoundException ex)
             {
-                return Ok($"User with ID {id} not found: {ex.Message}");
+                return Ok($"User with ID {userId} not found: {ex.Message}");
             }
         }
 
 
-        [HttpPut("Update-MenuMasterMapping/{userMenuMappingId}")]
-        public async Task<IActionResult> UpdateMenuAsync(int userMenuMappingId, [FromBody] ModelUserMenuMapping modelUserMenuMapping)
+        [HttpPut("Update-MenuMasterMapping/{userId}")]
+        public async Task<IActionResult> UpdateMenuAsync(int userId, [FromBody] ModelUserMenuMapping modelUserMenuMapping)
         {
-            var existingUser = await _modelUserMenuMappingService.GetMenuMappingDetailsById(userMenuMappingId);
-            if (existingUser == null)
-            {
-                return NotFound($"Menu Mapping with ID {userMenuMappingId} not found.");
-            }
+            if (userId != modelUserMenuMapping.UserId)
+                return BadRequest("User ID mismatch.");
 
             try
             {
-                var updated = await _modelUserMenuMappingService.UpdateMenuMappingAsync(userMenuMappingId, modelUserMenuMapping);
+                var updated = await _modelUserMenuMappingService.UpdateMenuMappingAsync(userId, modelUserMenuMapping);
                 return Ok(updated);
             }
             catch (Exception ex)
@@ -70,20 +67,16 @@ namespace MicroService_Template.Controllers
         }
 
         [HttpGet("GetMenuMappingById")]
-        public async Task<IActionResult> GetMenuMappingById(int Menuid)
+        public async Task<IActionResult> GetMenuMappingById(int userId)
         {
             try
             {
-                var result = await _modelUserMenuMappingService.GetMenuMappingDetailsById(Menuid);
-                if (result == null)
-                {
-                    return NotFound("Menu Mapping Id Not Found");
-                }
-                return Ok(result); 
+                var result = await _modelUserMenuMappingService.GetMenuMappingDetailsById(userId);
+                return Ok(result);
             }
             catch (KeyNotFoundException)
             {
-                return NotFound("Menu Mapping Id Not Found");
+                return NotFound("Menu Mapping not found.");
             }
         }
 

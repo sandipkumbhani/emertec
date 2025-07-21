@@ -31,13 +31,13 @@ namespace Emertec.UI.Application.Services
         {
             return await _menuMappingRepository.UpdateMenuMappingAsync(modelUserMenuMapping);
         }
-        public async Task<string> DeleteMenuMappingAsync(int menuMappingId)
+        public async Task<string> DeleteMenuMappingAsync(int userId)
         {
-            return await _menuMappingRepository.DeleteMenuMappingAsync(menuMappingId);
+            return await _menuMappingRepository.DeleteMenuMappingAsync(userId);
         }
-        public async Task<ModelUserMenuMapping> GetMenuMappingByIdAsync(int menuMappingId)
+        public async Task<ModelUserMenuMapping> GetMenuMappingByIdAsync(int userId)
         {
-            return await _menuMappingRepository.GetMenuMappingByIdAsync(menuMappingId);
+            return await _menuMappingRepository.GetMenuMappingByIdAsync(userId);
         }
     }
 }

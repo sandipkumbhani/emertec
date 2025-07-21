@@ -30,7 +30,7 @@
                                     </div>
                                     <div class="col-xl-4 col-lg-6" style="align-content:center;">
                                         <div class="item-input">
-                                        <button type="submit" class="btn btn-primary" style="margin-top:3.5%;">Search</button>
+                                            <button type="submit" class="btn btn-primary" style="margin-top:3.5%;">Search</button>
                                         </div>
                                     </div>
                                 </form>
@@ -42,6 +42,10 @@
 
                                 @if (Model?.Sentences != null && Model.Sentences.Any())
                                 {
+                                    <label class="form-label col-form-label required fw-semibold fs-6">Sentence</label>
+                                    <button type="button" class="btn btn-outline-secondary" onclick="copyAllSentences()" title="Copy All Sentences">
+                                        <i class="bi bi-copy"></i>
+                                    </button>
                                     <ul class="list-group mt-2">
                                         @foreach (var sentence in Model.Sentences)
                                         {
@@ -56,5 +60,29 @@
             </div>
         </div>
     </div>
+    <script>
+        function copyAllSentences() {
+            const sentences = [];
+            document.querySelectorAll(".userinput").forEach(function (el) {
+                if (el.tagName.toLowerCase() === "li") {
+                    sentences.push(el.textContent.trim());
+                }
+            });
+
+            if (sentences.length === 0) {
+                alert("No sentences to copy.");
+                return;
+            }
+
+            navigator.clipboard.writeText(sentences.join("\n"))
+                .then(() => {
+                    alert("Copied all sentences to clipboard!");
+                })
+                .catch(err => {
+                    console.error("Copy failed: ", err);
+                    alert("Failed to copy.");
+                });
+        }
+    </script>
 </body>
 </html>

@@ -91,38 +91,7 @@
 					<div class="left-sidebar-wrap">
 						<div class="sidebar-menu-area">
 							<!--- Sidemenu -->
-							<ul id="leftside-menu-container" class="side-nav" style="padding:initial;">
-								<li class="side-nav-item">
-									<a class="nav-link" asp-controller="User" asp-action="UserList">
-										<i class="ri-time-line"></i>
-										<i class="ri-time-fill"></i>
-										<span> Users </span>
-									</a>
-								</li>
-								<li class="side-nav-item">
-									<a class="nav-link" asp-controller="MenuMaster" asp-action="MenuMasterList">
-										<i class="ri-time-line"></i>
-										<i class="ri-time-fill"></i>
-										<span> Menu Master </span>
-									</a>
-								</li>
-								<li class="side-nav-item">
-									<a class="nav-link" asp-controller="MenuMapping" asp-action="MenuMappingList">
-										<i class="ri-time-line"></i>
-										<i class="ri-time-fill"></i>
-										<span> User MenuMapping </span>
-									</a>
-								</li>
-								<li class="side-nav-item">
-									<a class="nav-link" asp-controller="ShowTranscript" asp-action="ShowTranscript">
-										<i class="ri-time-line"></i>
-										<i class="ri-time-fill"></i>
-										<span> Show Transcript </span>
-									</a>
-								</li>
-
-
-							</ul>
+							@await Component.InvokeAsync("SidebarMenu")
 							<!--- End Sidemenu -->
 							<div class="clearfix"></div>
 						</div>
@@ -186,8 +155,39 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+@* 
+<ul id="leftside-menu-container" class="side-nav" style="padding:initial;">
+	<li class="side-nav-item">
+		<a class="nav-link" asp-controller="User" asp-action="UserList">
+			<i class="ri-time-line"></i>
+			<i class="ri-time-fill"></i>
+			<span> Users </span>
+		</a>
+	</li>
+	<li class="side-nav-item">
+		<a class="nav-link" asp-controller="MenuMaster" asp-action="MenuMasterList">
+			<i class="ri-time-line"></i>
+			<i class="ri-time-fill"></i>
+			<span> Menu Master </span>
+		</a>
+	</li>
+	<li class="side-nav-item">
+		<a class="nav-link" asp-controller="MenuMapping" asp-action="MenuMappingList">
+			<i class="ri-time-line"></i>
+			<i class="ri-time-fill"></i>
+			<span> User MenuMapping </span>
+		</a>
+	</li>
+	<li class="side-nav-item">
+		<a class="nav-link" asp-controller="ShowTranscript" asp-action="ShowTranscript">
+			<i class="ri-time-line"></i>
+			<i class="ri-time-fill"></i>
+			<span> Show Transcript </span>
+		</a>
+	</li>
 
 
+</ul> *@
 
 @* <div class="container-fluid">
     <div class="row">

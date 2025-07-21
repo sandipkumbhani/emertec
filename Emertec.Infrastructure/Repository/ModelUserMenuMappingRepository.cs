@@ -44,44 +44,41 @@ namespace MicroService_Template.Infrastructure.Repository
         }
         public async Task<ModelUserMenuMapping?> GetMenuMappingById(int UserId)
         {
-            //ModelUserMenuMapping modelUserMenuMapping = new ModelUserMenuMapping();
-            //IList<ModelUserMenuMapping> ModelUserMenuMappingList = await _context.modelUserMenuMappings.Where(e => e.UserId == UserId).ToListAsync();
-            //if (ModelUserMenuMappingList.Count > 0)
-            //{
-            //    modelUserMenuMapping = ModelUserMenuMappingList.First();
-            //    string MenuIds = string.Empty;
-            //    foreach (var ModelUserMenuMapping in ModelUserMenuMappingList)
-            //    {
-            //        MenuIds += ModelUserMenuMapping.MenuId.ToString() + ",";
-            //    }
-            //    MenuIds = MenuIds.Substring(0, MenuIds.Length - 1);
-            //    modelUserMenuMapping.MenuIds = MenuIds;
-            //}
-            //return modelUserMenuMapping;
-            var mappings = await _context.modelUserMenuMappings
-       .Where(m => m.UserId == UserId && m.IsActive)
+            var userMenuMappings = await _context.modelUserMenuMappings
+       .Where(x => x.UserId == UserId && x.IsActive)
        .ToListAsync();
 
-            var model = new ModelUserMenuMapping
-            {
-                UserId = UserId,
-                MenuIds = string.Join(",", mappings.Select(m => m.MenuId)),
-                UserMenuMappingId = mappings.FirstOrDefault()?.UserMenuMappingId ?? 0
-            };
+            if (!userMenuMappings.Any()) return null;
 
-            return model;
+            var firstRecord = userMenuMappings.First();
+
+            // Combine all MenuIds as string for UI display
+            firstRecord.MenuIds = string.Join(",", userMenuMappings.Select(x => x.MenuId));
+
+            return firstRecord;
         }
-
+        public async Task<List<ModelUserMenuMapping>> GetAllActiveMappingsByUserIdAsync(int userId)
+        {
+            return await _context.modelUserMenuMappings
+                .Where(x => x.UserId == userId && x.IsActive)
+                .ToListAsync();
+        }
         public async Task DeleteMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
         {
             var existingMenu = await _context.modelUserMenuMappings
-                .FirstOrDefaultAsync(m => m.UserMenuMappingId == modelUserMenuMapping.UserMenuMappingId);
+        .Where(x => x.UserId == modelUserMenuMapping.UserId && x.IsActive)
+        .ToListAsync();
 
-            if (existingMenu != null)
+            if (!existingMenu.Any()) return;
+
+            foreach (var mapping in existingMenu)
             {
-                existingMenu.IsActive = false;
-                await _context.SaveChangesAsync();
+                mapping.IsActive = false;
+                mapping.UpdateBy = 1;
+                mapping.UpdateDate = DateTime.UtcNow;
             }
+            _context.modelUserMenuMappings.UpdateRange(existingMenu);
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdatMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)

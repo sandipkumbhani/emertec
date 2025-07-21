@@ -12,8 +12,8 @@ namespace Emertec.UI.Application.Interface
     {
         Task<List<ModelUserMenuMapping>> GetAllMenuMappingAsync();
         Task<string> AddMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping);
-        Task<ModelUserMenuMapping> GetMenuMappingByIdAsync(int menuMappingId);
-        Task<string> DeleteMenuMappingAsync(int menuMappingId);
+        Task<ModelUserMenuMapping> GetMenuMappingByIdAsync(int userId);
+        Task<string> DeleteMenuMappingAsync(int userId);
         Task<string> UpdateMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping);
     }
 }

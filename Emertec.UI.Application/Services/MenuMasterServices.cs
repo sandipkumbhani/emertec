@@ -38,5 +38,6 @@ namespace Emertec.UI.Application.Services
         {
             return await _menuMasterRepository.DeletemenuAsync(menuId);
         }
+
     }
 }

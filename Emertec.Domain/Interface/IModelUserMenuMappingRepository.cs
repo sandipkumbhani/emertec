@@ -14,7 +14,7 @@ namespace MicroService_Template.Domain.Interface
         Task<ModelUserMenuMapping?> GetMenuMappingById(int menuMasterid);
         Task DeleteMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping);
         Task UpdatMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping);
-
+        Task<List<ModelUserMenuMapping>> GetAllActiveMappingsByUserIdAsync(int userId);
 
     }
 }
