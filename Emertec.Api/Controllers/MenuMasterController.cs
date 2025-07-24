@@ -72,13 +72,27 @@ namespace MicroService_Template.Controllers
                 }
             }
         }
-        [HttpGet("{id}")]
+        [HttpGet("GetByMenuId")]
         public async Task<IActionResult> GetById(int id)
 
         {
             try
             {
                 var menumaster = await _modelMenuMasterService.GetMenuMsaterById(id);
+                return Ok(menumaster);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+
+        }
+        [HttpGet("GetMenusByUserId")]
+        public async Task<IActionResult> GetMenusByUserId(int userId)
+        {
+            try
+            {
+                var menumaster = await _modelMenuMasterService.GetMenusByUserIdAsync(userId);
                 return Ok(menumaster);
             }
             catch (KeyNotFoundException ex)

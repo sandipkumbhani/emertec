@@ -11,7 +11,7 @@ namespace Emertec.UI.Application.Services
         {
             _loginRepository = loginRepository;
         }
-        public async Task<string> Login(LoginViewModel model)
+        public async Task<ResponseToken> Login(LoginViewModel model)
         {
             return await _loginRepository.CreateUserLoginAsync(model);
         }

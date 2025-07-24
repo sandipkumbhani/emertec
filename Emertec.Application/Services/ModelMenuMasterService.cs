@@ -8,6 +8,9 @@ namespace MicroService_Template.Application.Services
     public class ModelMenuMasterService : IModelMenuMasterService
     {
         private readonly IModelMenuMasterRepository _modelMenuMasterRepository;
+
+        public object ExceptionUtilities { get; private set; }
+
         public ModelMenuMasterService(IModelMenuMasterRepository modelMenuMasterRepository)
         {
             _modelMenuMasterRepository = modelMenuMasterRepository;
@@ -92,5 +95,14 @@ namespace MicroService_Template.Application.Services
             return menuMaster;
         }
 
+        public async Task<List<ModelMenuMaster>> GetMenusByUserIdAsync(long userId)
+        {
+            var menu = await _modelMenuMasterRepository.GetMenusByUserIdAsync(userId);
+            if (menu == null)
+            {
+                throw new KeyNotFoundException($"Menu Mater with ID {userId} not found.");
+            }
+            return menu;
+        }
     }
 }

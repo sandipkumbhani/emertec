@@ -50,7 +50,7 @@ namespace Emertec.UI.Infrastructure.Provider
         }
         public async Task<ModelMenuMaster> GetMenuByIdAsync(int? id)
         {
-            var baseUrl = apiCredential.url + $"MenuMaster/{id}";
+            var baseUrl = apiCredential.url + $"MenuMaster/GetByMenuId?id={id}";
             var response = await _httpClient.GetAsync(baseUrl);
             var jsonString = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ModelMenuMaster>(jsonString)!;
@@ -68,6 +68,13 @@ namespace Emertec.UI.Infrastructure.Provider
             var baseUrl = apiCredential.url + $"MenuMaster/Delete-Menu-Master?id={id}";
             var response = await _httpClient.DeleteAsync(baseUrl);
             return await response.Content.ReadAsStringAsync();
+        }
+        public async Task<List<ModelMenuMaster>> GetMenusByUserIdAsync(long userId)
+        {
+            var baseUrl = apiCredential.url + $"MenuMaster/GetMenusByUserId?userId={userId}";
+            var response = await _httpClient.GetAsync(baseUrl);
+            var jsonString = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<ModelMenuMaster>>(jsonString)!;
         }
     }
 }

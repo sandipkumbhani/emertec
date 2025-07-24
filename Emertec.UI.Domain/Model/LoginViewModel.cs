@@ -14,6 +14,9 @@ namespace Emertec.UI.Domain.Models
     }
     public class ResponseToken
     {
-        public string? Token { get; set; }
+        public string Token { get; set; } = "";
+        public int UserId { get; set; }
+        public string Username { get; set; } = "";
+        public string EmailId { get; set; } = "";
     }
 }

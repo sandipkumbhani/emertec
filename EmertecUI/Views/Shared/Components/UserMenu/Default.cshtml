@@ -1,0 +1,11 @@
+﻿@model List<MicroService_Template.Domain.Model.ModelMenuMaster>
+
+
+@foreach (var menu in Model)
+{
+    <li class="nav-item">
+        <a class="nav-link" asp-controller="MenuMaster" asp-action="MenuMasterList">
+            @menu.Name
+        </a>
+    </li>
+}

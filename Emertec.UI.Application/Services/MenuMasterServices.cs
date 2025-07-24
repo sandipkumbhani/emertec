@@ -31,5 +31,9 @@ namespace Emertec.UI.Application.Services
         {
             return await _menuMasterRepository.DeletemenuAsync(menuId);
         }
+        public async Task<List<ModelMenuMaster>> GetMenusByUserIdAsync(long userId)
+        {
+            return await _menuMasterRepository.GetMenusByUserIdAsync(userId);
+        }
     }
 }

@@ -4,7 +4,7 @@ namespace Emertec.UI.Application.Interface
 {
     public interface ILoginServices
     {
-        Task<string> Login(LoginViewModel model);
+        Task<ResponseToken> Login(LoginViewModel model);
     }
 }
 

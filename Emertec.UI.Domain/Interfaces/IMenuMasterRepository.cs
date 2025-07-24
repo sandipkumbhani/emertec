@@ -9,5 +9,6 @@ namespace Emertec.UI.Domain.Interfaces
         Task<string> AddMenuAsync(ModelMenuMaster modelMenuMaster);
         Task<string> UpdateMenuAsync(ModelMenuMaster menuMaster);
         Task<string> DeletemenuAsync(int id);
+        Task<List<ModelMenuMaster>> GetMenusByUserIdAsync(long userId);
     }
 }

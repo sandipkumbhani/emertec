@@ -19,7 +19,7 @@ namespace Emertec.UI.Infrastructure.Provider
             _configuration = configuration;
             apiCredential = new APICredential(configuration);
         }
-        public async Task<string> CreateUserLoginAsync(LoginViewModel userModel)
+        public async Task<ResponseToken> CreateUserLoginAsync(LoginViewModel userModel)
         {
             try
             {
@@ -38,7 +38,8 @@ namespace Emertec.UI.Infrastructure.Provider
                         var responseToken = JsonConvert.DeserializeObject<ResponseToken>(jsonData);
                         if (responseToken != null && !string.IsNullOrEmpty(responseToken.Token))
                         {
-                            Response = responseToken.Token;
+                            // Response = responseToken.Token;
+                            return responseToken;
                         }
                     }
                 }
@@ -49,7 +50,7 @@ namespace Emertec.UI.Infrastructure.Provider
                         throw new Exception(responseModel.ErrorMessage);
                     }
                 }
-                return Response;
+                throw new Exception(responseModel.ErrorMessage);
             }
             catch (Exception ex)
             {

@@ -45,5 +45,18 @@ namespace MicroService_Template.Infrastructure.Repository
             _context.modelMenuMasters.Update(modelMenuMaster);
             _context.SaveChanges();
         }
+        public async Task<List<ModelMenuMaster>> GetMenusByUserIdAsync(long userId)
+        {
+            var menus = await (from um in _context.modelUserMenuMappings
+                               join m in _context.modelMenuMasters on um.MenuId equals m.MenuId
+                               where um.UserId == userId
+                                     && um.IsActive
+                                     && m.IsActive
+                               select m)
+                      .Distinct()
+                      .ToListAsync();
+
+            return menus;
+        }
     }
 }

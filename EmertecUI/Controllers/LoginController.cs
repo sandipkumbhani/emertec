@@ -6,6 +6,8 @@ using System.IdentityModel.Tokens.Jwt;
 using Emertec.UI.Application.Interface;
 using Emertec.UI.Domain.Models;
 using Emertec.UI.Domain.Helper;
+using MicroService_Template.Domain.DTO;
+using Newtonsoft.Json;
 
 namespace EmertecUI.Controllers
 {
@@ -31,19 +33,25 @@ namespace EmertecUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var tokenString = await _loginServices.Login(viewModel);
-                    Response.Cookies.Append("jwtToken", tokenString, new CookieOptions
+                    var responseToken = await _loginServices.Login(viewModel);
+                    Response.Cookies.Append("jwtToken", responseToken.Token, new CookieOptions
                     {
                         HttpOnly = true,
-                        Secure = true, // Use HTTPS
+                        Secure = true,
                         SameSite = SameSiteMode.Strict,
                         Expires = DateTime.UtcNow.AddHours(24)
                     });
-                    var jwt = new JwtSecurityTokenHandler().ReadJwtToken(tokenString);
-                    var email = jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email || c.Type == "unique_name")?.Value;
+                    //var jwt = new JwtSecurityTokenHandler().ReadJwtToken(tokenString);
+                    //var email = jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email || c.Type == "unique_name")?.Value;
+                    //var claims = new List<Claim>
+                    //{
+                    //    new Claim(ClaimTypes.Email,email ?? viewModel.EmailId)
+                    //};
                     var claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Email,email ?? viewModel.EmailId)
+                        new Claim("UserId", responseToken.UserId.ToString()),
+                        new Claim(ClaimTypes.Name, responseToken.Username),
+                        new Claim(ClaimTypes.Email, responseToken.EmailId)
                     };
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(identity);

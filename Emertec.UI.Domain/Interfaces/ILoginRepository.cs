@@ -4,6 +4,6 @@ namespace Emertec.UI.Domain.Interfaces
 {
     public interface ILoginRepository
     {
-        Task<string> CreateUserLoginAsync(LoginViewModel userModel);
+        Task<ResponseToken> CreateUserLoginAsync(LoginViewModel userModel);
     }
 }
