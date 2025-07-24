@@ -2,11 +2,6 @@
 using MicroService_Template.Domain.Interface;
 using MicroService_Template.Domain.Model;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MicroService_Template.Application.Services
 {
@@ -20,7 +15,6 @@ namespace MicroService_Template.Application.Services
 
         public async Task<List<string>> GetSentencesByTelephoneAsync(string telephoneNumber)
         {
-
             var jsonRecord = await _showTrancriptRepository.GetByTelephoneNumberAsync(telephoneNumber);
 
             if (jsonRecord == null )
@@ -32,8 +26,6 @@ namespace MicroService_Template.Application.Services
             {
                 return new List<string> { "File Not Found" };
             }
-              
-
             try
             {
                 var jsonContent = await File.ReadAllTextAsync(jsonRecord.FilePath);

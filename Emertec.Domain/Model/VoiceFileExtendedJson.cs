@@ -8,7 +8,7 @@ namespace MicroService_Template.Domain.Model
 {
     public class VoiceFileExtendedJson
     {
-        public string? Guid { get; set; }
+        //public string? Guid { get; set; }
         public string? AgentUsername { get; set; }
         public string? AgentSalutation { get; set; } = "";
         public string? AgentFirstName { get; set; }
@@ -18,11 +18,12 @@ namespace MicroService_Template.Domain.Model
         public string? TeamName { get; set; } = "";
         public string? CallNumber { get; set; }
         public string? TelephoneNumber { get; set; }    
+        public int? UserId { get; set; }
         public string? CallDateTime { get; set; }
         public string? CompanyId { get; set; }
         public string? CallRespondentFullPath { get; set; } = null;
         public List<Segment>? Segments { get; set; }
-        public object FileName { get; set; }
+        public string? FileName { get; set; }
         public string? FullText { get; set; }
     }
     public class Segment

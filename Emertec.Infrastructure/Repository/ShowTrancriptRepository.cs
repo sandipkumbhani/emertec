@@ -24,5 +24,5 @@ namespace MicroService_Template.Infrastructure.Repository
                 .FirstOrDefaultAsync(x => x.TelephoneNumber == telephoneNumber);
         }
     }
-    }
+}
 

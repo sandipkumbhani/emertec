@@ -17,6 +17,7 @@ using System.Text;
 {
 
     var builder = WebApplication.CreateBuilder(args);
+    builder.Services.AddHttpContextAccessor();
     //builder.Services.AddQuartz(q =>
     //{
     //    var mp3ToRsaJobKey = new JobKey("MP3ToRSAWorker");
@@ -109,7 +110,7 @@ using System.Text;
     })
  .AddJwtBearer(options =>
  {
-     options.RequireHttpsMetadata = false; // Set to true in production
+     options.RequireHttpsMetadata = false; 
      options.SaveToken = true;
      options.TokenValidationParameters = new TokenValidationParameters
      {

@@ -54,6 +54,7 @@ namespace MicroService_Template.Domain.Services
 
                 var token = GenerateJWTToken(user);
 
+
                 return new LoginUserDTO
                 {
                     UserId = user.UserId,
@@ -83,17 +84,14 @@ namespace MicroService_Template.Domain.Services
             var bytes = Encoding.UTF8.GetBytes(password + salt);
             return Convert.ToBase64String(sha256.ComputeHash(bytes));
         }
-
-
-
-
         private string GenerateJWTToken(ModelUsers modelUsers)
         {
             var claims = new[]
             {
-        new Claim(JwtRegisteredClaimNames.Sub, modelUsers.UserId.ToString()),
-        new Claim(JwtRegisteredClaimNames.Email, modelUsers.EmailId ?? string.Empty),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+             
+            new Claim(JwtRegisteredClaimNames.Sub, modelUsers.UserId.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, modelUsers.EmailId ?? string.Empty),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
     };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_JwtKey));

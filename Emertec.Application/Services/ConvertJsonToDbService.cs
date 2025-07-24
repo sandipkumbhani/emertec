@@ -2,7 +2,10 @@
 using MicroService_Template.Domain.Extension.Interface;
 using MicroService_Template.Domain.Interface;
 using MicroService_Template.Domain.Model;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -17,9 +20,12 @@ namespace MicroService_Template.Domain.Services
         private readonly IModelDimTextFullRepository _modelDimTextFullRepository;
         private readonly IModelDimTextSentenceRepository _modelDimTextSentenceRepository;
         private readonly IModelDimTextWordRepositorycs _modelDimTextWordRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+      
         public ConvertJsonToDbService(IModelDimJsonRepository modelDimJsonRepository, IModelDimAgentRepository modelDimAgentRepository,
             IModelDimCampaignRepository modelDimCampaignRepository, IModelDimCompanyRepository modelDimCompanyRepository,
-            IModelDimTextFullRepository modelDimTextFullRepository, IModelDimTextSentenceRepository modelDimTextSentenceRepository, IModelDimTextWordRepositorycs modelDimTextWordRepositorycs)
+            IModelDimTextFullRepository modelDimTextFullRepository, IModelDimTextSentenceRepository modelDimTextSentenceRepository, IModelDimTextWordRepositorycs modelDimTextWordRepositorycs, 
+            IHttpContextAccessor httpContextAccessor)
         {
             _modelDimJsonRepository = modelDimJsonRepository;
             _modelDimAgentRepository = modelDimAgentRepository;
@@ -28,15 +34,17 @@ namespace MicroService_Template.Domain.Services
             _modelDimTextFullRepository = modelDimTextFullRepository;
             _modelDimTextSentenceRepository = modelDimTextSentenceRepository;
             _modelDimTextWordRepository = modelDimTextWordRepositorycs;
+            _httpContextAccessor = httpContextAccessor;
+          
         }
-
         private List<string> GetALLJsonFiles(JsonToDbDTO _jsontodb)
         {
             var rsaFiles = new List<string>();
 
             if (!Directory.Exists(_jsontodb.BasePath))
+            {
                 throw new DirectoryNotFoundException($"Base path not found: {_jsontodb.BasePath}");
-
+            }
             // Get all subfolders inside the base directory
             var subFolders = Directory.GetDirectories(_jsontodb.BasePath);
             var rsaDateFolderPattern = new Regex(@"^\d{4}-\d{2}-\d{2}-JSON$");
@@ -50,12 +58,11 @@ namespace MicroService_Template.Domain.Services
                 rsaFiles.AddRange(files);
 
             }
-
             return rsaFiles;
         }
         public async Task<List<ModelDimJson>> SaveJsonToDB(JsonToDbDTO jsonToDb)
         {
-            var updatedRows = new List<ModelDimJson>();
+            var saveRecord = new List<ModelDimJson>();
             var jsonFiles = GetALLJsonFiles(jsonToDb);
             var processedAgents = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             var processedCampaigns = new HashSet<string>();
@@ -70,10 +77,9 @@ namespace MicroService_Template.Domain.Services
 
                 bool fileNameExists = await _modelDimJsonRepository.ExistsByFileNameAsync(fileName);
                 if (fileNameExists)
+                {
                     continue;
-
-
-
+                }
                 var addrecord = new ModelDimJson
                 {
                     Id = Guid.NewGuid(),
@@ -82,18 +88,17 @@ namespace MicroService_Template.Domain.Services
                     TelephoneNumber = data?.TelephoneNumber?.Trim(),
                     UserId = 14,
                     IsActive = true,
-                    InsertBy = 1, // or jsonToDb.UserId
+                    InsertBy = 1, 
                     InsertDate = DateTime.Now,
                     UpdateBy = 1,
                     UpdateDate = DateTime.Now,
                     
                    
                 };
-
                 await _modelDimJsonRepository.InsertJsonRecordAsync(addrecord);
                 await _modelDimJsonRepository.SaveChangesAsync();
 
-                updatedRows.Add(addrecord);
+                saveRecord.Add(addrecord);
 
                 string agentKey = $"{data.AgentFirstName?.Trim()}|{data.AgentLastName?.Trim()}";
 
@@ -171,9 +176,6 @@ namespace MicroService_Template.Domain.Services
                         }
                     }
                 }
-
-
-
                 var allWords = data.Segments?
                     .SelectMany(seg => seg.words)
                     .Where(w => !string.IsNullOrWhiteSpace(w.word))
@@ -193,13 +195,8 @@ namespace MicroService_Template.Domain.Services
                     Created = DateTime.Now,
                     Modified = DateTime.Now
                 };
-
                 await _modelDimTextFullRepository.InsertAsync(textFull);
                 await _modelDimTextFullRepository.SaveChangesAsync();
-
-
-
-
 
                 foreach (var segment in data.Segments)
                 {
@@ -248,11 +245,8 @@ namespace MicroService_Template.Domain.Services
                         }
                     }
                 }
-
-               
-
             }
-            return updatedRows;
+            return saveRecord;
 
         }
     }

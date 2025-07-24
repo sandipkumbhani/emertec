@@ -86,11 +86,11 @@ namespace MicroService_Template.Domain.Services
                 {
                     Console.WriteLine($"JSON already exists: {jsonPath}");
                     jsonFiles.Add(jsonPath);
-                    continue; 
+                 
                 }
 
-                string guidFolder = rsaFolder.Replace("-RSA", "-GUID");
-                string guidPath = Path.Combine(guidFolder, fileName + ".guid");
+               /* string guidFolder = rsaFolder.Replace("-RSA", "-GUID");
+                string guidPath = Path.Combine(guidFolder, fileName + ".guid");*/
 
                 /*if (!File.Exists(guidPath))
                 {
@@ -157,7 +157,7 @@ namespace MicroService_Template.Domain.Services
             return rsaFiles;
         }
 
-        // Decrypt method to convert rsa to mp3
+        // Decrypt method for convert rsa to mp3
         private void DecryptRsaToMp3(string rsaFilePath, string privateKeyPath, string outputMp3Path)
         {
             byte[] encryptedFile = File.ReadAllBytes(rsaFilePath);
@@ -180,16 +180,18 @@ namespace MicroService_Template.Domain.Services
             File.WriteAllBytes(outputMp3Path, fullMp3);
             Console.WriteLine($" Decryption successful! MP3 saved at: {outputMp3Path}");
         }
-        private void ConvertMp3ToJson(string mp3Path, string jsonOutputFolder, string whisperExePath)
+        private void ConvertMp3ToJson(string mp3Path, string outputFolder, string whisperExePath)
         {
-            Directory.CreateDirectory(jsonOutputFolder);
+            Directory.CreateDirectory(outputFolder);
 
             string fileNameWithoutExt = Path.GetFileNameWithoutExtension(mp3Path);
-            string expectedJsonPath = Path.Combine(jsonOutputFolder, fileNameWithoutExt + ".json");
+            string jsonPath = Path.Combine(outputFolder, fileNameWithoutExt + ".json");
+            string srtPath = Path.Combine(outputFolder, fileNameWithoutExt + ".srt");
+            string speakerTxtPath = Path.Combine(outputFolder, fileNameWithoutExt + "_speaker.txt");
 
-            if (File.Exists(expectedJsonPath))
+            if (File.Exists(jsonPath) && File.Exists(srtPath) && File.Exists(speakerTxtPath))
             {
-                Console.WriteLine($"JSON already exists. Skipping: {expectedJsonPath}");
+                Console.WriteLine("All output files already exist. Skipping.");
                 return;
             }
 
@@ -198,10 +200,10 @@ namespace MicroService_Template.Domain.Services
         "--model medium",
         "--compute_type float32",
         "--threads 4",
-        "--output_format json",
+        "--output_format json srt",
         "--word_timestamps true",
         "--task translate",
-        $"-o \"{jsonOutputFolder}\"",
+        $"-o \"{outputFolder}\"",
         $"\"{mp3Path}\""
     };
 
@@ -216,8 +218,6 @@ namespace MicroService_Template.Domain.Services
             };
 
             using var process = new Process { StartInfo = startInfo };
-
-            // Capture real-time output
             process.OutputDataReceived += (sender, e) =>
             {
                 if (!string.IsNullOrEmpty(e.Data))
@@ -237,13 +237,38 @@ namespace MicroService_Template.Domain.Services
             if (process.ExitCode != 0)
             {
                 Console.WriteLine("Whisper failed.");
+                return;
             }
-            else
-            {
-                Console.WriteLine($"Generated JSON: {expectedJsonPath}");
-            }
-        }
 
+            Console.WriteLine($"Generated JSON: {jsonPath}");
+            Console.WriteLine($"Generated SRT: {srtPath}");
+
+
+            // Generate speaker.txt with alternating speaker labels (0 and 1)
+            if (File.Exists(srtPath))
+            {
+                var srtLines = File.ReadAllLines(srtPath);
+                var speakerLines = new List<string>();
+
+                int lineCounter = 0;
+                for (int i = 0; i < srtLines.Length; i++)
+                {
+                    // Detect start of a subtitle block
+                    if (Regex.IsMatch(srtLines[i], @"^\d+$") && i + 2 < srtLines.Length)
+                    {
+                        string subtitleText = srtLines[i + 2];
+                        int speakerId = lineCounter % 2; // Alternates between 0 and 1
+                        string speakerRole = speakerId == 0 ? "Caller" : "Receiver";
+                        speakerLines.Add($"Speaker {speakerId} ({speakerRole}): {subtitleText}");
+                        lineCounter++;
+                    }
+                }
+
+                File.WriteAllLines(speakerTxtPath, speakerLines);
+                Console.WriteLine($"Generated Speaker.txt with alternating speakers: {speakerTxtPath}");
+            }
+
+        }
         private void AppendGuidToJson(string jsonPath /*string guidPath*/)
         {
             if (!File.Exists(jsonPath))
@@ -273,9 +298,15 @@ namespace MicroService_Template.Domain.Services
             transcript.CallRespondentFullPath = metadata.CallRespondentFullPath;
             if (transcript.Segments != null)
             {
+                int speakerCounter = 0;
+
                 foreach (var segment in transcript.Segments)
                 {
                     segment.text = segment.text?.Trim();
+                    segment.Speaker = (speakerCounter % 2).ToString();
+
+                    speakerCounter++;
+
                     if (segment.words != null)
                     {
                         foreach (var word in segment.words)
@@ -283,12 +314,14 @@ namespace MicroService_Template.Domain.Services
                             word.word = word.word?.Trim();
                         }
                     }
-
                 }
+
                 var fullText = string.Join(" ", transcript.Segments.Select(s => s.text?.Trim()));
                 transcript.FullText = fullText;
-
+                var fileNameWithoutExt = Path.GetFileNameWithoutExtension(jsonPath);
+                transcript.FileName = fileNameWithoutExt;
             }
+
             string updatedJson = JsonConvert.SerializeObject(transcript, Formatting.Indented);
             File.WriteAllText(jsonPath, updatedJson);
         }
@@ -340,7 +373,7 @@ namespace MicroService_Template.Domain.Services
             string cnRaw = parts.FirstOrDefault(p => p.StartsWith("CI"));
             if (!string.IsNullOrEmpty(ciRaw))
             {
-                result.CallNumber = ciRaw.Substring(2); // "CI" prefix is 2 characters
+                result.CallNumber = ciRaw.Substring(2);
             }
 
             string utcstRaw = parts.FirstOrDefault(p => p.StartsWith("UTCST"))?.Substring(5);

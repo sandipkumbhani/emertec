@@ -1,10 +1,12 @@
 ﻿using MicroService_Template.Application.Extension.Interface;
 using MicroService_Template.Domain.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static MicroService_Template.Domain.Model.ModelDimJson;
 
 namespace MicroService_Template.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class ShowTrancriptController : Controller
