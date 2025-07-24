@@ -2,6 +2,7 @@
 using Emertec.UI.Application.Services;
 using MicroService_Template.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace EmertecUI.Controllers
 {
@@ -20,6 +21,9 @@ namespace EmertecUI.Controllers
             ViewBag.UserList = UserList;
             return View("~/Views/User/UserList.cshtml");
         }
+       
+        
+
         [HttpGet]
         public async Task<IActionResult> AddUser(int? id)
         {
@@ -27,14 +31,14 @@ namespace EmertecUI.Controllers
             if (id == null)
             {
                 return View(new ModelUsers());
-
             }
             var user = await _userServices.GetUserByIdAsync(id.Value);
             return View(user);
         }
         [HttpPost]
-        public async Task<IActionResult> AddUser(ModelUsers modelUsers)
+        public async Task<IActionResult> AddUser(ModelUsers modelUsers,string action)
         {
+          
             string NameMsg = string.Empty;
             if (string.IsNullOrEmpty(modelUsers.Name))
             {

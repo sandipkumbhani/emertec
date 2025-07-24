@@ -1,5 +1,4 @@
-﻿
-using Emertec.UI.Domain.Helper;
+﻿using Emertec.UI.Domain.Helper;
 using Emertec.UI.Domain.Interfaces;
 using MicroService_Template.Domain.Interface;
 using MicroService_Template.Domain.Model;

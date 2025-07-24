@@ -2,6 +2,8 @@
 using MicroService_Template.Domain.DTO;
 using MicroService_Template.Domain.Extension.Interface;
 using MicroService_Template.Domain.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,9 +13,10 @@ using System.Threading.Tasks;
 
 namespace MicroService_Template.Controllers
 {
+   
     [Route("api/[controller]")]
     [ApiController]
-
+ 
     public class AudioController : ControllerBase
     {
         private readonly IConvertRsaToJsonService _convertRsaToJson;
@@ -34,16 +37,23 @@ namespace MicroService_Template.Controllers
             _cryptoService = cryptoService;
             _jsontodb = jsontodb.Value;
         }
+        
         [HttpPost("convert-all-mp3-to-rsa")]
         public IActionResult ConvertAllMp3ToRsa()
         {
             var rsaFiles = _audioService.ConvertAllMp3FilesToRsaAndGuid(_paths);
-
-            return Ok(new
+            try
             {
-                Message = "All MP3 files processed successfully.",
-                Files = rsaFiles
-            });
+                return Ok(new
+                {
+                    Message = "All MP3 files processed successfully.",
+                    Files = rsaFiles
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
         }
         [HttpPost("mp3-to-json")]
@@ -72,7 +82,7 @@ namespace MicroService_Template.Controllers
             var result = _cryptoService.GenerateRsaKeys(outputFolder);
             return Ok(result);
         }
-        [HttpPost("process-json-files")]
+        [HttpPost("save-json-to-db")]
         public async Task<IActionResult> GetAllJson()
         {
             var jsonToDb = new JsonToDbDTO

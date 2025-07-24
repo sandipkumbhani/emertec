@@ -28,6 +28,7 @@ namespace MicroService_Template.Domain.Model
         public class ModelSentence
         {
             public string Text { get; set; } = string.Empty;
+            public string? Speaker { get; set; }
         }
 
         //public Guid CampaignId { get; set; }
