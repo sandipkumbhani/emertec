@@ -51,7 +51,7 @@ namespace EmertecUI.Controllers
                     {
                         new Claim("UserId", responseToken.UserId.ToString()),
                         new Claim(ClaimTypes.Name, responseToken.Username),
-                        new Claim(ClaimTypes.Email, responseToken.EmailId)
+                        new Claim(ClaimTypes.Email, responseToken.EmailId),
                     };
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(identity);

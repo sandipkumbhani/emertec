@@ -17,6 +17,7 @@ namespace EmertecUI.Controllers
         }
         public async Task<IActionResult> MenuMappingList()
         {
+            var userIdClaim = HttpContext.User.FindFirst("UserId")?.Value;
             IList<ModelUserMenuMapping> MenuMappingList = await _menuMappingServices.GetAllMenuMappingAsync();
             return View("~/Views/MenuMapping/MenuMappingList.cshtml", MenuMappingList);
         }
