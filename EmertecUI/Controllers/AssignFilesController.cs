@@ -17,37 +17,42 @@ namespace EmertecUI.Controllers
         [HttpGet]
         public async Task<IActionResult> AssignFilesList()
         {
+            var model = new AssignFilesDto
+            {
+                UserList = await _assignFiles.GetAllUsersAsync(),
+                FileList = await _assignFiles.GetFileNamesForUserZeroAsync()
+            };
 
-            IList<ModelUsers> userList = await _assignFiles.GetAllUsersAsync();
-            ViewBag.UserList = userList;
-            IList<string> fileNames = await _assignFiles.GetFileNamesForUserZeroAsync();
-            ViewBag.FileList = fileNames;
-            var model = new ModelUsers();
             return View("~/Views/AssignFiles/AssignFiles.cshtml", model);
         }
         [HttpPost]
-        //public async Task<IActionResult> AssignFilesList(AssignFilesDto model)
-        //{
-        //    if (model.UserId == 0 || model.SelectedFileNames == null || !model.SelectedFileNames.Any())
-        //    {
-        //        ModelState.AddModelError("", "Please select a user and at least one file.");
-        //    }
-        //    else
-        //    {
+        
+        public async Task<IActionResult> AssignFilesList(AssignFilesDto model)
+        {
+            int selectedUserId = model.UserId;
 
-        //        var jsonIds = await _assignFiles.GetJsonIdsByFileNamesAsync(model.SelectedFileNames);
-
-
-        //        await _assignFiles.UpdateMenuMappingAsync(model.UserId, jsonIds);
-
-        //        TempData["Success"] = "Files assigned successfully.";
-        //        return RedirectToAction("AssignFilesList");
-        //    }
-        //    model.UserList = await _assignFiles.GetAllUsersAsync();
-        //    model.FileList = await _assignFiles.GetFileNamesForUserZeroAsync();
+            if (selectedUserId == 0)
+            {
+                ViewBag.UserError = "Please select a user.";
+            }
+            if (model.SelectedFileNames == null || !model.SelectedFileNames.Any())
+            {
+                ViewBag.FileError = "Please select at least one file.";
+            }
+            if (ViewBag.UserError != null || ViewBag.FileError != null)
+            {
+                // Re-populate dropdowns if validation fails
+                model.UserList = await _assignFiles.GetAllUsersAsync();
+                model.FileList = await _assignFiles.GetFileNamesForUserZeroAsync();
+                return View("~/Views/AssignFiles/AssignFiles.cshtml", model);
+            }
+            model.UserList = await _assignFiles.GetAllUsersAsync();
+            model.FileList = await _assignFiles.GetFileNamesForUserZeroAsync();
+            TempData["Success"] = "Files assigned successfully.";
 
         //    return View("~/Views/AssignFiles/AssignFiles.cshtml", model);
         //}
+
 
         private async Task InitViewBag()
         {

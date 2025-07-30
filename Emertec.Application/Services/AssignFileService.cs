@@ -42,6 +42,10 @@ namespace MicroService_Template.Application.Services
         //        await _assignFileRepository.UserUpdateAsync(file);
         //    }
         //}
+        public async Task<List<Guid>> GetJsonIdsByFileNamesAsync(List<string> fileNames)
+        {
+            return await _assignFileRepository.GetjsonidByFileNmaeAsync(fileNames);
+        }
         public async Task AssignUserToFilesAsync(int userId, List<Guid> jsonIds)
         {
             var filesToUpdate = await _assignFileRepository.GetFilesByJsonIdsAsync(jsonIds);

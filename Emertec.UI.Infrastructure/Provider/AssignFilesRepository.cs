@@ -41,12 +41,24 @@ namespace Emertec.UI.Infrastructure.Provider
             return JsonConvert.DeserializeObject<List<string>>(json)!;
         }
 
+        public async Task<List<string>> GetjsonidByFileNmaeAsync(List<string> fileNames)
+        {
+            var queryString = string.Join("&", fileNames.Select(name => $"fileNames={Uri.EscapeDataString(name)}"));
+            var baseUrl = $"{apiCredential.url}AssignFile/GetJsonIdsByFileNames?{queryString}";
+
+            var response = await _httpClient.GetAsync(baseUrl);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<string>>(json)!;
+        }
+
         public async Task<bool> AssignUserToFilesAsync(int userId, List<Guid> jsonIds)
         {
             var dto = new AssignFilesDto
             {
                 UserId = userId,
-                jsonid = jsonIds 
+                JsonIds = jsonIds 
             };
 
             var url = $"{apiCredential.url}AssignFile/AssignUserToFiles"; 

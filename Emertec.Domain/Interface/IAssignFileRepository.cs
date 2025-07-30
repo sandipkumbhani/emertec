@@ -12,7 +12,7 @@ namespace MicroService_Template.Domain.Interface
         Task<List<string>> GetFileNamesByUserIdZeroAsync();
         //Task AssignfileAsync(long userId, List<Guid> jsonIds);
         Task<List<ModelDimJson>> GetFilesByJsonIdsAsync(List<Guid> jsonIds);
-        Task UserUpdateAsync(ModelDimJson modelDimJson);
-         Task SaveChangesAsync();
+        Task<List<Guid>> GetjsonidByFileNmaeAsync(List<string> fileNames);
+        Task SaveChangesAsync();
     }
 }

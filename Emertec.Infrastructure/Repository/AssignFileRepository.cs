@@ -34,6 +34,14 @@ namespace MicroService_Template.Infrastructure.Repository
         //     _context.modelDimJson.UpdateRange(records);
         //     await _context.SaveChangesAsync();
         // }
+        public async Task<List<Guid>> GetjsonidByFileNmaeAsync(List<string> fileNames)
+        {
+            return await _context.modelDimJson
+                .Where(x => fileNames.Contains(x.FileName) && x.UserId == 0)
+                .Select(x => x.Id) 
+                .ToListAsync();
+        }
+
         public async Task<List<ModelDimJson>> GetFilesByJsonIdsAsync(List<Guid> jsonIds)
         {
             return await _context.modelDimJson
@@ -46,11 +54,7 @@ namespace MicroService_Template.Infrastructure.Repository
         }
 
 
-        public async Task UserUpdateAsync(ModelDimJson modelDimJson)
-        {
-            _context.modelDimJson.Update(modelDimJson);
-            _context.SaveChanges();
-        }
+        
 
 
 

@@ -25,8 +25,20 @@ namespace MicroService_Template.Controllers
             {
                 return NotFound("No files found for UserId = 0.");
             }
+
             return Ok(fileNames);
         }
+        [HttpGet("GetJsonIdsByFileNames")]
+        public async Task<IActionResult> GetJsonIdsByFileNamesAsync([FromQuery] List<string> fileNames)
+        {
+            if (fileNames == null || fileNames.Count == 0)
+            {
+                return BadRequest("File names cannot be null or empty.");
+            }
+            var jsonIds = await _assignFileService.GetJsonIdsByFileNamesAsync(fileNames);
+            return Ok(jsonIds);
+        }
+
         [HttpPost("AssignUserToFiles")]
         public async Task<IActionResult> AssignUserToFiles([FromBody] AssignFilesDto assignFilesDto)
         {

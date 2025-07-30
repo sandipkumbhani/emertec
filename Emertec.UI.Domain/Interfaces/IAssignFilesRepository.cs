@@ -11,6 +11,7 @@ namespace Emertec.UI.Domain.Interfaces
     {
         Task<List<ModelUsers>> GetAllUsersAsync();
         Task<List<string>> GetFileNamesForUserZeroAsync();
+        Task<List<string>> GetjsonidByFileNmaeAsync(List<string> fileNames);
         Task<bool> AssignUserToFilesAsync(int userId, List<Guid> jsonIds);
     }
 }

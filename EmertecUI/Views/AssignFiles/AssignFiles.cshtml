@@ -1,8 +1,8 @@
-﻿@model MicroService_Template.Domain.Model.ModelUsers
+﻿@model Emertec.UI.Domain.AssignFiles.AssignFilesDto
+
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    IList<MicroService_Template.Domain.Model.ModelUsers> UserList = ViewBag.UserList;
-    IList<string>fileList = ViewBag.fileList;
+
 }
 <html>
 <body>
@@ -25,44 +25,40 @@
                                 <form class="row all-custom-class" method="post" action="@Url.Action("AssignFilesList", "AssignFiles")">
                                     <div class="col-xl-4 col-lg-6">
                                         <div class="item-input">
-                                            <input type="hidden" id="UserId" name="UserId" value="@Model?.UserId" />
 
-                                            <select class="form-select" id="UserId" name="UserId">
-                                                <option value="0" selected="@(Model?.UserId == 0 ? "selected" : null)">-select-</option>
-                                                @foreach (var item in UserList)
-                                                {
-                                                    <option value="@item.UserId" selected="@(Model?.UserId == item.UserId ? "selected" : null)">
-                                                        @item.Name
-                                                    </option>
-                                                }
+                                            <select asp-for="UserId" asp-items="@(new SelectList(Model.UserList, "UserId", "Name"))" class="form-select">
+                                                <option value="0">-- Select User --</option>
                                             </select>
-
-                                            <div class="col-xl-4 col-lg-6">
-                                                <div class="item-input">
-                                                    <label class="form-label required fw-semibold fs-6">Select Menus</label>
-                                                    @foreach (var file in ViewBag.FileList as List<string>)
-                                                    {
-                                                        
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="SelectedMenuIds" value="@file" />
-                                                            <label class="form-check-label" for="menu_@file">@file</label>
-                                                        </div>
-                                                    }
-                                       
+                                            @if (ViewBag.UserError != null)
+                                            {
+                                                <span class="text-danger">@ViewBag.UserError</span>
+                                            }
+                                            <label class="form-label required fw-semibold fs-6">Select Files</label>
+                                            @foreach (var file in Model.FileList)
+                                            {
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="SelectedFileNames" value="@file" />
+                                                    <label class="form-check-label" for="file_@file">@file</label>
                                                 </div>
+                                            }
+                                            @if (ViewBag.FileError != null)
+                                            {
+                                                <span class="text-danger">@ViewBag.FileError</span>
+                                            }
 
-                                            </div>
-                                            <div class="button-main" style="display: flex; gap: 12px; margin-top: 20px;">
-                                                <button type="submit" class="card-link outline-bar">
-                                                    <svg width="16" height="16" viewBox="0 0 512 512" fill="#0466C8" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M433.941 129.941L320 16H80C71.164 16 64 23.164 64 32V480C64 488.836 71.164 496 80 496H432C440.836 496 448 488.836 448 480V144C448 138.141 445.645 132.547 441.373 128.606L433.941 129.941zM320 32L432 144H336C327.164 144 320 136.836 320 128V32zM384 416H128V384H384V416zM384 352H128V320H384V352zM256 288H128V256H256V288z" />
-                                                    </svg>
-                                                    <span>Save</span>
-                                                </button>
-                                            </div>
+                                        </div>
+                                        <div class="button-main" style="display: flex; gap: 12px; margin-top: 20px;">
+                                            <button type="submit" class="card-link outline-bar">
+                                                <svg width="16" height="16" viewBox="0 0 512 512" fill="#0466C8" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M433.941 129.941L320 16H80C71.164 16 64 23.164 64 32V480C64 488.836 71.164 496 80 496H432C440.836 496 448 488.836 448 480V144C448 138.141 445.645 132.547 441.373 128.606L433.941 129.941zM320 32L432 144H336C327.164 144 320 136.836 320 128V32zM384 416H128V384H384V416zM384 352H128V320H384V352zM256 288H128V256H256V288z" />
+                                                </svg>
+                                                <span>Save</span>
+                                            </button>
                                         </div>
                                     </div>
                                 </form>
+
+
                             </div>
 
                         </div>

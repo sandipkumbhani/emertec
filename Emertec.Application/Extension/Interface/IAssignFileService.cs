@@ -11,5 +11,6 @@ namespace MicroService_Template.Application.Extension.Interface
     {
         Task<List<string>> GetFileNamesForUserZeroAsync();
         Task AssignUserToFilesAsync(int userId, List<Guid> jsonIds);
+        Task<List<Guid>> GetJsonIdsByFileNamesAsync(List<string> fileNames);
     }
 }
