@@ -11,21 +11,24 @@ using System.Threading.Tasks;
 namespace MicroService_Template.Application.Services
 {
     public class ShowTrancriptService : IShowTrancriptService
-    { 
+    {
         private readonly IShowTrancriptRepository _showTrancriptRepository;
         public ShowTrancriptService(IShowTrancriptRepository showTrancriptRepository)
         {
             _showTrancriptRepository = showTrancriptRepository ?? throw new ArgumentNullException(nameof(showTrancriptRepository));
         }
-
-        public async Task<List<string>> GetSentencesByTelephoneAsync(string telephoneNumber)
+        public async Task<List<ModelDimJson>> GetFileNameByIsTranscript()
+        {
+            return await _showTrancriptRepository.GetFileNamesByIsTranscriptAsync();
+        }
+        public async Task<List<string>> GetByFileNameAsync(string filename)
         {
 
-            var jsonRecord = await _showTrancriptRepository.GetByTelephoneNumberAsync(telephoneNumber);
+            var jsonRecord = await _showTrancriptRepository.GetByFileNameAsync(filename);
 
             if (jsonRecord == null)
             {
-                return new List<string> { "No record found for this telephone number." };
+                return new List<string> { "No record found for this FileName." };
             }
 
             if (!File.Exists(jsonRecord.FilePath))

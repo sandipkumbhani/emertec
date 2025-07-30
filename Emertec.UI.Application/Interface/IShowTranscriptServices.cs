@@ -4,6 +4,7 @@ namespace Emertec.UI.Application.Interface
 {
     public interface IShowTranscriptServices
     {
-        Task<ModelDimJson> GetTranscriptsByTelephoneNoAsync(string Telephoneno);
+        Task<List<ModelDimJson>> GetFileNameByIsTranscriptedAsync();
+        Task<ModelDimJson> GetByFileNameAsync(string fileName);
     }
 }

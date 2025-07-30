@@ -9,6 +9,7 @@ namespace MicroService_Template.Application.Extension.Interface
 {
     public interface IShowTrancriptService
     {
-        Task<List<string>> GetSentencesByTelephoneAsync(string telephoneNumber);
+        Task<List<ModelDimJson>> GetFileNameByIsTranscript();
+        Task<List<string>> GetByFileNameAsync(string filename);
     }
 }

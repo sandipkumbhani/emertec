@@ -26,28 +26,28 @@ namespace EmertecUI.Controllers
             return View("~/Views/AssignFiles/AssignFiles.cshtml", model);
         }
         [HttpPost]
-        public async Task<IActionResult> AssignFilesList(AssignFilesViewModel model)
-        {
-            if (model.UserId == 0 || model.SelectedFileNames == null || !model.SelectedFileNames.Any())
-            {
-                ModelState.AddModelError("", "Please select a user and at least one file.");
-            }
-            else
-            {
+        //public async Task<IActionResult> AssignFilesList(AssignFilesDto model)
+        //{
+        //    if (model.UserId == 0 || model.SelectedFileNames == null || !model.SelectedFileNames.Any())
+        //    {
+        //        ModelState.AddModelError("", "Please select a user and at least one file.");
+        //    }
+        //    else
+        //    {
 
-                var jsonIds = await _assignFiles.GetJsonIdsByFileNamesAsync(model.SelectedFileNames);
+        //        var jsonIds = await _assignFiles.GetJsonIdsByFileNamesAsync(model.SelectedFileNames);
 
 
-                await _assignFiles.UpdateMenuMappingAsync(model.UserId, jsonIds);
+        //        await _assignFiles.UpdateMenuMappingAsync(model.UserId, jsonIds);
 
-                TempData["Success"] = "Files assigned successfully.";
-                return RedirectToAction("AssignFilesList");
-            }
-            model.UserList = await _assignFiles.GetAllUsersAsync();
-            model.FileList = await _assignFiles.GetFileNamesForUserZeroAsync();
+        //        TempData["Success"] = "Files assigned successfully.";
+        //        return RedirectToAction("AssignFilesList");
+        //    }
+        //    model.UserList = await _assignFiles.GetAllUsersAsync();
+        //    model.FileList = await _assignFiles.GetFileNamesForUserZeroAsync();
 
-            return View("~/Views/AssignFiles/AssignFiles.cshtml", model);
-        }
+        //    return View("~/Views/AssignFiles/AssignFiles.cshtml", model);
+        //}
 
         private async Task InitViewBag()
         {

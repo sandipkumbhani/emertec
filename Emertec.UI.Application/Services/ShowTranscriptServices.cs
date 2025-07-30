@@ -11,9 +11,13 @@ namespace Emertec.UI.Application.Services
         {
             _showTranscriptRepository = showTranscriptRepository;
         }
-        public async Task<ModelDimJson> GetTranscriptsByTelephoneNoAsync(string Telephoneno)
+        public async Task<List<ModelDimJson>> GetFileNameByIsTranscriptedAsync()
         {
-            return await _showTranscriptRepository.GetTranscriptsByTelephoneNoAsync(Telephoneno);
+            return await _showTranscriptRepository.GetFileNameByIsTranscriptedAsync();
+        }
+        public async Task<ModelDimJson> GetByFileNameAsync(string fileName)
+        {
+            return await _showTranscriptRepository.GetByFileNameAsync(fileName);
         }
     }
 }

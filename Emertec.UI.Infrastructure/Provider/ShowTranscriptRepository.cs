@@ -17,9 +17,17 @@ namespace Emertec.UI.Infrastructure.Provider
             _configuration = configuration;
             apiCredential = new APICredential(configuration);
         }
-        public async Task<ModelDimJson> GetTranscriptsByTelephoneNoAsync(string Telephoneno)
+        public async Task<List<ModelDimJson>> GetFileNameByIsTranscriptedAsync()
         {
-            var baseUrl = apiCredential.url + $"ShowTrancript/sentences-from-telephone?telephone={Telephoneno}";
+            var baseUrl = apiCredential.url + "ShowTrancript/GetFileNameByIsTranscripted";
+            var response = await _httpClient.GetAsync(baseUrl);
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<ModelDimJson>>(json)!;
+        }
+        public async Task<ModelDimJson> GetByFileNameAsync(string fileName)
+        {
+            var baseUrl = apiCredential.url + $"ShowTrancript/sentences-from-FileName?fileName={fileName}";
             var response = await _httpClient.GetAsync(baseUrl);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();

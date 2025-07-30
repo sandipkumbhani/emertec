@@ -1,4 +1,5 @@
 ﻿using MicroService_Template.Application.Extension.Interface;
+using MicroService_Template.Application.Services;
 using MicroService_Template.Domain.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,24 +17,34 @@ namespace MicroService_Template.Controllers
         {
             _showTrancriptService = showTrancriptService ?? throw new ArgumentNullException(nameof(showTrancriptService));
         }
-
-        [HttpGet("sentences-from-telephone")]
-        public async Task<IActionResult> GetSentencesFromTelephone([FromQuery] string telephone)
+        [HttpGet("GetFileNameByIsTranscripted")]
+        public async Task<IActionResult> GetFileNameByIsTranscriptedAsync()
         {
-            if (telephone == null)
+            List<ModelDimJson> fileNames = await _showTrancriptService.GetFileNameByIsTranscript();
+
+            if (fileNames == null || fileNames.Count == 0)
             {
-                return BadRequest("Telephone number is required.");
+                throw new Exception("FileName is null");
+            }
+            return Ok(fileNames);
+        }
+        [HttpGet("sentences-from-FileName")]
+        public async Task<IActionResult> GetByFileNameAsync([FromQuery] string fileName)
+        {
+            if (fileName == null)
+            {
+                return BadRequest("File Name is required.");
             }
 
-            var sentences = await _showTrancriptService.GetSentencesByTelephoneAsync(telephone);
+            var sentences = await _showTrancriptService.GetByFileNameAsync(fileName);
 
             if (sentences == null || !sentences.Any())
             {
-                return NotFound("No sentences found for this telephone number.");
+                return NotFound("No sentences found for this File Name.");
             }
             var result = new ModelDimJson
             {
-                TelephoneNumber = telephone,
+                FileName = fileName,
                 Sentences = sentences.Select(s => new ModelSentence { Text = s }).ToList()
             };
 

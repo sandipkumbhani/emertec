@@ -7,8 +7,8 @@
     {
         <li class="nav-item">
             <a class="nav-link" href="@menu.Url"
-               @(menu.Url.StartsWith("http", StringComparison.OrdinalIgnoreCase) ? "target=\"_blank\"" : "")>
-                <i class="@menu.Icon"></i>
+            @(menu.Url.StartsWith("http", StringComparison.OrdinalIgnoreCase) ? "target=\"_blank\"" : "")>
+                <i class="@menu.Icon" style="display:flow"></i>
                 <span>@menu.Name</span>
             </a>
         </li>

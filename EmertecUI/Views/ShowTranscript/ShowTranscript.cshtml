@@ -1,10 +1,121 @@
 ﻿@model MicroService_Template.Domain.Model.ModelDimJson
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    string telephoneError = ViewBag.TelephoneError;
+    IList<MicroService_Template.Domain.Model.ModelDimJson> Filelist = ViewBag.FileList;
 }
 <html>
 <body>
+    <div class="content-page" style="margin:35px 0 0 0">
+        <div class="content">
+            <div class="main-inner container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card com-profile-info">
+                            <!-- Top Header -->
+                            <div class="table-top-header">
+                                <h3>Users</h3>
+                                <div class="d-flex gap-2">
+                                </div>
+                            </div>
+                            <!-- Table -->
+                            <div class="table-responsive">
+                                <table id="franchiseTable" class="table dt-responsive nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th class="dt-orderable-asc dt-orderable-desc">FileName</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var user in Filelist)
+                                        {
+                                            <tr>
+                                                <td>@user.FileName</td>
+                                                <td>
+                                                    <button type="submit" class="btn btn-primary" style="margin-top:4%;">View</button>
+                                                </td>
+                                            </tr>
+                                        }
+                                        @if (Model?.Sentences != null && Model.Sentences.Any())
+                                        {
+                                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                <label class="form-label fw-semibold">Sentence</label>
+                                                <button type="button" class="btn btn-primary" onclick="copyAllSentences()" title="Copy All Sentences">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z" />
+                                                    </svg>
+                                                    <span>Copy</span>
+                                                </button>
+                                            </div>
+
+                                            <style>
+                                                .chat-container {
+                                                    display: flex;
+                                                    flex-direction: column;
+                                                    gap: 10px;
+                                                }
+
+                                                .chat-message {
+                                                    max-width: 70%;
+                                                    padding: 10px 15px;
+                                                    border-radius: 15px;
+                                                    font-size: 14px;
+                                                    word-break: break-word;
+                                                    display: inline-block;
+                                                }
+
+                                                .agent-message {
+                                                    background-color: antiquewhite;
+                                                    align-self: flex-start;
+                                                    text-align: left;
+                                                }
+
+                                                .receiver-message {
+                                                    background-color: #d8eafd;
+                                                    align-self: flex-end;
+                                                    text-align: right;
+                                                }
+                                            </style>
+
+
+                                            <div class="chat-container">
+                                                @foreach (var sentence in Model.Sentences)
+                                                {
+                                                    var isAgent = sentence.Text?.StartsWith("Speaker 0:") ?? false;
+                                                    var messageText = sentence.Text?
+                                                    .Replace("Speaker 0:", "Agent:")
+                                                    .Replace("Speaker 1:", "Receiver:")
+                                                    .Trim();
+
+                                                    <div class="chat-message @(isAgent ? "agent-message" : "receiver-message")">
+                                                        @messageText
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
+                                    </tbody>
+                                </table>
+                                <!-- Bottom Area -->
+                                <div class="datatable-footer-bottom">
+                                    <div class="totle-left">
+                                        <span id="totalList">Total List: <span id="recordCount">0</span></span>
+                                    </div>
+                                    <div id="customFranchisePagination" class="dataTables_paginate paging_simple_numbers"></div>
+                                    <div class="show-page">
+                                        <span>Show per page:</span>
+                                        <select id="pageLength" class="form-select"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+@* <body>
     <div class="content-page">
         <div class="content">
             <div class="main-inner container-fluid">
@@ -42,65 +153,65 @@
                                 @if (!string.IsNullOrEmpty(ViewBag.Error))
                                 {
                                     <div class="alert alert-danger mt-3">@ViewBag.Error</div>
-                                } *@
+                                } 
 
-                                @if (Model?.Sentences != null && Model.Sentences.Any())
-                                {
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <label class="form-label fw-semibold">Sentence</label>
-                                        <button type="button" class="btn btn-primary" onclick="copyAllSentences()" title="Copy All Sentences">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
-                                                <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z" />
-                                            </svg>
-                                            <span>Copy</span>
-                                        </button>
-                                    </div>
+@if (Model?.Sentences != null && Model.Sentences.Any())
+{
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <label class="form-label fw-semibold">Sentence</label>
+        <button type="button" class="btn btn-primary" onclick="copyAllSentences()" title="Copy All Sentences">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z" />
+            </svg>
+            <span>Copy</span>
+        </button>
+    </div>
 
-                                    <style>
-                                        .chat-container {
-                                            display: flex;
-                                            flex-direction: column;
-                                            gap: 10px;
-                                        }
+    <style>
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-                                        .chat-message {
-                                            max-width: 70%;
-                                            padding: 10px 15px;
-                                            border-radius: 15px;
-                                            font-size: 14px;
-                                            word-break: break-word;
-                                            display: inline-block;
-                                        }
+        .chat-message {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+            word-break: break-word;
+            display: inline-block;
+        }
 
-                                        .agent-message {
-                                            background-color: antiquewhite;
-                                            align-self: flex-start;
-                                            text-align: left;
-                                        }
+        .agent-message {
+            background-color: antiquewhite;
+            align-self: flex-start;
+            text-align: left;
+        }
 
-                                        .receiver-message {
-                                            background-color: #d8eafd;
-                                            align-self: flex-end;
-                                            text-align: right;
-                                        }
-                                    </style>
+        .receiver-message {
+            background-color: #d8eafd;
+            align-self: flex-end;
+            text-align: right;
+        }
+    </style>
 
 
-                                    <div class="chat-container">
-                                        @foreach (var sentence in Model.Sentences)
-                                        {
-                                            var isAgent = sentence.Text?.StartsWith("Speaker 0:") ?? false;
-                                            var messageText = sentence.Text?
-                                            .Replace("Speaker 0:", "Agent:")
-                                            .Replace("Speaker 1:", "Receiver:")
-                                            .Trim();
+    <div class="chat-container">
+        @foreach (var sentence in Model.Sentences)
+        {
+            var isAgent = sentence.Text?.StartsWith("Speaker 0:") ?? false;
+            var messageText = sentence.Text?
+            .Replace("Speaker 0:", "Agent:")
+            .Replace("Speaker 1:", "Receiver:")
+            .Trim();
 
-                                            <div class="chat-message @(isAgent ? "agent-message" : "receiver-message")">
-                                                @messageText
-                                            </div>
-                                        }
-                                    </div>
-                                }
+            <div class="chat-message @(isAgent ? "agent-message" : "receiver-message")">
+                @messageText
+            </div>
+        }
+    </div>
+}
                             </div>
                         </div>
                     </div>
@@ -108,28 +219,27 @@
             </div>
         </div>
     </div>
-    <script>
-        function copyAllSentences() {
-            const sentences = [];
-            document.querySelectorAll(".chat-message").forEach(function (el) {
-                sentences.push(el.textContent.trim());
-            });
+<script>
+    function copyAllSentences() {
+        const sentences = [];
+        document.querySelectorAll(".chat-message").forEach(function (el) {
+            sentences.push(el.textContent.trim());
+        });
 
-            if (sentences.length === 0) {
-                alert("No sentences to copy.");
-                return;
-            }
-
-            navigator.clipboard.writeText(sentences.join("\n"))
-                .then(() => {
-                    alert("Copied all sentences to clipboard!");
-                })
-                .catch(err => {
-                    console.error("Copy failed: ", err);
-                    alert("Failed to copy.");
-                });
+        if (sentences.length === 0) {
+            alert("No sentences to copy.");
+            return;
         }
-    </script>
 
-</body>
-</html>
+        navigator.clipboard.writeText(sentences.join("\n"))
+            .then(() => {
+                alert("Copied all sentences to clipboard!");
+            })
+            .catch(err => {
+                console.error("Copy failed: ", err);
+                alert("Failed to copy.");
+            });
+    }
+</script>
+
+</body> *@

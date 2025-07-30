@@ -9,6 +9,7 @@ namespace MicroService_Template.Domain.Interface
 {
     public interface IShowTrancriptRepository
     {
-        Task<ModelDimJson?> GetByTelephoneNumberAsync(string telephoneNumber);
+        Task<List<ModelDimJson>> GetFileNamesByIsTranscriptAsync();
+        Task<ModelDimJson?> GetByFileNameAsync(string fileName);
     }
 }

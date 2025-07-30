@@ -18,10 +18,15 @@ namespace MicroService_Template.Infrastructure.Repository
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<ModelDimJson?> GetByTelephoneNumberAsync(string telephoneNumber)
+        public async Task<ModelDimJson?> GetByFileNameAsync(string fileName)
         {
             return await _context.modelDimJson
-                .FirstOrDefaultAsync(x => x.TelephoneNumber == telephoneNumber);
+                .FirstOrDefaultAsync(x => x.FileName == fileName);
+        }
+        public async Task<List<ModelDimJson>> GetFileNamesByIsTranscriptAsync()
+        {
+            return await _context.modelDimJson.Where(x => x.IsTrascripted == false)
+                .ToListAsync();
         }
     }
 }

@@ -12,13 +12,21 @@ namespace EmertecUI.Controllers
             _showTranscriptServices = showTranscriptServices;
         }
         [HttpGet]
-        public async Task<IActionResult> ShowTranscript(string? telephoneNo)
+        public async Task<IActionResult> ShowTranscript()
         {
-            if (string.IsNullOrWhiteSpace(telephoneNo))
+            IList<ModelDimJson> fileNames = await _showTranscriptServices.GetFileNameByIsTranscriptedAsync();
+            ViewBag.FileList = fileNames;
+            var model = new ModelDimJson();
+            return View("~/Views/ShowTranscript/ShowTranscript.cshtml", model);
+        }
+        [HttpGet]
+        public async Task<IActionResult> ShowTranscript(string? fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
             {
                 return View(new ModelDimJson());
             }
-            var modelDimJson = await _showTranscriptServices.GetTranscriptsByTelephoneNoAsync(telephoneNo);
+            var modelDimJson = await _showTranscriptServices.GetByFileNameAsync(fileName);
             if (modelDimJson == null || modelDimJson.Sentences == null || !modelDimJson.Sentences.Any())
             {
                 ViewBag.Error = "Transcript not found.";
