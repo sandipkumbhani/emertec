@@ -52,6 +52,7 @@ namespace MicroService_Template.Infrastructure.Repository
                                where um.UserId == userId
                                      && um.IsActive
                                      && m.IsActive
+                                     && m.IsDefault
                                select m)
                       .Distinct()
                       .ToListAsync();

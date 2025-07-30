@@ -61,6 +61,7 @@
                                             <th class="dt-orderable-asc dt-orderable-desc">Name</th>
                                             <th>Description</th>
                                             <th>Icon</th>
+                                            <th>IsDefault</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -70,6 +71,7 @@
                                                 <td>@menuMaster.Name</td>
                                                 <td>@menuMaster.Description</td>
                                                 <td>@menuMaster.Icon</td>
+                                                <td>@menuMaster.IsDefault</td>
                                                 <td>
                                                     <a href="@Url.Action("AddMenuMaster", "MenuMaster", new { id = menuMaster.MenuId })" class="btn btn-sm btn-warning me-1">
                                                         <i class="bi bi-pencil"></i> Edit

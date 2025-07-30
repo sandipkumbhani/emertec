@@ -6,6 +6,8 @@
     string NameMsg = ViewBag.NameMsg;
     string DescriptionMsg = ViewBag.DescriptionMsg;
     string check = string.Empty;
+    string MenuMsg = ViewBag.MenuMsg;
+    string UserMsg = ViewBag.UserMsg;
 }
 <html>
 <body>
@@ -38,6 +40,10 @@
                                                     </option>
                                                 }
                                             </select>
+                                            @if (!string.IsNullOrEmpty(UserMsg))
+                                            {
+                                                <span class="text-danger">@UserMsg</span>
+                                            }
                                         </div>
                                     </div>
                                     <div class="col-xl-4 col-lg-6">
@@ -51,7 +57,12 @@
                                                     <label class="form-check-label" for="menu_@menu.MenuId">@menu.Name</label>
                                                 </div>
                                             }
+                                            @if (!string.IsNullOrEmpty(MenuMsg))
+                                            {
+                                                <span class="text-danger">@MenuMsg</span>
+                                            }
                                         </div>
+                                        
                                     </div>
                                     <div class="button-main" style="display: flex; gap: 12px; margin-top: 20px;">
                                         <button type="submit" class="card-link outline-bar">

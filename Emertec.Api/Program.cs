@@ -1,10 +1,11 @@
 ﻿using Emertec.Application.Extension;
 using Emertec.Infrastructure.Extension;
+using Emertec.UI.Domain.Interfaces;
+using MicroService_Template.Domain.Interface;
 using MicroService_Template.Application.Extension.Interface;
 using MicroService_Template.Application.Services;
 using MicroService_Template.Domain.DTO;
 using MicroService_Template.Domain.Extension.Interface;
-using MicroService_Template.Domain.Interface;
 using MicroService_Template.Domain.Services;
 using MicroService_Template.Infrastructure.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -69,6 +70,9 @@ using System.Text;
     builder.Services.AddScoped<IModelUserMenuMappingRepository, ModelUserMenuMappingRepository>();
     builder.Services.AddScoped<IModelUserRoleRepository, ModelUserRoleRepository>();
     builder.Services.AddScoped<IShowTrancriptRepository, ShowTrancriptRepository>();
+    builder.Services.AddScoped<IAssignFileRepository, AssignFileRepository>();
+
+
 
 
     //SERVICE INJECTION 
@@ -82,6 +86,7 @@ using System.Text;
     builder.Services.AddScoped<IModelUserMenuMappingService,ModelUserMenuMappingService>();
     builder.Services.AddScoped<IModelUserRoleService, ModelUserRoleService>();
     builder.Services.AddScoped<IShowTrancriptService, ShowTrancriptService>();
+    builder.Services.AddScoped<IAssignFileService, AssignFileService>();
 
 
     builder.Services.AddControllers();

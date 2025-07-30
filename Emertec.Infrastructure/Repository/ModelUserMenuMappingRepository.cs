@@ -80,13 +80,17 @@ namespace MicroService_Template.Infrastructure.Repository
             _context.modelUserMenuMappings.UpdateRange(existingMenu);
             await _context.SaveChangesAsync();
         }
-
         public async Task UpdatMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
         {
             _context.modelUserMenuMappings.Update(modelUserMenuMapping);
             _context.SaveChanges();
         }
+        public async Task<List<ModelUserMenuMapping>> GetMenuMappingByUserIdAsync(long userId)
+        {
+            return await _context.modelUserMenuMappings
+                .Where(x => x.UserId == userId && x.IsActive)
+                .ToListAsync();
 
-
+        }
     }
 }

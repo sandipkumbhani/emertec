@@ -2,6 +2,7 @@
 using MicroService_Template.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Security.Claims;
 
 namespace EmertecUI.Controllers
 {
@@ -14,12 +15,28 @@ namespace EmertecUI.Controllers
         }
         public async Task<IActionResult> UserList()
         {
-            IList<ModelUsers> UserList = await _userServices.GetAllUsersAsync();
-            ViewBag.UserList = UserList;
+            var role = HttpContext.User?.FindFirst(ClaimTypes.Role)?.Value;
+            var userIdClaim = HttpContext.User?.FindFirst("UserId")?.Value;
+            long.TryParse(userIdClaim, out long userId);
+
+            IList<ModelUsers> userList = await _userServices.GetAllUsersAsync();
+
+            if (string.Equals(role, "Admin", StringComparison.OrdinalIgnoreCase))
+            {
+                
+                userList = userList.Where(u => u.UserId != userId).ToList();
+            }
+            else
+            {
+               
+                userList = userList.Where(u => u.UserId == userId).ToList();
+            }
+
+            ViewBag.UserList = userList;
             return View("~/Views/User/UserList.cshtml");
         }
-       
-        
+
+
 
         [HttpGet]
         public async Task<IActionResult> AddUser(int? id)

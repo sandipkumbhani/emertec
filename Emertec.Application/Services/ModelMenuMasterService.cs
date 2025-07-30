@@ -22,6 +22,8 @@ namespace MicroService_Template.Application.Services
                 Name = modelMenuMaster.Name,
                 Description = modelMenuMaster.Description,
                 Icon = modelMenuMaster.Icon,
+                Url = modelMenuMaster.Url,
+                IsDefault = modelMenuMaster.IsDefault,
                 IsActive = true,
                 InsertBy = 1,
                 InsertDate = DateTime.Now,
@@ -41,7 +43,9 @@ namespace MicroService_Template.Application.Services
                Description= menuMaster.Description,
                 Name = menuMaster.Name,
                 Icon = menuMaster.Icon,
-               IsActive = menuMaster.IsActive,
+                Url = menuMaster.Url,
+                IsDefault = menuMaster.IsDefault,
+                IsActive = menuMaster.IsActive,
                 InsertBy = menuMaster.InsertBy,
                 InsertDate = menuMaster.InsertDate,
                 UpdateBy = menuMaster.UpdateBy,
@@ -72,6 +76,7 @@ namespace MicroService_Template.Application.Services
             menuExisting.Name = modelMenuMaster.Name;
             menuExisting.Description = modelMenuMaster.Description;
             menuExisting.Icon = modelMenuMaster.Icon;
+            menuExisting.Url = modelMenuMaster.Url;
             menuExisting.IsDefault = true;
             menuExisting.IsActive = true;
             menuExisting.InsertBy = 1;

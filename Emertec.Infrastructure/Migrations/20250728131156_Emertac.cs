@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MicroService_Template.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Emertec : Migration
+    public partial class Emertac : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -56,6 +56,27 @@ namespace MicroService_Template.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_modelDimCompany", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "modelDimJson",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    TelephoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    InsertBy = table.Column<long>(type: "bigint", nullable: false),
+                    InsertDate = table.Column<DateTime>(type: "smalldatetime", nullable: false),
+                    UpdateBy = table.Column<long>(type: "bigint", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "smalldatetime", nullable: false),
+                    IsTrascripted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_modelDimJson", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -161,6 +182,7 @@ namespace MicroService_Template.Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Icon = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsDefault = table.Column<bool>(type: "bit", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     InsertBy = table.Column<long>(type: "bigint", nullable: false),
@@ -220,32 +242,6 @@ namespace MicroService_Template.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "modelDimJson",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    TelephoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    InsertBy = table.Column<long>(type: "bigint", nullable: false),
-                    InsertDate = table.Column<DateTime>(type: "smalldatetime", nullable: false),
-                    UpdateBy = table.Column<long>(type: "bigint", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "smalldatetime", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_modelDimJson", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_modelDimJson_modelUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "modelUsers",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "modelUserMenuMappings",
                 columns: table => new
                 {
@@ -275,11 +271,6 @@ namespace MicroService_Template.Infrastructure.Migrations
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_modelDimJson_UserId",
-                table: "modelDimJson",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_modelUserMenuMappings_MenuId",

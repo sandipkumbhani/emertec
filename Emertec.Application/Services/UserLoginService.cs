@@ -2,17 +2,12 @@
 using MicroService_Template.Domain.Extension.Interface;
 using MicroService_Template.Domain.Interface;
 using MicroService_Template.Domain.Model;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MicroService_Template.Domain.Services
 {
@@ -52,7 +47,7 @@ namespace MicroService_Template.Domain.Services
                 }
                 var role = await _userLoginRepository.GetUserWithRoleAsync(user.UserRoleId);
 
-                var token = GenerateJWTToken(user);
+                var token = GenerateJWTToken(user,role.Name);
 
 
                 return new LoginUserDTO
@@ -84,17 +79,18 @@ namespace MicroService_Template.Domain.Services
             var bytes = Encoding.UTF8.GetBytes(password + salt);
             return Convert.ToBase64String(sha256.ComputeHash(bytes));
         }
-        private string GenerateJWTToken(ModelUsers modelUsers)
+        private string GenerateJWTToken(ModelUsers modelUsers, string roleName)
         {
             var claims = new[]
             {
              
             new Claim(JwtRegisteredClaimNames.Sub, modelUsers.UserId.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, modelUsers.EmailId ?? string.Empty),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-    };
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Role, roleName),
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_JwtKey));
+    };
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_JwtKey));        
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(

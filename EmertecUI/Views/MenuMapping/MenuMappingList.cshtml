@@ -1,8 +1,10 @@
 ﻿@model IList<MicroService_Template.Domain.Model.ModelUserMenuMapping>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var role = ViewBag.UserRole;
 }
-
+@if (role != "Admin")
+{
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -107,3 +109,4 @@
         window.location.href = "/MenuMapping/AddMenuMapping";
     });
 </script>
+}

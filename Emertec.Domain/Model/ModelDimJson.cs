@@ -21,8 +21,7 @@ namespace MicroService_Template.Domain.Model
         public long UpdateBy { get; set; }
         [Column(TypeName = "smalldatetime")]
         public DateTime UpdateDate { get; set; }
-        [ForeignKey("UserId")]
-        public virtual ModelUsers? ModelUsers { get; set; }
+         public bool IsTrascripted { get; set; }
         [NotMapped]
         public List<ModelSentence> Sentences { get; set; } = new();
         public class ModelSentence

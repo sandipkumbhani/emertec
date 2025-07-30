@@ -45,10 +45,31 @@
                                     </div>
                                     <div class="col-xl-4 col-lg-6">
                                         <div class="item-input">
-                                            <label for="Icon" class="form-label col-form-label required fw-semibold fs-6">Icon</label>
-                                            <input type="file" class="form-control userinput" id="Icon" name="Icon" value="@Model.Icon">
+                                            <label for="Url" class="form-label col-form-label required fw-semibold fs-6">Url</label>
+                                            <input type="text" class="form-control userinput" id="Url" name="Url" value="@Model.Url">
+                                            @*  @if (!string.IsNullOrEmpty(DescriptionMsg))
+                                            {
+                                                <span class="text-danger">@DescriptionMsg</span>
+                                            } *@
                                         </div>
                                     </div>
+
+                                    <div class="col-xl-4 col-lg-6">
+                                        <div class="item-input">
+                                            <label for="Icon" class="form-label col-form-label required fw-semibold fs-6">Icon</label>
+                                            <input type="text" class="form-control userinput" id="Icon" name="Icon" value="@Model.Icon">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6" style="margin-top: 2.5%;">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <input type="checkbox" name="IsDefault" id="IsDefault" class="form-check-input"
+                                                   value="true"
+                                                   @(Model.IsDefault ? "checked" : "") style="transform: scale(1.4); margin-top: 2px;" />
+                                            <label for="IsDefault" class="form-label col-form-label required fw-semibold mb-0" style="font-size: 16px;">Is Default</label>
+                                        </div>
+                                    </div>
+
+
                                     <div class="button-main" style="display: flex; gap: 12px; margin-top: 20px;">
                                         <button type="submit" class="card-link outline-bar">
                                             <svg width="16" height="16" viewBox="0 0 512 512" fill="#0466C8" xmlns="http://www.w3.org/2000/svg">

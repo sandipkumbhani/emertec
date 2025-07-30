@@ -1,11 +1,16 @@
-﻿@model List<MicroService_Template.Domain.Model.ModelMenuMaster>
-
+﻿@using MicroService_Template.Domain.Model
+@model List<ModelMenuMaster>
 
 @foreach (var menu in Model)
 {
-    <li class="nav-item">
-        <a class="nav-link" asp-controller="MenuMaster" asp-action="MenuMasterList">
-            @menu.Name
-        </a>
-    </li>
+    if (!string.IsNullOrEmpty(menu.Url))
+    {
+        <li class="nav-item">
+            <a class="nav-link" href="@menu.Url"
+               @(menu.Url.StartsWith("http", StringComparison.OrdinalIgnoreCase) ? "target=\"_blank\"" : "")>
+                <i class="@menu.Icon"></i>
+                <span>@menu.Name</span>
+            </a>
+        </li>
+    }
 }

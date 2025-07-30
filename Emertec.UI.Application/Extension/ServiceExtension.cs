@@ -13,6 +13,7 @@ namespace Emertec.UI.Application.Extension
             services.AddScoped<IMenuMasterServices, MenuMasterServices>();
             services.AddScoped<IMenuMappingServices, MenuMappingService>();
             services.AddScoped<IShowTranscriptServices, ShowTranscriptServices>();
+            services.AddScoped<IAssignFilesService, AssignFilesService>();
             return services;
         }
     }

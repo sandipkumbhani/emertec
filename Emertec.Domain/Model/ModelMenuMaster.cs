@@ -18,6 +18,7 @@ namespace MicroService_Template.Domain.Model
         public string? Description { get; set; }
         [StringLength(100)]
         public string? Icon { get; set; }
+        public string? Url { get; set; }
         public bool IsDefault { get; set; }
         public bool IsActive { get; set; }
 

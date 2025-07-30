@@ -86,7 +86,7 @@ namespace MicroService_Template.Domain.Services
                     FileName = Path.GetFileName(file),
                     FilePath = file,
                     TelephoneNumber = data?.TelephoneNumber?.Trim(),
-                    UserId = 14,
+                    UserId = 0,
                     IsActive = true,
                     InsertBy = 1, 
                     InsertDate = DateTime.Now,

@@ -1,6 +1,7 @@
 ﻿@model MicroService_Template.Domain.Model.ModelDimJson
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string telephoneError = ViewBag.TelephoneError;
 }
 <html>
 <body>
@@ -25,7 +26,10 @@
                                         <div class="item-input">
                                             <label for="telephoneNo" class="form-label col-form-label required fw-semibold fs-6">Telephone Number</label>
                                             <input type="text" class="form-control userinput" id="telephoneNo" name="telephoneNo" value="@Model.TelephoneNumber">&nbsp;
-
+                                            @if (!string.IsNullOrEmpty(ViewBag.TelephoneError))
+                                            {
+                                                <span class="text-danger">@ViewBag.TelephoneError</span>
+                                            }
                                         </div>
                                     </div>
                                     <div class="col-xl-4 col-lg-6" style="align-content:center;">
@@ -34,11 +38,11 @@
                                         </div>
                                     </div>
                                 </form>
-
+                                @* 
                                 @if (!string.IsNullOrEmpty(ViewBag.Error))
                                 {
                                     <div class="alert alert-danger mt-3">@ViewBag.Error</div>
-                                }
+                                } *@
 
                                 @if (Model?.Sentences != null && Model.Sentences.Any())
                                 {
@@ -69,7 +73,7 @@
                                         }
 
                                         .agent-message {
-                                            background-color:antiquewhite;
+                                            background-color: antiquewhite;
                                             align-self: flex-start;
                                             text-align: left;
                                         }
@@ -96,9 +100,6 @@
                                             </div>
                                         }
                                     </div>
-
-
-
                                 }
                             </div>
                         </div>

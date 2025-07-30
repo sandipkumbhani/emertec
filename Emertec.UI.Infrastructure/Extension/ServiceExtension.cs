@@ -13,6 +13,7 @@ namespace Emertec.UI.Infrastructure.Extension
             services.AddScoped<IMenuMasterRepository, MenuMasterRepository>();
             services.AddScoped<IMenuMappingRepository, MenuMappingRepository>();
             services.AddScoped<IShowTranscriptRepository, ShowTranscriptRepository>();
+            services.AddScoped<IAssignFilesRepository, AssignFilesRepository>();
             return services;
         }
     }

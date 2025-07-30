@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MicroService_Template.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250717045604_Emertec")]
-    partial class Emertec
+    [Migration("20250728131156_Emertac")]
+    partial class Emertac
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -120,6 +120,9 @@ namespace MicroService_Template.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsTrascripted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("TelephoneNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -133,8 +136,6 @@ namespace MicroService_Template.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("modelDimJson");
                 });
@@ -349,6 +350,9 @@ namespace MicroService_Template.Infrastructure.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("MenuId");
 
                     b.ToTable("modelMenuMasters");
@@ -470,17 +474,6 @@ namespace MicroService_Template.Infrastructure.Migrations
                     b.HasIndex("UserRoleId");
 
                     b.ToTable("modelUsers");
-                });
-
-            modelBuilder.Entity("MicroService_Template.Domain.Model.ModelDimJson", b =>
-                {
-                    b.HasOne("MicroService_Template.Domain.Model.ModelUsers", "ModelUsers")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ModelUsers");
                 });
 
             modelBuilder.Entity("MicroService_Template.Domain.Model.ModelUserMenuMapping", b =>

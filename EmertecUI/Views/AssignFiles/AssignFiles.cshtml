@@ -1,0 +1,84 @@
+﻿@model MicroService_Template.Domain.Model.ModelUsers
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    IList<MicroService_Template.Domain.Model.ModelUsers> UserList = ViewBag.UserList;
+    IList<string>fileList = ViewBag.fileList;
+}
+<html>
+<body>
+    <div class="content-page">
+        <div class="content">
+            <div class="main-inner container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box">
+                            <h1 class="page-title">Add MenuMaster</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card com-profile-info">
+                            <div class="top-details">
+                                <h2 class="page-form-title">User File Assign</h2>
+
+                                <form class="row all-custom-class" method="post" action="@Url.Action("AssignFilesList", "AssignFiles")">
+                                    <div class="col-xl-4 col-lg-6">
+                                        <div class="item-input">
+                                            <input type="hidden" id="UserId" name="UserId" value="@Model?.UserId" />
+
+                                            <select class="form-select" id="UserId" name="UserId">
+                                                <option value="0" selected="@(Model?.UserId == 0 ? "selected" : null)">-select-</option>
+                                                @foreach (var item in UserList)
+                                                {
+                                                    <option value="@item.UserId" selected="@(Model?.UserId == item.UserId ? "selected" : null)">
+                                                        @item.Name
+                                                    </option>
+                                                }
+                                            </select>
+
+                                            <div class="col-xl-4 col-lg-6">
+                                                <div class="item-input">
+                                                    <label class="form-label required fw-semibold fs-6">Select Menus</label>
+                                                    @foreach (var file in ViewBag.FileList as List<string>)
+                                                    {
+                                                        
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="SelectedMenuIds" value="@file" />
+                                                            <label class="form-check-label" for="menu_@file">@file</label>
+                                                        </div>
+                                                    }
+                                       
+                                                </div>
+
+                                            </div>
+                                            <div class="button-main" style="display: flex; gap: 12px; margin-top: 20px;">
+                                                <button type="submit" class="card-link outline-bar">
+                                                    <svg width="16" height="16" viewBox="0 0 512 512" fill="#0466C8" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M433.941 129.941L320 16H80C71.164 16 64 23.164 64 32V480C64 488.836 71.164 496 80 496H432C440.836 496 448 488.836 448 480V144C448 138.141 445.645 132.547 441.373 128.606L433.941 129.941zM320 32L432 144H336C327.164 144 320 136.836 320 128V32zM384 416H128V384H384V416zM384 352H128V320H384V352zM256 288H128V256H256V288z" />
+                                                    </svg>
+                                                    <span>Save</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    $(document).on("click", "#btnAddUser", AddUser);
+
+    function AddUser(){
+       window.location.href = "/AssignFiles/AssignFilesList";
+     };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="~/js/record.js" defer></script>

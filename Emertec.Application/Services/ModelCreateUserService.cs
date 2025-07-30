@@ -89,6 +89,7 @@ namespace MicroService_Template.Application.Services
             }
             userExisting.Name = modelUsers.Name;
             userExisting.EmailId = modelUsers.EmailId;
+            userExisting.UserRoleId = modelUsers.UserRoleId;
             userExisting.IsActive =true;
             userExisting.InsertBy = 1;
             userExisting.InsertDate = DateTime.UtcNow; 

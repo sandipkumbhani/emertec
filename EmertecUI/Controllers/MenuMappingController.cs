@@ -1,6 +1,7 @@
 ﻿using Emertec.UI.Application.Interface;
 using MicroService_Template.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace EmertecUI.Controllers
 {
@@ -17,9 +18,25 @@ namespace EmertecUI.Controllers
         }
         public async Task<IActionResult> MenuMappingList()
         {
-            IList<ModelUserMenuMapping> MenuMappingList = await _menuMappingServices.GetAllMenuMappingAsync();
-            return View("~/Views/MenuMapping/MenuMappingList.cshtml", MenuMappingList);
+            var role = HttpContext.User?.FindFirst(ClaimTypes.Role)?.Value;
+            var userIdClaim = HttpContext.User?.FindFirst("UserId")?.Value;
+            long.TryParse(userIdClaim, out long userId);
+            IList<ModelUserMenuMapping> menuMappingList = await _menuMappingServices.GetAllMenuMappingAsync();
+            if (string.Equals(role, "Admin", StringComparison.OrdinalIgnoreCase))
+            {
+                menuMappingList = menuMappingList
+                    .Where(m => m.UserId != userId)
+                    .ToList();
+            }
+            else
+            {
+                menuMappingList = menuMappingList
+                    .Where(m => m.UserId == userId)
+                    .ToList();
+            }
+            return View("~/Views/MenuMapping/MenuMappingList.cshtml", menuMappingList);
         }
+
         [HttpGet]
         public async Task<IActionResult> AddMenuMapping(int? id)
         {
@@ -37,14 +54,28 @@ namespace EmertecUI.Controllers
         {
             await InitViewBag();
             string MenuIds = string.Empty;
-            var selectedMenus = Request.Form["SelectedMenuIds"];
-            if (selectedMenus.Count == 0)
+            bool isValid = true;
+            if (modelUserMenuMapping.UserId == 0)
             {
-                ModelState.AddModelError("", "Please select at least one menu.");
+                ViewBag.UserMsg = "Please select a user.";
+                isValid = false;
+            }
+
+            var selectedMenus = Request.Form["SelectedMenuIds"];
+            if (!selectedMenus.Any())
+            {
+                ViewBag.MenuMsg = "Please select at least one menu.";
+                isValid = false;
+            }
+            else
+            {
+                modelUserMenuMapping.MenuIds = string.Join(",", selectedMenus);
+            }
+
+            if (!isValid)
+            {
                 return View(modelUserMenuMapping);
             }
-            MenuIds = string.Join(",", selectedMenus);
-            modelUserMenuMapping.MenuIds = MenuIds;
             if (modelUserMenuMapping.UserMenuMappingId == 0)
             {
                 await _menuMappingServices.AddMenuMappingAsync(modelUserMenuMapping);
