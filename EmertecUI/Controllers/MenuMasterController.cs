@@ -1,6 +1,7 @@
 ﻿using Emertec.UI.Application.Interface;
 using MicroService_Template.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace EmertecUI.Controllers
 {
@@ -20,6 +21,7 @@ namespace EmertecUI.Controllers
         [HttpGet]
         public async Task<IActionResult> AddMenuMaster(int? id)
         {
+            ViewBag.UserRole = User.FindFirst(ClaimTypes.Role)?.Value;
             if (id == null)
             {
                 return View(new ModelMenuMaster());
@@ -53,7 +55,6 @@ namespace EmertecUI.Controllers
             else
             {
                 await _menuMasterServices.UpdateMenuAsync(modelMenuMaster);
-
             }
             return RedirectToAction("MenuMasterList");
         }

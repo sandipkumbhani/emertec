@@ -38,11 +38,10 @@ namespace MicroService_Template.Controllers
             var jsonIds = await _assignFileService.GetJsonIdsByFileNamesAsync(fileNames);
             return Ok(jsonIds);
         }
-
         [HttpPost("AssignUserToFiles")]
         public async Task<IActionResult> AssignUserToFiles([FromBody] AssignFilesDto assignFilesDto)
         {
-            await _assignFileService.AssignUserToFilesAsync(assignFilesDto.UserId, assignFilesDto.JsonIds);
+            await _assignFileService.AssignUserToFilesAsync(assignFilesDto.UserId, assignFilesDto.JsonIds, assignFilesDto.loggedInUserId);
             return Ok(new { message = "User assigned to files successfully." });
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Emertec.UI.Application.Interface;
+using Emertec.UI.Application.Services;
 using MicroService_Template.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,35 +10,31 @@ namespace EmertecUI.Controllers
     public class UserController : Controller
     {
         IUserServices _userServices;
-        public UserController(IUserServices userServices)
+        IMenuMappingServices _menuMappingServices;
+        IMenuMasterServices _menuMasterServices;
+        public UserController(IUserServices userServices, IMenuMappingServices menuMappingServices,IMenuMasterServices menuMasterServices)
         {
             _userServices = userServices;
+            _menuMappingServices = menuMappingServices;
+            _menuMasterServices = menuMasterServices;
         }
         public async Task<IActionResult> UserList()
         {
             var role = HttpContext.User?.FindFirst(ClaimTypes.Role)?.Value;
             var userIdClaim = HttpContext.User?.FindFirst("UserId")?.Value;
             long.TryParse(userIdClaim, out long userId);
-
             IList<ModelUsers> userList = await _userServices.GetAllUsersAsync();
-
             if (string.Equals(role, "Admin", StringComparison.OrdinalIgnoreCase))
             {
-                
                 userList = userList.Where(u => u.UserId != userId).ToList();
             }
             else
             {
-               
                 userList = userList.Where(u => u.UserId == userId).ToList();
             }
-
             ViewBag.UserList = userList;
             return View("~/Views/User/UserList.cshtml");
         }
-
-
-
         [HttpGet]
         public async Task<IActionResult> AddUser(int? id)
         {
@@ -52,7 +49,6 @@ namespace EmertecUI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUser(ModelUsers modelUsers,string action)
         {
-          
             string NameMsg = string.Empty;
             if (string.IsNullOrEmpty(modelUsers.Name))
             {
@@ -95,7 +91,20 @@ namespace EmertecUI.Controllers
             }
             if (modelUsers.UserId == 0)
             {
-                await _userServices.AddUserAsync(modelUsers);
+                ModelUsers createdUser = await _userServices.AddUserAsync(modelUsers);
+                long newUserId = createdUser.UserId; 
+                var roles = await _userServices.GetRoleNameByIdAsync(modelUsers.UserRoleId);
+                string roleName = roles.Name ?? "";
+                if (string.Equals(roleName, "Admin", StringComparison.OrdinalIgnoreCase))
+                {
+                    var allMenus = await _menuMasterServices.GetAllMenuMasterAsync();
+                    var menuMapping = new ModelUserMenuMapping
+                    {
+                        UserId = createdUser.UserId,
+                        MenuIds = string.Join(",", allMenus.Select(m => m.MenuId)),
+                    };
+                    await _menuMappingServices.AddMenuMappingAsync(menuMapping);
+                }
             }
             else
             {

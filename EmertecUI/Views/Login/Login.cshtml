@@ -36,8 +36,6 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- App css -->
     <link href="css/app-style.css" rel="stylesheet" type="text/css" />
-
-
 </head>
 <body data-sidenav-size="default">
     <div class="wrapper single-page">
@@ -68,7 +66,7 @@
                                     </div>
                                 </div>
                                 <div class="forget-item">
-                                    <a href="forgot-password.html">Forget Password?</a>
+                                    <a asp-controller="ForgotPassword" asp-action="ForgotPassword">Forgot Password?</a>
                                 </div>
 
                                 @if (!string.IsNullOrEmpty(LoginMessage))

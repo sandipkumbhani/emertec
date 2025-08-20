@@ -11,13 +11,15 @@ namespace Emertec.UI.Domain.AssignFiles
     {
 
             public int UserId { get; set; }
-            public List<string> SelectedFileNames { get; set; }
-            public List<Guid> JsonIds { get; set; }
+            public List<string>? SelectedFileNames { get; set; }
+            public List<Guid>? JsonIds { get; set; }
 
-            
-            public IList<ModelUsers> UserList { get; set; }
-            public IList<string> FileList { get; set; }
-        
+            public IList<ModelUsers>? UserList { get; set; }
+            public IList<string>? FileList { get; set; }
+            public long loggedInUserId { get; set; }
+
+
+
 
 
     }

@@ -55,7 +55,6 @@ namespace Emertec.UI.Infrastructure.Provider
             var jsonString = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ModelMenuMaster>(jsonString)!;
         }
-
         public async Task<string> UpdateMenuAsync(ModelMenuMaster menuMaster)
         {
             var baseUrl = apiCredential.url + $"MenuMaster/Update-Menu/{menuMaster.MenuId}";

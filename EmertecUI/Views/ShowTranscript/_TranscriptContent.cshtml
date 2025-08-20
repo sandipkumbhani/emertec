@@ -1,0 +1,28 @@
+﻿@model MicroService_Template.Domain.Model.ModelDimJson
+
+@if (Model?.Sentences != null && Model.Sentences.Any())
+{
+    <h4>Transcript</h4>
+    <div class="chat-container">
+        @foreach (var sentence in Model.Sentences)
+        {
+            var isAgent = sentence.Text?.StartsWith("Speaker 0:") ?? false;
+            var messageText = sentence.Text?
+            .Replace("Speaker 0:", "Agent:")
+            .Replace("Speaker 1:", "Receiver:")
+            .Trim();
+
+            <div class="chat-message @(isAgent ? "agent-message" : "receiver-message")">
+                @messageText
+            </div>
+        }
+    </div>
+}
+else if (!string.IsNullOrEmpty(ViewBag.Error))
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+else
+{
+    <div class="text-muted">No transcript found.</div>
+}

@@ -4,6 +4,7 @@ using Emertec.UI.Domain.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -39,22 +40,12 @@ namespace EmertecUI.Controllers
                         SameSite = SameSiteMode.Strict,
                         Expires = DateTime.UtcNow.AddHours(24)
                     });
-                    //var jwt = new JwtSecurityTokenHandler().ReadJwtToken(responseToken.Token);
-                    //var email = jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email || c.Type == "unique_name")?.Value;
-                    //var claims = new List<Claim>
-                    //{
-                    //    new Claim(ClaimTypes.Email,email ?? viewModel.EmailId)
-                    //};
-                    var jwt = new JwtSecurityTokenHandler().ReadJwtToken(responseToken.Token);
-
                     var claims = new List<Claim>
                     {
                         new Claim("UserId", responseToken.UserId.ToString()),
                         new Claim(ClaimTypes.Name, responseToken.Username),
                         new Claim(ClaimTypes.Email, responseToken.EmailId),
                         new Claim(ClaimTypes.Role, responseToken.UserRoleName),
-
-
                     };
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(identity);
@@ -73,5 +64,9 @@ namespace EmertecUI.Controllers
                 return View(viewModel);
             }
         }
+       
+       
     }
 }
+
+    

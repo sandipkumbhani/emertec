@@ -16,7 +16,6 @@ namespace MicroService_Template.Controllers
         public UserMenuMappingController(IModelUserMenuMappingService modelUserMenuMappingService)
         {
             _modelUserMenuMappingService = modelUserMenuMappingService;
-
         }
         [HttpGet("get-all-Menu-Mapping")]
         public async Task<IActionResult> GetAllUsers()
@@ -25,7 +24,7 @@ namespace MicroService_Template.Controllers
             return Ok(users);
         }
 
-        [HttpPost("Menu-Master-Mapping")]
+        [HttpPost("Create-Menu-Mapping")]
         public async Task<IActionResult> CreateMenuMasterMaster([FromBody] ModelUserMenuMapping modelUserMenuMapping)
         {
             if (!ModelState.IsValid)
@@ -55,7 +54,9 @@ namespace MicroService_Template.Controllers
         public async Task<IActionResult> UpdateMenuAsync(int userId, [FromBody] ModelUserMenuMapping modelUserMenuMapping)
         {
             if (userId != modelUserMenuMapping.UserId)
+            {
                 return BadRequest("User ID mismatch.");
+            }
 
             try
             {

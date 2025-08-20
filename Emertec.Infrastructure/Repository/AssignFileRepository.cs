@@ -41,7 +41,6 @@ namespace MicroService_Template.Infrastructure.Repository
                 .Select(x => x.Id) 
                 .ToListAsync();
         }
-
         public async Task<List<ModelDimJson>> GetFilesByJsonIdsAsync(List<Guid> jsonIds)
         {
             return await _context.modelDimJson
@@ -52,11 +51,5 @@ namespace MicroService_Template.Infrastructure.Repository
         {
             await _context.SaveChangesAsync();
         }
-
-
-        
-
-
-
     }
 }

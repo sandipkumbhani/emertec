@@ -10,7 +10,7 @@ namespace MicroService_Template.Application.Extension.Interface
     public interface IAssignFileService
     {
         Task<List<string>> GetFileNamesForUserZeroAsync();
-        Task AssignUserToFilesAsync(int userId, List<Guid> jsonIds);
+        Task AssignUserToFilesAsync(int userId, List<Guid> jsonIds,long loggedInUserId);
         Task<List<Guid>> GetJsonIdsByFileNamesAsync(List<string> fileNames);
     }
 }

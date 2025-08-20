@@ -36,7 +36,6 @@ namespace EmertecUI.Controllers
             }
             return View("~/Views/MenuMapping/MenuMappingList.cshtml", menuMappingList);
         }
-
         [HttpGet]
         public async Task<IActionResult> AddMenuMapping(int? id)
         {
@@ -60,18 +59,16 @@ namespace EmertecUI.Controllers
                 ViewBag.UserMsg = "Please select a user.";
                 isValid = false;
             }
-
             var selectedMenus = Request.Form["SelectedMenuIds"];
             if (!selectedMenus.Any())
             {
                 ViewBag.MenuMsg = "Please select at least one menu.";
                 isValid = false;
-            }
+            }   
             else
             {
                 modelUserMenuMapping.MenuIds = string.Join(",", selectedMenus);
             }
-
             if (!isValid)
             {
                 return View(modelUserMenuMapping);
@@ -87,7 +84,7 @@ namespace EmertecUI.Controllers
             return RedirectToAction("MenuMappingList");
         }
         [HttpGet]
-        public async Task<IActionResult> DeleteUser(int userId)
+        public async Task<IActionResult> DeleteMenuMappingUser(int userId)
         {
             try
             {

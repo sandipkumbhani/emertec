@@ -9,7 +9,9 @@ namespace MicroService_Template.Domain.Interface
 {
     public interface IShowTrancriptRepository
     {
-        Task<List<ModelDimJson>> GetFileNamesByIsTranscriptAsync();
+        Task<List<ModelDimJson>> GetFileNameByIsTranscriptAsync();
         Task<ModelDimJson?> GetByFileNameAsync(string fileName);
+        Task<bool> MarFileAsTranscriptedAsync(string fileName, long loggedInUserId);
+        Task<List<ModelDimJson>> GetFileNameByIsTranscriptTrueAsync();
     }
 }

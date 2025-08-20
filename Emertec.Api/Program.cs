@@ -16,7 +16,6 @@ using Quartz;
 using System.Text;
 //using MicroService_Template.Job;
 {
-
     var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddHttpContextAccessor();
     //builder.Services.AddQuartz(q =>
@@ -71,7 +70,8 @@ using System.Text;
     builder.Services.AddScoped<IModelUserRoleRepository, ModelUserRoleRepository>();
     builder.Services.AddScoped<IShowTrancriptRepository, ShowTrancriptRepository>();
     builder.Services.AddScoped<IAssignFileRepository, AssignFileRepository>();
-
+    builder.Services.AddScoped<IForgotPasswordDbRepository,ForgotPasswordDbRepository>();
+    builder.Services.AddScoped<IGetLoginUserNameRepository, GetLoginUserNameRepository>();
 
 
 
@@ -83,10 +83,13 @@ using System.Text;
     builder.Services.AddScoped<IModelCreateUserService, ModelCreateUserService>();
     builder.Services.AddScoped<IModelMenuMasterService, ModelMenuMasterService>();
     builder.Services.AddScoped<IUserLoginService, UserLoginService>();
-    builder.Services.AddScoped<IModelUserMenuMappingService,ModelUserMenuMappingService>();
+    builder.Services.AddScoped<IModelUserMenuMappingService, ModelUserMenuMappingService>();
     builder.Services.AddScoped<IModelUserRoleService, ModelUserRoleService>();
     builder.Services.AddScoped<IShowTrancriptService, ShowTrancriptService>();
     builder.Services.AddScoped<IAssignFileService, AssignFileService>();
+    builder.Services.AddScoped<IEmailService, EmailService>();
+    builder.Services.AddScoped<IForgotPasswordService, ForgotPasswordService>();
+    builder.Services.AddScoped<IGetLoginUserNameService, GetLoginUserNameService>();
 
 
     builder.Services.AddControllers();
@@ -115,7 +118,7 @@ using System.Text;
     })
  .AddJwtBearer(options =>
  {
-     options.RequireHttpsMetadata = false; 
+     options.RequireHttpsMetadata = false;
      options.SaveToken = true;
      options.TokenValidationParameters = new TokenValidationParameters
      {
@@ -180,7 +183,7 @@ using System.Text;
 
     app.MapControllers();
 
-    
+
 
     app.Run();
 }

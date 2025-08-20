@@ -12,6 +12,6 @@ namespace Emertec.UI.Application.Interface
         Task<List<ModelUsers>> GetAllUsersAsync();
         Task<List<string>> GetFileNamesForUserZeroAsync();
         Task<List<Guid>> GetJsonIdsByFileNamesAsync(List<string> fileNames);
-        Task<bool> UpdateUserIdAsync(int userId, List<Guid> jsonIds);
+        Task<bool> UpdateUserIdAsync(int userId, List<Guid> jsonIds, long loggedInUserId);
     }
 }

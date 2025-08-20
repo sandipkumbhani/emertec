@@ -22,31 +22,11 @@ namespace MicroService_Template.Application.Services
         {
             return await _assignFileRepository.GetFileNamesByUserIdZeroAsync();
         }
-        //public async Task<bool> UpdateUserIdsByJsonIdAsync(long userId, List<Guid> jsonIds)
-        // {
-        //     if (jsonIds == null || !jsonIds.Any())
-        //     {
-        //         return false; 
-        //     }
-        //     await _assignFileRepository.AssignfileAsync(userId,jsonIds);
-        //     return true; 
-        // }
-
-        //public async Task  AssignUserToFilesAsync(long userId, List<Guid> jsonIds)
-        //{
-        //    var filesToUpdate = await _assignFileRepository.GetFilesByJsonIdsAsync(jsonIds);
-
-        //    foreach (var file in filesToUpdate)
-        //    {
-        //        file.UserId = userId;
-        //        await _assignFileRepository.UserUpdateAsync(file);
-        //    }
-        //}
         public async Task<List<Guid>> GetJsonIdsByFileNamesAsync(List<string> fileNames)
         {
             return await _assignFileRepository.GetjsonidByFileNmaeAsync(fileNames);
         }
-        public async Task AssignUserToFilesAsync(int userId, List<Guid> jsonIds)
+        public async Task AssignUserToFilesAsync(int userId, List<Guid> jsonIds,long loggedInUserId)
         {
             var filesToUpdate = await _assignFileRepository.GetFilesByJsonIdsAsync(jsonIds);
 
@@ -55,11 +35,12 @@ namespace MicroService_Template.Application.Services
                 if (file.UserId == 0)
                 {
                     file.UserId = userId;
+                    file.InsertBy = loggedInUserId;
+
                 }
             }
 
             await _assignFileRepository.SaveChangesAsync();
         }
-
     }
 }

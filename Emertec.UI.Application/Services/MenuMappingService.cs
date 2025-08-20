@@ -15,7 +15,7 @@ namespace Emertec.UI.Application.Services
         {
             return await _menuMappingRepository.GetAllMenuMappingAsync();
         }
-        public async Task<string> AddMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
+        public async Task<ModelUserMenuMapping> AddMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
         {
             return await _menuMappingRepository.AddMenuMappingAsync(modelUserMenuMapping);
         }

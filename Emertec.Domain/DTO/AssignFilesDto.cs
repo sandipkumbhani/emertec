@@ -8,9 +8,11 @@ namespace MicroService_Template.Domain.DTO
 {
     public class AssignFilesDto
     {
-       public int UserId { get; set; }
-       public List<Guid>? JsonIds { get; set; }
-        
+        public int UserId { get; set; }
+        public List<Guid>? JsonIds { get; set; }
+        public long loggedInUserId { get; set; }
+
+
 
     }
 }

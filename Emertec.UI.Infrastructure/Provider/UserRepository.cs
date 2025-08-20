@@ -27,7 +27,7 @@ namespace Emertec.UI.Infrastructure.Provider
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<ModelUsers>>(json)!;
         }
-        public async Task<string> AddUserAsync(ModelUsers user)
+        public async Task<ModelUsers> AddUserAsync(ModelUsers user)
         {
             var baseUrl = apiCredential.url + "User/create";
 
@@ -39,19 +39,51 @@ namespace Emertec.UI.Infrastructure.Provider
 
             if (!response.IsSuccessStatusCode)
             {
-                var errorResponse = JsonConvert.DeserializeObject<CommanResponseDto>(responseData);
-                var message = errorResponse?.ErrorMessage
-                              ?? errorResponse?.Message
-                              ?? "Failed to create user.";
+                // Try parsing as JSON error response
+                try
+                {
+                    var errorResponse = JsonConvert.DeserializeObject<CommanResponseDto>(responseData);
 
-                throw new Exception($"API Error ({response.StatusCode}): {message}");
+                    var message = errorResponse?.ErrorMessage
+                                  ?? errorResponse?.Message
+                                  ?? responseData; // fallback to raw response text
+
+                    if (message.Contains("email", StringComparison.OrdinalIgnoreCase))
+                    {
+                        throw new InvalidOperationException("This email is already registered.");
+                    }
+
+                    throw new Exception($"API Error ({response.StatusCode}): {message}");
+                }
+                catch (JsonException)
+                {
+                    // If not JSON, treat it as plain text
+                    if (responseData.Contains("email", StringComparison.OrdinalIgnoreCase))
+                    {
+                        throw new InvalidOperationException("This email is already registered.");
+                    }
+                    throw new Exception($"API Error ({response.StatusCode}): {responseData}");
+                }
             }
-            return "User created successfully.";
+
+            // ✅ Only try to deserialize if success
+            try
+            {
+                var createdUser = JsonConvert.DeserializeObject<ModelUsers>(responseData);
+                return createdUser!;
+            }
+            catch (JsonException)
+            {
+                throw new Exception("Unexpected response format from API: " + responseData);
+            }
         }
-        public async Task<ModelUsers> GetUsersByIdAsync(int? id)
+
+        public async Task<ModelUsers> GetUsersByIdAsync(long? id)
         {
             if (id == null)
+            {
                 throw new ArgumentNullException(nameof(id));
+            }
 
             var baseUrl = apiCredential.url + $"User/GetById?userid={id}";
             var response = await _httpClient.GetAsync(baseUrl);
@@ -62,7 +94,7 @@ namespace Emertec.UI.Infrastructure.Provider
             var jsonString = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ModelUsers>(jsonString)!;
         }
-        public async Task<string> UpdateUserAsync(ModelUsers user)
+        public async Task<ModelUsers> UpdateUserAsync(ModelUsers user)
         {
             var baseUrl = apiCredential.url + $"User/Update-User/{user.UserId}";
             var jsonContent = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
@@ -72,18 +104,19 @@ namespace Emertec.UI.Infrastructure.Provider
             if (!response.IsSuccessStatusCode)
                 throw new Exception($"Failed to update user. Status code: {response.StatusCode}");
 
-            return await response.Content.ReadAsStringAsync();
+            var jsonString =  await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ModelUsers>(jsonString)!;
         }
         public async Task<string> DeleteUserAsync(int id)
         {
             var baseUrl = $"{apiCredential.url}User/Delete-User?id={id}";
             var response = await _httpClient.DeleteAsync(baseUrl);
             if (!response.IsSuccessStatusCode)
+            {
                 throw new Exception($"Failed to delete user. Status code: {response.StatusCode}");
+            }
             return await response.Content.ReadAsStringAsync();
-
         }
-        //user role
         public async Task<List<ModelUserRole>> GetAllUserRoleAsync()
         {
             var baseUrl = apiCredential.url + "UserRole/get-all-userRole";
@@ -91,6 +124,19 @@ namespace Emertec.UI.Infrastructure.Provider
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<ModelUserRole>>(json)!;
+        }
+        public async Task<ModelUserRole> GetRoleNameByIdAsync(long? id)
+        {
+            if (id == null)
+                throw new ArgumentNullException(nameof(id));
+
+            var baseUrl = apiCredential.url + $"UserRole/GetUserRoleById?id={id}";
+            var response = await _httpClient.GetAsync(baseUrl);
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Failed to get user. Status code: {response.StatusCode}");
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ModelUserRole>(jsonString)!;
         }
     }
 }

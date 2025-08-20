@@ -52,13 +52,14 @@ namespace Emertec.UI.Infrastructure.Provider
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<string>>(json)!;
         }
-
-        public async Task<bool> AssignUserToFilesAsync(int userId, List<Guid> jsonIds)
+        public async Task<bool> AssignUserToFilesAsync(int userId, List<Guid> jsonIds,long loggedInUserId)
         {
             var dto = new AssignFilesDto
             {
                 UserId = userId,
-                JsonIds = jsonIds 
+                JsonIds = jsonIds,
+                loggedInUserId = loggedInUserId
+
             };
 
             var url = $"{apiCredential.url}AssignFile/AssignUserToFiles"; 

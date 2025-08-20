@@ -3,6 +3,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     string NameMsg = ViewBag.NameMsg;
     string DescriptionMsg = ViewBag.DescriptionMsg;
+    string userRole = ViewBag.UserRole as string ?? "";
+    bool isAdmin = string.Equals(userRole, "Admin", StringComparison.OrdinalIgnoreCase);
+    bool isNew = Model.MenuId == 0;
+    bool isChecked = Model.IsDefault || (isAdmin && isNew);
 }
 <html>
 <body>
@@ -64,18 +68,17 @@
                                         <div class="d-flex align-items-center gap-2">
                                             <input type="checkbox" name="IsDefault" id="IsDefault" class="form-check-input"
                                                    value="true"
-                                                   @(Model.IsDefault ? "checked" : "") style="transform: scale(1.4); margin-top: 2px;" />
+                                                   @(isChecked ? "checked" : "") style="transform: scale(1.4); margin-top: 2px;" />
                                             <label for="IsDefault" class="form-label col-form-label required fw-semibold mb-0" style="font-size: 16px;">Is Default</label>
                                         </div>
                                     </div>
 
-
                                     <div class="button-main" style="display: flex; gap: 12px; margin-top: 20px;">
-                                        <button type="submit" class="card-link outline-bar">
-                                            <svg width="16" height="16" viewBox="0 0 512 512" fill="#0466C8" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M433.941 129.941L320 16H80C71.164 16 64 23.164 64 32V480C64 488.836 71.164 496 80 496H432C440.836 496 448 488.836 448 480V144C448 138.141 445.645 132.547 441.373 128.606L433.941 129.941zM320 32L432 144H336C327.164 144 320 136.836 320 128V32zM384 416H128V384H384V416zM384 352H128V320H384V352zM256 288H128V256H256V288z" />
-                                            </svg>
-                                            <span>Save</span>
+                                        <button type="submit" class="card-link">
+                                            <i class="ri-save-line"></i>
+                                            <span>
+                                                Save
+                                            </span>
                                         </button>
                                         @if (Model.MenuId == 0 || Model.MenuId == null)
                                         {

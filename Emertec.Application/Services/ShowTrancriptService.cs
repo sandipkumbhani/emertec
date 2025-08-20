@@ -19,7 +19,11 @@ namespace MicroService_Template.Application.Services
         }
         public async Task<List<ModelDimJson>> GetFileNameByIsTranscript()
         {
-            return await _showTrancriptRepository.GetFileNamesByIsTranscriptAsync();
+            return await _showTrancriptRepository.GetFileNameByIsTranscriptAsync();
+        }
+        public async Task<List<ModelDimJson>> GetFileNameByIsTranscriptTrue()
+        {
+            return await _showTrancriptRepository.GetFileNameByIsTranscriptTrueAsync();
         }
         public async Task<List<string>> GetByFileNameAsync(string filename)
         {
@@ -38,7 +42,6 @@ namespace MicroService_Template.Application.Services
             try
             {
                 var jsonContent = await File.ReadAllTextAsync(jsonRecord.FilePath);
-
                 var voiceJson = JsonConvert.DeserializeObject<VoiceFileExtendedJson>(jsonContent);
                 var filteredSegments = voiceJson?.Segments?
                     .Where(seg => seg.Speaker != null && !string.IsNullOrWhiteSpace(seg.text))
@@ -53,7 +56,9 @@ namespace MicroService_Template.Application.Services
                 return new List<string> { "Error reading or parsing the JSON file." };
             }
         }
-
-
+        public async Task<bool> MarFileAsTranscriptedAsync(string fileName,long loggedInUserId)
+        {
+            return await _showTrancriptRepository.MarFileAsTranscriptedAsync(fileName,loggedInUserId);
+        }
     }
 }

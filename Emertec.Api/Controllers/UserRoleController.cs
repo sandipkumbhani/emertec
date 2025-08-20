@@ -65,24 +65,18 @@ namespace MicroService_Template.Controllers
                 return NotFound(new { message = ex.Message });
             }
         }
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
-
+        [HttpGet("GetUserRoleById")]
+        public async Task<IActionResult> GetById(int id)
         {
             try
             {
-                var menumaster = _modelUserRoleService.GetUserRoleById(id);
-                return Ok(menumaster);
+                var role = await _modelUserRoleService.GetUserRoleById(id); 
+                return Ok(role);
             }
             catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
-
         }
-
-
-
-
     }
 }

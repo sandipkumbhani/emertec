@@ -33,7 +33,6 @@ namespace MicroService_Template.Domain.Model
         [ForeignKey("UserId")]
         public virtual ModelUsers? User { get; set; }
         
-
         [ForeignKey("MenuId")]
         public virtual ModelMenuMaster? Menu { get; set; }
     }

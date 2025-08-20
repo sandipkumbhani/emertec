@@ -29,7 +29,6 @@ namespace MicroService_Template.Application.Services
                     UpdateDate = DateTime.Now
                 });
             }
-
             return await _modelUserMenuMappingRepository.AddMenuMappingAsync(ModelUserMenuMappingList);
         }
         public async Task<List<ModelUserMenuMapping>> GetAllMenuMappingAsync()

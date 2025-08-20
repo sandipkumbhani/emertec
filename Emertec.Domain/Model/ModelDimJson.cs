@@ -24,6 +24,10 @@ namespace MicroService_Template.Domain.Model
          public bool IsTrascripted { get; set; }
         [NotMapped]
         public List<ModelSentence> Sentences { get; set; } = new();
+        [NotMapped]
+        public string? InsertName { get; set; }
+        [NotMapped]
+        public string? UpdeterName { get; set; }
         public class ModelSentence
         {
             public string Text { get; set; } = string.Empty;

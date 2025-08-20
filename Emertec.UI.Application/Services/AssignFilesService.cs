@@ -1,11 +1,6 @@
 ﻿using Emertec.UI.Application.Interface;
 using Emertec.UI.Domain.Interfaces;
 using MicroService_Template.Domain.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Emertec.UI.Application.Services
 {
@@ -29,16 +24,13 @@ namespace Emertec.UI.Application.Services
             var stringIds = await _assignFilesRepository.GetjsonidByFileNmaeAsync(fileNames);
             return stringIds.Select(Guid.Parse).ToList();
         }
-
-
-        public async Task<bool> UpdateUserIdAsync(int userId, List<Guid> jsonIds)
+        public async Task<bool> UpdateUserIdAsync(int userId,List<Guid> jsonIds,long loggedInUserId)
         {
-            if (jsonIds == null || !jsonIds.Any() || userId <= 0)
+            if (jsonIds == null || loggedInUserId == null)
             {
-                return false; // No user or files selected
+                return false; 
             }
-            return await _assignFilesRepository.AssignUserToFilesAsync(userId, jsonIds);
-
+            return await _assignFilesRepository.AssignUserToFilesAsync(userId, jsonIds, loggedInUserId);
         }
     }
 }

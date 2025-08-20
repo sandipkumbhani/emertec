@@ -28,6 +28,24 @@ namespace MicroService_Template.Controllers
             }
             return Ok(fileNames);
         }
+        [HttpGet("GetFileNameByIsTranscriptTrue")]
+        public async Task<IActionResult> GetFileNameByIsTranscriptTrueAsync()
+        {
+            try
+            {
+                List<ModelDimJson> fileNames = await _showTrancriptService.GetFileNameByIsTranscriptTrue();
+
+                if (fileNames == null || fileNames.Count == 0)
+                {
+                    return NotFound("No transcripted files found.");
+                }
+                return Ok(fileNames);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
         [HttpGet("sentences-from-FileName")]
         public async Task<IActionResult> GetByFileNameAsync([FromQuery] string fileName)
         {
@@ -50,7 +68,22 @@ namespace MicroService_Template.Controllers
 
             return Ok(result);
         }
-
-
+        [HttpPost("Mark-As-Transcripted")]
+        public async Task<IActionResult> MarkAsTranscripted(string fileName, long loggedInUserId)
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                return BadRequest("File name is required.");
+            }
+            bool success = await _showTrancriptService.MarFileAsTranscriptedAsync(fileName, loggedInUserId);
+            if (success)
+            {
+                return Ok("File marked as transcripted.");
+            }
+            else
+            {
+                return NotFound("No matching file found or already transcripted.");
+            }
+        }
     }
 }

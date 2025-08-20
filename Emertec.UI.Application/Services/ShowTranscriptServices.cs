@@ -15,9 +15,17 @@ namespace Emertec.UI.Application.Services
         {
             return await _showTranscriptRepository.GetFileNameByIsTranscriptedAsync();
         }
+        public async Task<List<ModelDimJson>> GetFileNameByIsTranscriptTrueAsync()
+        {
+            return await _showTranscriptRepository.GetFileNameByIsTranscriptTrueAsync();
+        }
         public async Task<ModelDimJson> GetByFileNameAsync(string fileName)
         {
             return await _showTranscriptRepository.GetByFileNameAsync(fileName);
+        }
+        public async Task<bool> MarkIsTranscriptAsync(string filename,long loggedInUserId)
+        {
+            return await _showTranscriptRepository.MarkIsTranscriptAsync(filename, loggedInUserId);
         }
     }
 }

@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MicroService_Template.Controllers
 {
-    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IModelCreateUserService _modelCreateUserService;
@@ -16,7 +16,6 @@ namespace MicroService_Template.Controllers
         public UserController(IModelCreateUserService modelCreateUserService)
         {
             _modelCreateUserService = modelCreateUserService;
-
         }
         [HttpGet("get-all-user")]
         public async Task<IActionResult> GetAllUsers()
@@ -24,8 +23,6 @@ namespace MicroService_Template.Controllers
             var users = await _modelCreateUserService.GetAllUsersAsync();
             return Ok(users);
         }
-
-
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] ModelUsers modelUsers)
         {
@@ -33,16 +30,23 @@ namespace MicroService_Template.Controllers
             {
                 return BadRequest(ModelState);
             }
+            try
+            {
+                var user = await _modelCreateUserService.CreateUserAsync(modelUsers);
+                return Ok(user);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return Ok($"This email is already registered.");
+            }
 
-            var user = await _modelCreateUserService.CreateUserAsync(modelUsers);
-            return Ok(user);
         }
         [HttpDelete("Delete-User")]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                _modelCreateUserService.DeleteUserById(id);
+                await _modelCreateUserService.DeleteUserById(id);
                 return Ok($"User with ID {id} has been deleted successfully.");
             }
             catch (KeyNotFoundException ex)

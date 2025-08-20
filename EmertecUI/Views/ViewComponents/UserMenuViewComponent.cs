@@ -12,7 +12,6 @@ namespace EmertecUI.Views.ViewComponents
         {
             _menuService = menuService;
         }
-
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var userIdClaim = HttpContext.User.FindFirst("UserId")?.Value;

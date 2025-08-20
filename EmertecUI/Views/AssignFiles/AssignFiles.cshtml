@@ -2,9 +2,11 @@
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-
 }
 <html>
+    <head>
+    <link href="~/css/addpagination.css" rel="stylesheet" />
+    </head>
 <body>
     <div class="content-page">
         <div class="content">
@@ -12,7 +14,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box">
-                            <h1 class="page-title">Add MenuMaster</h1>
+                            <h1 class="page-title">Assign Files</h1>
                         </div>
                     </div>
                 </div>
@@ -20,9 +22,7 @@
                     <div class="col-12">
                         <div class="card com-profile-info">
                             <div class="top-details">
-                                <h2 class="page-form-title">User File Assign</h2>
-
-                                <form class="row all-custom-class" method="post" action="@Url.Action("AssignFilesList", "AssignFiles")">
+                                <form class="row all-custom-class" id="franchiseTable" method="post" action="@Url.Action("AssignFilesList", "AssignFiles")">
                                     <div class="col-xl-4 col-lg-6">
                                         <div class="item-input">
 
@@ -34,18 +34,25 @@
                                                 <span class="text-danger">@ViewBag.UserError</span>
                                             }
                                             <label class="form-label required fw-semibold fs-6">Select Files</label>
-                                            @foreach (var file in Model.FileList)
-                                            {
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="SelectedFileNames" value="@file" />
-                                                    <label class="form-check-label" for="file_@file">@file</label>
-                                                </div>
-                                            }
-                                            @if (ViewBag.FileError != null)
-                                            {
-                                                <span class="text-danger">@ViewBag.FileError</span>
-                                            }
-
+                                            <table id="franchiseTable" class="table dt-responsive nowrap">
+                                                <tbody>
+                                                @foreach (var file in Model.FileList)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" name="SelectedFileNames" value="@file" />
+                                                                <label class="form-check-label" for="file_@file">@file</label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                @if (ViewBag.FileError != null)
+                                                {
+                                                    <span class="text-danger">@ViewBag.FileError</span>
+                                                }
+                                                </tbody>
+                                            </table>
                                         </div>
                                         <div class="button-main" style="display: flex; gap: 12px; margin-top: 20px;">
                                             <button type="submit" class="card-link outline-bar">
@@ -56,11 +63,23 @@
                                             </button>
                                         </div>
                                     </div>
+                                    <div class="datatable-footer-bottom">
+                                        <div class="totle-left">
+                                            <span id="totalRecords">Total Reminders: 3</span>
+                                        </div>
+                                        <div id="pagination" class="dataTables_paginate paging_simple_numbers"></div>
+                                        <div class="show-page">
+                                            <span>Show per page:</span>
+                                            <select id="rowsPerPage" class="form-select">
+                                                <option value="5" >5 </option>
+                                                <option value="10" selected>10 </option>
+                                                <option value="25">25</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </form>
 
-
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -78,3 +97,4 @@
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="~/js/record.js" defer></script>
+<script src="~/js/addpagination.js"></script>

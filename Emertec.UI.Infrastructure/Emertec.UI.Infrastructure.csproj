@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="4.12.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Emertec.Domain\Emertec.Domain.csproj" />
     <ProjectReference Include="..\Emertec.UI.Domain\Emertec.UI.Domain.csproj" />
   </ItemGroup>

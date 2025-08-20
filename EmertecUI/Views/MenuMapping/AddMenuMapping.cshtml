@@ -62,16 +62,16 @@
                                                 <span class="text-danger">@MenuMsg</span>
                                             }
                                         </div>
-                                        
+
                                     </div>
                                     <div class="button-main" style="display: flex; gap: 12px; margin-top: 20px;">
-                                        <button type="submit" class="card-link outline-bar">
-                                            <svg width="16" height="16" viewBox="0 0 512 512" fill="#0466C8" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M433.941 129.941L320 16H80C71.164 16 64 23.164 64 32V480C64 488.836 71.164 496 80 496H432C440.836 496 448 488.836 448 480V144C448 138.141 445.645 132.547 441.373 128.606L433.941 129.941zM320 32L432 144H336C327.164 144 320 136.836 320 128V32zM384 416H128V384H384V416zM384 352H128V320H384V352zM256 288H128V256H256V288z" />
-                                            </svg>
-                                            <span>Save</span>
+                                        <button type="submit" class="card-link">
+                                            <i class="ri-save-line"></i>
+                                            <span>
+                                                Save
+                                            </span>
                                         </button>
-                                      @if (Model.UserMenuMappingId == 0 || Model.UserMenuMappingId == null)
+                                        @if (Model.UserMenuMappingId == 0)
                                         {
                                             <button type="reset" class="card-link outline-bar">
                                                 <svg width="16" height="16" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -81,16 +81,15 @@
                                             </button>
                                         }
                                         <a href="@Url.Action("MenuMappingList", "MenuMapping")" class="card-link outline-bar">
-                                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
-                                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
-                                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
-                                               </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                                                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
+                                                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
+                                            </svg>
                                             <span>View</span>
                                         </a>
                                     </div>
                                 </form>
                             </div>
-
                         </div>
                     </div>
                 </div>

@@ -27,9 +27,9 @@ namespace Emertec.UI.Infrastructure.Provider
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<ModelUserMenuMapping>>(json)!;
         }
-        public async Task<string> AddMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
+        public async Task<ModelUserMenuMapping> AddMenuMappingAsync(ModelUserMenuMapping modelUserMenuMapping)
         {
-            var baseUrl = apiCredential.url + "UserMenuMapping/Menu-Master-Mapping";
+            var baseUrl = apiCredential.url + "UserMenuMapping/Create-Menu-Mapping";
 
             var userJson = JsonConvert.SerializeObject(modelUserMenuMapping);
             var requestContent = new StringContent(userJson, Encoding.UTF8, "application/json");
@@ -46,8 +46,18 @@ namespace Emertec.UI.Infrastructure.Provider
 
                 throw new Exception($"API Error ({response.StatusCode}): {message}");
             }
-            return "Menu Added successfully.";
+
+            try
+            {
+                var createdMappings = JsonConvert.DeserializeObject<List<ModelUserMenuMapping>>(responseData);
+                return createdMappings?.FirstOrDefault() ?? throw new Exception("Empty result from API.");
+            }
+            catch (JsonException)
+            {
+                throw new Exception($"Unexpected response format. Raw response: {responseData}");
+            }
         }
+
         public async Task<List<ModelUserRole>> GetAllUserRoleAsync()
         {
             var baseUrl = apiCredential.url + "UserRole/get-all-userRole";

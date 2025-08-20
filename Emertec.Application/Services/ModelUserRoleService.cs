@@ -29,13 +29,11 @@ namespace MicroService_Template.Application.Services
                 UpdateBy = 1,
                 UpdateDate = DateTime.Now
             };
-
             return await _modelUserRoleRepository.AddUserRoleAsync(menuMaster);
         }
         public async Task<List<ModelUserRole>> GetAllUsersRoleAsync()
         {
             var users = await _modelUserRoleRepository.GetAllUsersRole();
-
             return users.Select(user => new ModelUserRole
             {
                 UserRoleId = user.UserRoleId,
@@ -89,5 +87,6 @@ namespace MicroService_Template.Application.Services
 
             return menuMaster;
         }
+
     }
 }

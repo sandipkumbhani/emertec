@@ -3,6 +3,8 @@ using Emertec.UI.Domain.Interfaces;
 using MicroService_Template.Domain.Model;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System.Net;
+using System.Text;
 
 namespace Emertec.UI.Infrastructure.Provider
 {
@@ -21,6 +23,23 @@ namespace Emertec.UI.Infrastructure.Provider
         {
             var baseUrl = apiCredential.url + "ShowTrancript/GetFileNameByIsTranscripted";
             var response = await _httpClient.GetAsync(baseUrl);
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return new List<ModelDimJson>(); 
+            }
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<ModelDimJson>>(json)!;
+        }
+        public async Task<List<ModelDimJson>> GetFileNameByIsTranscriptTrueAsync()
+        {
+            var baseUrl = apiCredential.url + "ShowTrancript/GetFileNameByIsTranscriptTrue";
+            var response = await _httpClient.GetAsync(baseUrl);
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return new List<ModelDimJson>();
+            }
+
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<ModelDimJson>>(json)!;
@@ -32,6 +51,14 @@ namespace Emertec.UI.Infrastructure.Provider
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ModelDimJson>(json)!;
+        }
+        public async Task<bool> MarkIsTranscriptAsync(string fileName, long loggedInUserId)
+        {
+            var baseUrl = $"{apiCredential.url}ShowTrancript/Mark-As-Transcripted?fileName={fileName}&loggedInUserId={loggedInUserId}";
+            var response = await _httpClient.PostAsync(baseUrl, null);
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            return response.IsSuccessStatusCode;
         }
     }
 }

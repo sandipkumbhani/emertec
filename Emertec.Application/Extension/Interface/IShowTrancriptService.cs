@@ -11,5 +11,7 @@ namespace MicroService_Template.Application.Extension.Interface
     {
         Task<List<ModelDimJson>> GetFileNameByIsTranscript();
         Task<List<string>> GetByFileNameAsync(string filename);
+        Task<bool> MarFileAsTranscriptedAsync(string fileName, long loggedInUserId);
+        Task<List<ModelDimJson>> GetFileNameByIsTranscriptTrue();
     }
 }

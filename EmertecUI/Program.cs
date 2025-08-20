@@ -3,7 +3,6 @@ using Emertec.UI.Domain.Model;
 using Emertec.UI.Infrastructure.Extension;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
-
 var builder = WebApplication.CreateBuilder(args);
 var globalClass = new GlobalClass();
 
@@ -65,7 +64,6 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Login}/{action=Login}/{id?}");

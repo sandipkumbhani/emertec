@@ -4,6 +4,7 @@ using MicroService_Template.Domain.DTO;
 using MicroService_Template.Domain.Interface;
 using MicroService_Template.Domain.Model;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.AspNetCore.Http.HttpResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,12 +28,10 @@ namespace MicroService_Template.Application.Services
             bool emailExists = await _modelCreateUserRepository.EmailExistsAsync(modelUsers.EmailId);
             if (emailExists)
             {
-                throw new InvalidOperationException("Email already exists.");
+                throw new InvalidOperationException("This email is already registered.");
             }
-
             var salt = Guid.NewGuid().ToString("N").Substring(0, 8);
             var hashedPassword = HashPassword(modelUsers.Password, salt);
-
             var newUser = new ModelUsers
             {
                 Name = modelUsers.Name,
@@ -46,7 +45,6 @@ namespace MicroService_Template.Application.Services
                 UpdateBy = 1,
                 UpdateDate = DateTime.Now
             };
-
             return await _modelCreateUserRepository.AddUserAsync(newUser);
         }
         public async Task<List<ModelUsers>> GetAllUsersAsync()
@@ -124,9 +122,6 @@ namespace MicroService_Template.Application.Services
 
             };
         }
-
-
-
         private string HashPassword(string password, string salt)
         {
             using var sha256 = SHA256.Create();

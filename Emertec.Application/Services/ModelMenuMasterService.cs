@@ -8,9 +8,6 @@ namespace MicroService_Template.Application.Services
     public class ModelMenuMasterService : IModelMenuMasterService
     {
         private readonly IModelMenuMasterRepository _modelMenuMasterRepository;
-
-        public object ExceptionUtilities { get; private set; }
-
         public ModelMenuMasterService(IModelMenuMasterRepository modelMenuMasterRepository)
         {
             _modelMenuMasterRepository = modelMenuMasterRepository;
@@ -50,8 +47,6 @@ namespace MicroService_Template.Application.Services
                 InsertDate = menuMaster.InsertDate,
                 UpdateBy = menuMaster.UpdateBy,
                 UpdateDate = menuMaster.UpdateDate,
-
-
             }).ToList();
         }
         public async Task DeleteMenuById(int id)

@@ -23,9 +23,6 @@ namespace MicroService_Template.Domain.Services
         {
             _userLoginRepository = userRepository;
             _configuration = configuration;
-            _JwtKey = _configuration["Jwt:Key"];
-            _JwtIssuer = _configuration["Jwt:Issuer"];
-            _JwtAudience = _configuration["Jwt:Audience"];
             _JwtExpiry = int.Parse(_configuration["Jwt:ExpiryMinutes"] ?? "60");
         }
 
@@ -90,14 +87,14 @@ namespace MicroService_Template.Domain.Services
                 new Claim(ClaimTypes.Role, roleName),
 
     };
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_JwtKey));        
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));        
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: _JwtIssuer,
-                audience: _JwtAudience,
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_JwtExpiry),
+                expires: DateTime.UtcNow.AddMinutes(30),
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
